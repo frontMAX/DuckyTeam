@@ -14,7 +14,8 @@ app.use(express.urlencoded({ extended: false }))
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect('mongodb://frontmax:bomberbomber@test:5000/duckybase')
+    // Add database duckybase and collection with name "user" or something.. plz add so all users can create collections...
+    const conn = await mongoose.connect('mongodb://frontmax:bomberbomber@cluster0.ycxia.mongodb.net:5000/duckybase')
     console.log(`MongoDB connected: ${conn.connection.host}`)
   } catch (err) {
     if (err) console.log(err)
