@@ -1,5 +1,11 @@
 {
   "devDependencies": {
     "@types/node": "^17.0.34"
+  },
+  "scripts": {
+    "start-server": " nodemon backend/server.ts --watch backend/*"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.16"
   }
 }
