@@ -6,19 +6,6 @@ import cookieSession from 'cookie-session';
 import {connect, Schema,model } from "mongoose";
 import { Request, Response, NextFunction } from "express";
 import { userRouter} from './resources/user/user.router';
-
-
-// const connectDB = async () => {
-//   try {
-//     const conn = await mongoose.connect('mongodb://frontmax:bomberbomber@test:5001/duckybase')
-//     console.log(`MongoDB connected: ${conn.connection.host}`)
-//   } catch (err) {
-//     if (err) console.log(err)
-
-//     process.exit(1)
-//   }
-// }
-
 const port = 5001;
 const app = express();
 
@@ -43,7 +30,6 @@ mongoose.connect(
 );
 
 //connectDB()
-
 
 
 
