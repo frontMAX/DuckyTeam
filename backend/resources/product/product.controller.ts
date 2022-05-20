@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { ProductModel, Product } from "./product.model";
 
+// Get all products
+export const getProducts = async (req: Request, res: Response) => {
+    const products = await ProductModel.find({});
+    res.status(200).json(products)
+};
+
 
 // Get a single product by id
 export const getProduct = async (req: Request<{ id: string }>, res: Response) => {
@@ -14,11 +20,7 @@ export const getProduct = async (req: Request<{ id: string }>, res: Response) =>
     res.status(200).json(product)
 };
 
-// Get all products
-export const getProducts = async (req: Request, res: Response) => {
-    const products = await ProductModel.find({});
-    res.status(200).json(products)
-};
+
 
 // @desc register/add a new product
 export const registerProduct = async (
