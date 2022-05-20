@@ -21,8 +21,7 @@ export const getProduct = async (req: Request<{ id: string }>, res: Response) =>
 };
 
 
-
-// @desc register/add a new product
+// register/add a new product
 export const registerProduct = async (
     req: Request<{}, {}, Product>,
     res: Response,
@@ -38,7 +37,9 @@ export const registerProduct = async (
 
     if (!req.body) {
         res.status(400)
+        console.log('Fill in required fields.')
         throw new Error('Fill in required fields.')
+
     }
 
     try {
