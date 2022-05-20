@@ -1,6 +1,6 @@
 http://localhost:5001/api/product
 
-### Get specific product
+### Get specific product (get the id from product you want to find)
 GET http://localhost:5001/api/product/id
 
 ### register new product
@@ -17,9 +17,9 @@ Content-Type: application/json
     "images": "null"
 }
 
-###  update product
+###  update product (get the id from product you want to update)
 
-PUT http://localhost:5001/api/product/62875b36861fb7a34a6cd375 
+PUT http://localhost:5001/api/product/id 
 Content-Type: application/json
 
 {
@@ -31,5 +31,5 @@ Content-Type: application/json
     "images": "null"
 }
 
-### Delete product 
-DELETE http://localhost:5001/api/product/62875a9f647863fa4231c91b
+### Delete product (get the id from product you want to delete)
+DELETE http://localhost:5001/api/product/id
