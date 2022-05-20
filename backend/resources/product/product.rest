@@ -5,7 +5,7 @@ GET http://localhost:5001/api/product/id
 
 ### register new product
 
-POST http://localhost:5000/api/product 
+POST http://localhost:5001/api/product 
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###  update product
 
-PUT http://localhost:5001/api/product/id 
+PUT http://localhost:5001/api/product/62875b36861fb7a34a6cd375 
 Content-Type: application/json
 
 {
@@ -32,4 +32,4 @@ Content-Type: application/json
 }
 
 ### Delete product 
-DELETE http://localhost:5001/api/product/id
+DELETE http://localhost:5001/api/product/62875a9f647863fa4231c91b
