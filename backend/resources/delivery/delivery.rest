@@ -6,6 +6,10 @@ POST http://localhost:5001/api/delivery
 Content-Type: application/json
 
 {
+    "name": "Instabox",
+    "price": 39,
+    "time": 48
+
 }
 
 ###
