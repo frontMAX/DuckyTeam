@@ -1,0 +1,13 @@
+GET http://localhost:5001/api/order
+
+###
+POST http://localhost:5001/api/order
+
+
+###
+
+PUT http://localhost:5001/api/order
+
+###
+
+DELETE http://localhost:5001/api/order
