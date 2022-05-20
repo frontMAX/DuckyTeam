@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { DeliveryModel } from "./deliveryModel";
+import { DeliveryModel } from "./delivery.model";
 
 export const getDeliveries = async (req: Request, res: Response) => {
   const deliveries = await DeliveryModel.find();

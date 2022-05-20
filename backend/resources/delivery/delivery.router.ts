@@ -6,7 +6,7 @@ import {
   getDelivery,
   registerDelivery,
   updateDelivery,
-} from "./deliveryController";
+} from "./delivery.controller";
 
 export const userRouter = express
   .Router()

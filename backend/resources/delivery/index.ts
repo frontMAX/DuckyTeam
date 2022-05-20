@@ -1,3 +1,3 @@
-export * from "./deliveryController";
-export * from "./deliveryModel";
-export * from "./deliveryRouter";
+export * from "./delivery.controller";
+export * from "./delivery.model";
+export * from "./delivery.router";
