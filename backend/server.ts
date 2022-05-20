@@ -6,6 +6,7 @@ import cookieSession from 'cookie-session';
 import {connect, Schema,model } from "mongoose";
 import { Request, Response, NextFunction } from "express";
 import { userRouter} from './resources/user/user.router';
+import { productRouter } from './resources/product/product.router';
 const port = 5001;
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors({ credentials: true, origin: ["http://localhost:5001"] }));
 
-app.use("/api", userRouter);
+app.use("/api", userRouter, productRouter);
 
 mongoose.connect(
   "mongodb+srv://frontMAX:bomberbomber@cluster0.ycxia.mongodb.net/duckybase",
