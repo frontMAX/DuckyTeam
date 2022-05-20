@@ -6,6 +6,11 @@
     "start-server": " nodemon backend/server.ts --watch backend/*"
   },
   "dependencies": {
-    "nodemon": "^2.0.16"
+    "@types/cookie-session": "^2.0.44",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.7.0"
   }
 }
