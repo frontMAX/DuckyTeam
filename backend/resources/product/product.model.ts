@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface Product {
+    id: Number;
     name: string;
     price: number;
     quantity: number;
@@ -12,10 +13,11 @@ export interface Product {
 
 const productSchema = new mongoose.Schema(
   {
+    id: {type: Number},
     name: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true},
-    details: { type: String, required: false},
+    details: { type: String, required: true},
     category: {type: String, required:true}, 
     images: {type: String, required: true},
     orderedQuantity: {type: Number}
