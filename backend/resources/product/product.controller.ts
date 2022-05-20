@@ -30,11 +30,11 @@ export const registerProduct = async (
 ) => {
 
     // supposed to check cookie if admin
-    if (!req.session.id) {
-        res.status(401);
-        res.send({ message: 'Unauthorized register attempt.' });
-        return;
-    }
+    // if (req.session.isAdmin !== 'true') {
+    //     res.status(401);
+    //     res.send({ message: 'Unauthorized register attempt.' });
+    //     return;
+    // }
 
     if (!req.body) {
         res.status(400)
@@ -57,11 +57,11 @@ export const updateProduct = async (
     res: Response
 ) => {
     // supposed to check cookie for admin
-    if (req.session.isAdmin !== 'true') {
-        res.status(401);
-        res.send({ message: 'Unauthorized save attempt.' });
-        return;
-    }
+    // if (req.session.isAdmin !== 'true') {
+    //     res.status(401);
+    //     res.send({ message: 'Unauthorized save attempt.' });
+    //     return;
+    // }
 
     const product = await ProductModel.findById(req.params.id);
 
@@ -83,11 +83,11 @@ export const updateProduct = async (
 export const deleteProduct = async (req: Request<{ id: string }>, res: Response) => {
 
     // checks if cookie (if admin) is existing
-    if (req.session.isAdmin !== 'true') {
-        res.status(401)
-        res.send({ message: 'Need to be admin to delete a product.' })
-        return
-    }
+    // if (req.session.isAdmin !== 'true') {
+    //     res.status(401)
+    //     res.send({ message: 'Need to be admin to delete a product.' })
+    //     return
+    // }
 
     const { id } = req.params
 
@@ -99,15 +99,15 @@ export const deleteProduct = async (req: Request<{ id: string }>, res: Response)
             .send({ error: true, msg: 'This product does not exist' });
     }
 
-    if (
-        req.session.isAdmin !== 'true'
-    ) {
-        res.status(403);
-        res.send({
-            message: 'You are not allowed to delete products.',
-        });
-        return;
-    }
+    // if (
+    //     req.session.isAdmin !== 'true'
+    // ) {
+    //     res.status(403);
+    //     res.send({
+    //         message: 'You are not allowed to delete products.',
+    //     });
+    //     return;
+    // }
 
     const deletedProduct = await ProductModel.findByIdAndDelete(id)
 
