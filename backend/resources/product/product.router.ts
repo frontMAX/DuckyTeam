@@ -1,4 +1,5 @@
 import express from "express";
+//import { adminSecure } from "../middlewares";
 
 import {
   getProducts,
@@ -12,6 +13,6 @@ export const productRouter = express
   .Router()
   .get("/product",  getProducts)
   .get("/product/:id",  getProduct)
-  .post("/product/:id",/* adminSecure, */ registerProduct)
+  .post("/product",/* adminSecure, */ registerProduct)
   .put("/product/:id",/* adminSecure, */ updateProduct)
   .delete("/product/:id",/* adminSecure, */ deleteProduct);
