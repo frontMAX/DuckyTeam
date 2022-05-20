@@ -1,6 +1,5 @@
 import express from "express";
-import { adminSecure } from "../middlewares";
-
+//import { adminSecure } from "../middlewares";
 import {
   deleteDelivery,
   getDeliveries,
@@ -11,7 +10,7 @@ import {
 
 export const userRouter = express
   .Router()
-  .get("/delivery", adminSecure, getDeliveries, getDelivery)
+  .get("/delivery", getDeliveries, getDelivery)
   .post("/delivery", registerDelivery)
-  .put("/delivery/:id", updateDelivery)
-  .delete("/delivery/:id", deleteDelivery);
+  .put("/delivery/:id", /* adminSecure, */ updateDelivery)
+  .delete("/delivery/:id", /* adminSecure, */ deleteDelivery);
