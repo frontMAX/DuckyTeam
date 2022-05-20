@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { nextTick } from "process";
+
 import { DeliveryModel } from "./deliveryModel";
 
 export const getDeliveries = async (req: Request, res: Response) => {
