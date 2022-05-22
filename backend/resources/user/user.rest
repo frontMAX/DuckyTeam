@@ -6,7 +6,7 @@ POST http://localhost:5001/api/user
 Content-Type: application/json
 
 {
-  "firstname": "esther tester",
+  "firstname": "regigera mig",
   "lastname": "hejsan svejsan",
   "password": "123",
    "address": {
@@ -18,13 +18,22 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5001/api/user/62874dbfd5b05ee73de2d239
+PUT http://localhost:5001/api/user/628a78e57940ae5178dd6340
 Content-Type: application/json
 
 {
+
+  "firstname": "jag är regigerad nu!",
+  "lastname": "hejsan svejsaneee",
+  "password": "123",
+   "address": {
+     "street": "Åkannavägen",
+     "zipcode": 43540,
+     "city": "Mölnlycke"
+   }
   
 }
 
 ###
 
-DELETE http://localhost:5001/api/user/62875be58f2b81ae73c9fdaf
+DELETE http://localhost:5001/api/user/628a78e57940ae5178dd6340

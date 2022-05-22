@@ -21,23 +21,32 @@ export const addUser = async (
     next(err);
   }
 };
+
 export const updateUser = async (
   req: Request<{ id: string }>,
   res: Response
 ) => {
-  const user = await UserModel.findById(req.params.id).select("+password");
-  console.log(user);
-  res.status(200).json(user);
+  const userToUpdate = await UserModel.findById({_id: req.params.id });
+
+  if(!userToUpdate){
+    res.status(404).json("cant update user because user does not exist")
+  }
+  if (userToUpdate){
+  await UserModel.findOneAndUpdate({_id: req.params.id}, req.body)
+  .then(()=> res.status(200).json("user is updated "))
+  .catch((err)=>res.status(400).json("error: " + err))
+  }
 };
 
+
 export const deleteUser = async (req: Request, res: Response) => {
-  let selectedUser = await UserModel.findById({ _id: req.params.id });
+  let selectedUser = await UserModel.findById(req.params.id,req.body);
   if (!selectedUser) {
    res.status(404).json("user does not exist")
   
   }
   if (selectedUser) {
-    let deleteUser = await UserModel.findByIdAndDelete({ _id: req.params.id })
+    await UserModel.findByIdAndDelete({ _id: req.params.id })
     .then(() => res.status(200).json("user is deleted!! "))
       .catch((err) => res.status(404).json("error: " + err));
   }
