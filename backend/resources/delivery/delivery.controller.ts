@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { UserModel } from "../user/user.model";
 
 import { DeliveryModel } from "./delivery.model";
 
@@ -23,7 +24,10 @@ export const registerDelivery = async (
   }
 };
 
-export const updateDelivery = async (req: Request, res: Response) => {
+export const updateDelivery = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
   const delivery = await DeliveryModel.findById(req.params.id);
   console.log(delivery);
   res.status(200).json(delivery);
