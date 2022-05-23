@@ -2,11 +2,22 @@ GET http://localhost:5001/api/order
 
 ###
 POST http://localhost:5001/api/order
+Content-Type: application/json
+{
+    "orderNumber": "121212f",
+    "products":"Fotboll" 
+}
 
 
 ###
 
 PUT http://localhost:5001/api/order
+Content-Type: application/json
+{
+    "orderNumber": "121212f",
+    "products":"Fotboll" 
+}
+
 
 ###
 

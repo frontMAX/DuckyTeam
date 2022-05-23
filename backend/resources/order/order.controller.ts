@@ -1,15 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { UserModel, User } from "../user/user.model";
 import { OrderModel, Order } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
-    const users = await UserModel.find({});
-    res.status(200).json(users);
+    const orders = await OrderModel.find({});
+    res.status(200).json(orders);
 };
 
 export const addOrder = async (
-    req: Request<{}, {}, User>,
+    req: Request<{}, {}, Order>,
     res: Response,
     next: NextFunction
 ) => {
