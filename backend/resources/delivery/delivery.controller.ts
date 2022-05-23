@@ -25,7 +25,9 @@ export const registerDelivery = async (
 
 export const updateDelivery = async (req: Request, res: Response) => {
   const delivery = await DeliveryModel.findById(req.params.id);
-  console.log(delivery);
+
+
+  }
   res.status(200).json(delivery);
 };
 
