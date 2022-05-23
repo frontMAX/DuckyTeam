@@ -1,5 +1,7 @@
 import { User, mockedUsers } from '../Api/Data'
 import { LoginDetails } from '../components/Forms/LoginForm';
+import { ProductInterface } from '../InterFaces'
+import axios from 'axios';
 
 function wait(time: number) {
   return new Promise<boolean>((resolve) => {
@@ -27,6 +29,15 @@ export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
   return foundUser
 }
 
+export async function ProductFetch(product: Promise<ProductInterface>) {
+  const res = await axios.get(
+    'http://localhost:5001/api/product'
+  )
+
+  const result = await res.data.product
+  console.log(result.product)
+  return result
+}
 
 export async function placeOrderFetch() {
   return await wait(1000)
