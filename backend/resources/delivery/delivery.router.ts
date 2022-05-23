@@ -8,7 +8,7 @@ import {
   updateDelivery,
 } from "./delivery.controller";
 
-export const userRouter = express
+export const deliveryRouter = express
   .Router()
   .get("/delivery", getDeliveries, getDelivery)
   .post("/delivery", registerDelivery)
