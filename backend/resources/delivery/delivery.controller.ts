@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { UserModel } from "../user/user.model";
 
 import { DeliveryModel } from "./delivery.model";
 
@@ -29,10 +28,29 @@ export const updateDelivery = async (
   res: Response
 ) => {
   const delivery = await DeliveryModel.findById(req.params.id);
-  console.log(delivery);
-  res.status(200).json(delivery);
+  if (!delivery) {
+    return res.status(400).send("update cancelled");
+  }
+  const updatedDelivery = await DeliveryModel.findByIdAndUpdate(
+    req.params.id,
+    req.body
+  );
+  console.log(updatedDelivery);
+  res.status(200).json(updatedDelivery);
 };
 
-export const deleteDelivery = async (req: Request, res: Response) => {
-  res.status(200).json("Delivery deleted");
+export const deleteDelivery = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const delivery = await DeliveryModel.findById(req.params.id);
+  if (!delivery) {
+    return res.status(404).send("Couldnt find item");
+  } else {
+    const deletedDelivery = await DeliveryModel.findByIdAndDelete(
+      req.params.id
+    );
+    console.log(deletedDelivery + "is deleted");
+    res.status(200).json(deletedDelivery);
+  }
 };
