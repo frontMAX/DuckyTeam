@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { User } from "../user/user.model"
 import { Product, productSchema } from "../product/product.model"
 import { timeStamp } from "console";
+import { Delivery } from "../delivery/delivery.model";
 
 export interface Order {
     orderNumber: string;
@@ -10,7 +11,7 @@ export interface Order {
     createdAt: Date;
     updatedAt: Date;
     user: User;
-    // delivery: Delivery;
+    delivery: Delivery;
 }
 
 const OrderSchema = new mongoose.Schema<Order>({
@@ -18,7 +19,7 @@ const OrderSchema = new mongoose.Schema<Order>({
     products: { type: [productSchema], required: false },
     // shipping: { type: addressSchema },
     user: { type: Schema.Types.ObjectId, ref: "user", required: false },
-    // delivery: { type: Delivery}
+    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
