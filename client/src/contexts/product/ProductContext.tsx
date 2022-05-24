@@ -8,6 +8,17 @@ interface ProductContextValue {
   isLoading: boolean;
   product?: ProductInterface;
 }
+
+export interface ProductType extends Product {}
+
+// type PContext = {
+//   products: ProductType[];
+//   dispatch: React.Dispatch<ProductActions>;
+//   createProduct: (product: Product) => void;
+//   updateProduct: (product: Product) => void;
+//   deleteProduct: (id: number) => void;
+// };
+
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   product: { id: 0, name: '', price: 0, details: '', image: '',category:'' },
@@ -32,7 +43,7 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:5001/api/product", { withCredentials: true }).then((res: AxiosResponse) => {
+    axios.get("http://localhost:5001/api/product").then((res: AxiosResponse) => {
       setProduct(res.data);
     })
 }, []);
