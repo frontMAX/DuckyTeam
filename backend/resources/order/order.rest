@@ -1,24 +1,28 @@
 GET http://localhost:5001/api/order
 
 ###
+
 POST http://localhost:5001/api/order
 Content-Type: application/json
+
 {
-    "orderNumber": "121212f",
-    "products":"Fotboll" 
+    "orderNumber": "121212f"
+   
 }
 
 
 ###
 
-PUT http://localhost:5001/api/order
+PUT http://localhost:5001/api/order/628c984de9e990fb2d4737e7
+
 Content-Type: application/json
+
 {
-    "orderNumber": "121212f",
-    "products":"Fotboll" 
+    "orderNumber": "121212f"
+   
 }
 
 
 ###
 
-DELETE http://localhost:5001/api/order
+DELETE http://localhost:5001/api/order/628c984de9e990fb2d4737e7

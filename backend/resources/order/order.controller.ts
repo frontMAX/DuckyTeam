@@ -26,7 +26,10 @@ export const updateOrder = async (
     req: Request<{ id: string }>,
     res: Response
 ) => {
-    const order = await OrderModel.findById(req.params.id).select("+password");
+    const order = await OrderModel.findById(req.params.id);
+    if (!order) {
+        return res.status(400).send("hittas ej")
+    }
     console.log(order);
     res.status(200).json(order);
 };
@@ -34,12 +37,12 @@ export const updateOrder = async (
 export const deleteOrder = async (req: Request, res: Response) => {
     let selectedOrder = await OrderModel.findById({ _id: req.params.id });
     if (!selectedOrder) {
-        res.status(404).json("user does not exist")
-
+        res.status(404).json("order does not exist")
     }
     if (selectedOrder) {
         let deleteOrder = await OrderModel.findByIdAndDelete({ _id: req.params.id })
-            .then(() => res.status(200).json("user is deleted!! "))
+            .then(() => res.status(200).json("order is deleted!! "))
             .catch((err) => res.status(404).json("error: " + err));
     }
 };
+

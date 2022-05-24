@@ -4,14 +4,16 @@ import {
     getOrders,
     addOrder,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    // getOrder
 } from "./order.controller"
 
 export const orderRouter = express
     .Router()
+    // .get("/order/:id", getOrder)
     .get("/order", getOrders)
     .post("/order", addOrder)
-    .put("/order", updateOrder)
-    .delete("/order", deleteOrder)
+    .put("/order/:id", updateOrder)
+    .delete("/order/:id", deleteOrder)
 
 
