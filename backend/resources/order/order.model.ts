@@ -15,9 +15,9 @@ export interface Order {
 
 const OrderSchema = new mongoose.Schema<Order>({
     orderNumber: { type: String, required: true },
-    products: { type: [productSchema], required: true },
+    products: { type: [productSchema], required: false },
     // shipping: { type: addressSchema },
-    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "user", required: false },
     // delivery: { type: Delivery}
 }, {
     timestamps: true,

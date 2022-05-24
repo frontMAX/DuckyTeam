@@ -6,23 +6,21 @@ POST http://localhost:5001/api/order
 Content-Type: application/json
 
 {
-    "orderNumber": "121212f"
+    "orderNumber": "obamacare"
    
 }
 
 
 ###
-
-PUT http://localhost:5001/api/order/628c984de9e990fb2d4737e7
-
+PUT http://localhost:5001/api/order/628c9d38c8344f8818d51b84
 Content-Type: application/json
 
 {
-    "orderNumber": "121212f"
+    "orderNumber": "obamacare2"
    
 }
 
 
 ###
 
-DELETE http://localhost:5001/api/order/628c984de9e990fb2d4737e7
+DELETE http://localhost:5001/api/order/628c9aee99fb488257ddcbc2

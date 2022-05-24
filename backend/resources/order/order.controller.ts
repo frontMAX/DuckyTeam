@@ -26,12 +26,20 @@ export const updateOrder = async (
     req: Request<{ id: string }>,
     res: Response
 ) => {
+
     const order = await OrderModel.findById(req.params.id);
+
     if (!order) {
-        return res.status(400).send("hittas ej")
+        res.status(400)
+        throw new Error('Product not found')
     }
-    console.log(order);
-    res.status(200).json(order);
+
+    const updatedOrder = await OrderModel.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+    })
+
+    console.log(updatedOrder);
+    res.status(200).json(updatedOrder);
 };
 
 export const deleteOrder = async (req: Request, res: Response) => {
