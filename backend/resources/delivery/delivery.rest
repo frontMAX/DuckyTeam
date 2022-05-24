@@ -1,0 +1,28 @@
+GET http://localhost:5001/api/delivery
+
+###
+
+POST http://localhost:5001/api/delivery
+Content-Type: application/json
+
+{
+    "name": "PostNord",
+    "price": 39,
+    "time": 48
+
+}
+
+###
+
+PUT http://localhost:5001/api/delivery/628b990a29b0b11dbb595342
+Content-Type: application/json
+
+{  
+    "name": "Bring",
+    "price": 0,
+    "time": 72
+}
+
+###
+
+DELETE http://localhost:5001/api/delivery/628c7f57fae0a313dc9192f9
