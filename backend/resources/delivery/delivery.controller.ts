@@ -29,7 +29,7 @@ export const updateDelivery = async (
 ) => {
   const delivery = await DeliveryModel.findById(req.params.id);
   if (!delivery) {
-    return res.status(400).send("update cancelled");
+    return res.status(400).send("Couldnt find item");
   }
   const updatedDelivery = await DeliveryModel.findByIdAndUpdate(
     req.params.id,
