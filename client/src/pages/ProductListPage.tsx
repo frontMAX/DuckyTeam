@@ -7,11 +7,11 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Categories, MockedCategories } from '../Api/Data';
 import ProductCard from '../components/Cards/ProductCard';
-import { useProduct, ProductType } from '../contexts/ProductsContext';
+import { useProduct } from '../contexts/product/ProductContext';
 
 interface CategoryState {
   [key: string]: any;
@@ -66,7 +66,7 @@ function handleCategoryClick(
 }
 
 function ProductListPage() {
-  const { products } = useProduct();
+  const { products, fetchProducts } = useProduct();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
 
@@ -79,6 +79,10 @@ function ProductListPage() {
   const filteredCategories = categoryState.all
     ? Categories
     : Categories.filter((category) => categoryState[category]);
+
+  useEffect(() => {
+    fetchProducts()
+  }, [fetchProducts]);
 
   return (
     <Container maxWidth="lg">
@@ -120,7 +124,7 @@ function ProductListPage() {
           .filter((product) =>
             filteredCategories.includes(product.category as MockedCategories)
           )
-          .map((product: ProductType) => (
+          .map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
               <ProductCard key={product.id} product={product} />
             </Grid>
