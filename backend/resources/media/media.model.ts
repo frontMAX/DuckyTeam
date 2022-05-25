@@ -1,14 +1,17 @@
 import mongoose from "mongoose"
 import {GridFSBucket} from "mongodb"
 
+
 mongoose.connection.on("connected",() => {
     
     const bucket = new mongoose.mongo.GridFSBucket(
         mongoose.connection.db
-        , {bucketName: "files"}
+        , {bucketName: "media"}
 
     )
 })
+
+
 
 export let bucket: GridFSBucket
 
