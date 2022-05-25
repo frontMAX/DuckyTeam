@@ -3,7 +3,6 @@ import multer from "multer";
 
 import {
     getMedia,
-    // getAllMedia,
     addMedia,
     deleteMedia,
 } from "./media.controller"
