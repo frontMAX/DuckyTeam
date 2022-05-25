@@ -4,6 +4,7 @@ import { Product, productSchema } from "../product/product.model"
 import { timeStamp } from "console";
 
 export interface Order {
+    id: string;
     orderNumber: string;
     products: Product[];
     // shipping: Address;

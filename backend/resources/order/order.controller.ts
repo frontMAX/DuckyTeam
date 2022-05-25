@@ -3,7 +3,11 @@ import { OrderModel, Order } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
-    const orders = await OrderModel.find({});
+    // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
+
+    // component som kan återanvändas, admin 
+
+    const orders = await OrderModel.find({}).populate('user');
     res.status(200).json(orders);
 };
 

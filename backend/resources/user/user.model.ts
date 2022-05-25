@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 //import { Address, addressSchema } from "./address.schema";
 
 export interface User {
+  id: string;
   firstname: string;
   lastname: string;
   /** Virtual */ fullname: string;

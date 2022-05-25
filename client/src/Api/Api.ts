@@ -34,6 +34,12 @@ export async function ProductFetch(product: Promise<ProductInterface>) {
     'http://localhost:5001/api/product'
   )
 
+  // export async function OrderFetch(order: Promise<OrderInterface>) {
+  //   const res = await axios.get(
+  //     'http://localhost:5001/api/product'
+  //   )
+  // }
+
   const result = await res.data.product
   console.log(result.product)
   return result
