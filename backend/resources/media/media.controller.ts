@@ -1,56 +1,66 @@
 import { bucket } from "./media.model";
 import { NextFunction, Request, Response } from "express";
 import { Readable } from 'stream'
+import { Types } from "mongoose";
+import { GridFSFile } from "mongoose/node_modules/mongodb";
 
-export const getAllMedia = async (req: Request, res: Response) => {
+export const getMedia = async (req: Request, res: Response) => {
+    const _id = new Types.ObjectId(req.params.id)
+    const media = await bucket.find({ _id }).next()
+    if (!media || media.contentType) {
+        return res.status(404).json('does not exist')
+    }
+    res.setHeader('Content-Type', media.contentType)
+
+    const readableStream = bucket.openDownloadStream(_id)
+    readableStream.pipe(res)
     res.status(200).json('')
 }
 
-export const addMedia = async (req: Request, res: Response) => {
+export const addMedia = async (req: Request, res: Response, next: NextFunction) => {
+    // throw error
     if (!req.file) {
         console.log('no file sent')
         return
     }
-    const readableStream = Readable.from(req.file.buffer)
-    const writeableStream = bucket.openUploadStream(req.file.originalname, { contentType: req.file.mimetype })
+    const { originalname, mimetype, buffer } = req.file
+    const thumbnailName = 'thumb' + originalname
 
-    readableStream.pipe(writeableStream)
+    const readableStream = Readable.from(buffer)
+    const writeableStream = bucket.openUploadStream(originalname,
+        {
+            contentType: mimetype,
+            metadata: { thumbnail: false }
+        })
+        bucket.openUploadStream(thumbnailName,{
+            contentType: mimetype,
+            metadata:{thumbnail: true}
+        })
+
+        const media: GridFSFile[] = [];
+
+        const uploaded = (file: GridFSFile) =>{
+            media.push(file)
+
+            res.status(201).json(media)
+        }
+
+
+    readableStream.pipe(writeableStream).on('finish', (media: GridFSFile) => {
+        res.status(201).json(media)
+    })
 
     res.status(200).json('media added')
 }
 
-export const deleteMedia = (req: Request, res: Response) => {
-    res.status(200).json('deleted media')
+export const deleteMedia = async (req: Request, res: Response) => {
+    const _id = new Types.ObjectId(req.params.id)
+    const media = await bucket.find({ _id }).next()
+
+    if (!media || media.contentType) {
+        return res.status(404).json('does not exist')
+    }
+    await bucket.delete(_id)
+
+    res.status(204).json('deleted media')
 }
-
-
-// import multer from "multer"
-
-// import { connection } from "mongoose";
-
-
-// connection.once('open', () => {
-// GridFsStorage = Grid(connection.db, mongoose.mongo)
-
-// })
-
-// const mediaStorage = multer.diskStorage({
-//     destination: function(req: Request, file, cb){
-//         cb(null,'uploads')
-//     },
-//     filename: function(req,file,cb){
-//         cb(null, file.fieldname + Date.now())
-//     }
-// })
-
-// const uploadMedia = multer({storage: mediaStorage})
-
-// const addMedia = async (
-//     req: Request<{}, {}, Media>,
-//     res: Response,
-//     next: NextFunction
-// ) => {
-//     const media = fs.readFileSync(req.file.path)
-//     let encode_media = media.toString('base64')
-
-// }
