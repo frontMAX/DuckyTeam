@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
 
-  "email" : "hej",
+  "email" : "hejsan",
   "password": "gröten"
 }
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5001/api/user/628c940d709da0ca1961f0fe
+DELETE http://localhost:5001/api/user/628c978cce95e28ba02ccb21
 
 ###
 
@@ -39,6 +39,13 @@ POST http://localhost:5001/api/user/login
 Content-Type: application/json
 
 {   
-  "email": "hej",
+  "email": "hejsan",
   "password": "gröten"
 }
+
+###
+
+
+DELETE http://localhost:5001/api/user/logout
+
+

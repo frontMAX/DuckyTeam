@@ -1,7 +1,19 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, Express } from "express";
+import { Session, SessionData } from "express-session";
 import { UserModel, User } from "./user.model";
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import { userInfo } from "os";
 // import { request } from "http";
+let uuid = uuidv4;
+declare module "express-session" {
+  interface SessionData {
+    user: User;
+    email: string;
+    role: Boolean;
+    logindate: Date;
+  }
+}
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await UserModel.find({});
@@ -82,11 +94,11 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-// can change to mail too, or id. vad vi vill kan vi ändra till sen, men kör på username så länge!
-//export const loginUser = async( req: Request, res: response ) => {
-//console.log(req.body.firstname)
-
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const user = await UserModel.findOne({ email: req.body.email }).select(
     "+password"
   );
@@ -101,7 +113,54 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(401).json("you typed in wrong password or name");
   }
 
-  delete user.password;
+  //console.log(req.session.user);
+  if (req.session.id) {
+    return res.json("you only need to log in once");
+  }
   console.log("yay, you logged in!");
-  return res.status(200).json(user);
+  req.session.user = user;
+  req.session.id = uuidv4();
+  //req.session.id = uuidv4();
+  req.session.logindate = new Date();
+  req.session.role = user.isAdmin;
+  //console.log(req.session.user);
+  console.log(req.session.user);
+  delete user.password;
+  return res.status(200).json(req.session.user);
 };
+
+//sees if user is logged in or not
+export const testlogin = async (req: Request, res: Response) => {
+  if (req.session.user) {
+    return res.json("you only need to log in once");
+  }
+  if (!req.session.user) {
+    return res.json(req.session);
+  }
+};
+
+export const logOut = async (req: Request<SessionData>, res: Response) => {
+  if (req.sessionID) {
+    req.session.destroy;
+
+    res.status(400).json("unable to log out");
+  }
+  res.json("logged out").redirect("/login");
+  if (!req.session.id) {
+    return res.status(404).json("you have to login to logout");
+  }
+  res.json("other error");
+};
+
+// export const logOut = async (req: Request<SessionData>, res: Response) => {
+//   req.session.destroy((err) => {
+//     if (err) {
+//       res.status(400).json("unable to log out");
+//     }
+//     res.json("logged out").redirect("/login");
+//   });
+//   if (!req.session.user) {
+//     return res.status(404).json("you have to login to logout");
+//   }
+//   res.json("other error");
+// };
