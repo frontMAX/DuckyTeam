@@ -9,6 +9,8 @@ import { userRouter } from "./resources/user/user.router";
 import { deliveryRouter } from "./resources/delivery/delivery.router";
 import { productRouter } from "./resources/product/product.router";
 import { orderRouter } from "./resources/order/order.router";
+import sessions from "express-session";
+const cookieParser = require("cookie-parser");
 
 const port = 5001;
 const app = express();
@@ -19,16 +21,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({ credentials: true, origin: ["http://localhost:5001"] }));
 
 app.use(
-  cookieSession({
+  sessions({
     name: "session",
     secret: "s3cretkey",
-    sameSite: "strict",
-    httpOnly: true,
-    secure: false,
-    maxAge: 1000 * 200,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 200,
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+    },
   })
 );
 
+app.use(cookieParser());
 app.use("/api", userRouter, productRouter, deliveryRouter, orderRouter);
 
 mongoose.connect(

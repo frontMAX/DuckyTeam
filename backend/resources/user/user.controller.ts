@@ -12,8 +12,11 @@ declare module "express-session" {
     email: string;
     role: Boolean;
     logindate: Date;
+    userid: string;
   }
 }
+
+let session: Session & Partial<SessionData>;
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await UserModel.find({});
@@ -113,20 +116,24 @@ export const loginUser = async (
     return res.status(401).json("you typed in wrong password or name");
   }
 
+  session = req.session;
   //console.log(req.session.user);
-  if (req.session.id) {
+  if (req.session.user) {
+    console.log(req.session.user);
     return res.json("you only need to log in once");
   }
   console.log("yay, you logged in!");
-  req.session.user = user;
-  req.session.id = uuidv4();
-  //req.session.id = uuidv4();
-  req.session.logindate = new Date();
-  req.session.role = user.isAdmin;
-  //console.log(req.session.user);
-  console.log(req.session.user);
-  delete user.password;
-  return res.status(200).json(req.session.user);
+  session = req.session;
+  session.userid = req.body.email;
+  console.log(req.session);
+
+  // req.session.user = user;
+  // //req.session.id = uuidv4();
+  // req.session.logindate = new Date();
+  // req.session.role = user.isAdmin;
+  // console.log(req.session.user);
+  // delete user.password;
+  // return res.status(200).json(req.session.user);
 };
 
 //sees if user is logged in or not
@@ -140,13 +147,12 @@ export const testlogin = async (req: Request, res: Response) => {
 };
 
 export const logOut = async (req: Request<SessionData>, res: Response) => {
-  if (req.sessionID) {
+  if (req.session.user) {
     req.session.destroy;
-
-    res.status(400).json("unable to log out");
+    res.json("logged out").redirect("/login");
   }
-  res.json("logged out").redirect("/login");
-  if (!req.session.id) {
+  res.status(400).json("unable to log out");
+  if (!req.session.user) {
     return res.status(404).json("you have to login to logout");
   }
   res.json("other error");
