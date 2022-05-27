@@ -2,10 +2,9 @@ import { NextFunction, Request, Response, Express } from "express";
 import { Session, SessionData } from "express-session";
 import { UserModel, User } from "./user.model";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
-import { userInfo } from "os";
-// import { request } from "http";
-let uuid = uuidv4;
+import mongoose from "mongoose";
+//import { v4 as uuidv4 } from "uuid";
+//let uuid = uuidv4;
 declare module "express-session" {
   interface SessionData {
     user: User;
@@ -105,54 +104,44 @@ export const loginUser = async (
   const user = await UserModel.findOne({ email: req.body.email }).select(
     "+password"
   );
-
   // No user found, can't log in.
   if (!user) {
     return res.status(401).json("you typed in wrong password or name");
   }
   const checkPassword = await bcrypt.compare(req.body.password, user.password);
-
+  //passwork check failed, wrong password
   if (!checkPassword) {
     return res.status(401).json("you typed in wrong password or name");
   }
-
-  session = req.session;
-  //console.log(req.session.user);
-  if (req.session.user) {
-    console.log(req.session.user);
-    return res.json("you only need to log in once");
+  //passwordceck worked, right password
+  if (checkPassword) {
+    console.log(checkPassword + " check");
+    // setting up user session
+    session = req.session;
+    session.user = user;
+    session.email = req.body.email;
+    session.userid = user.email;
+    console.log(req.session.id + " the sessionID");
+    console.log(req.session.cookie);
+    return res.status(201).json(session);
   }
-  console.log("yay, you logged in!");
-  session = req.session;
-  session.userid = req.body.email;
-  console.log(req.session);
-
-  // req.session.user = user;
-  // //req.session.id = uuidv4();
-  // req.session.logindate = new Date();
-  // req.session.role = user.isAdmin;
-  // console.log(req.session.user);
-  // delete user.password;
-  // return res.status(200).json(req.session.user);
-};
-
-//sees if user is logged in or not
-export const testlogin = async (req: Request, res: Response) => {
+  //if user is logged in send them a message ans show they are logged in already
   if (req.session.user) {
-    return res.json("you only need to log in once");
-  }
-  if (!req.session.user) {
-    return res.json(req.session);
+    console.log(session.user);
+    res.json("you only need to log in once");
   }
 };
 
-export const logOut = async (req: Request<SessionData>, res: Response) => {
-  if (req.session.user) {
-    req.session.destroy;
-    res.json("logged out").redirect("/login");
+export const logout = async (
+  req: Request<mongoose.Schema.Types.ObjectId>,
+  res: Response
+) => {
+  if (req.session.userid) {
+    session.destroy;
+    res.json("logged out");
   }
   res.status(400).json("unable to log out");
-  if (!req.session.user) {
+  if (!req.session.userid) {
     return res.status(404).json("you have to login to logout");
   }
   res.json("other error");
@@ -169,4 +158,13 @@ export const logOut = async (req: Request<SessionData>, res: Response) => {
 //     return res.status(404).json("you have to login to logout");
 //   }
 //   res.json("other error");
+// };
+//sees if user is logged in or not
+// export const testlogin = async (req: Request, res: Response) => {
+//   if (req.session.user) {
+//     return res.json("you only need to log in once");
+//   }
+//   if (!req.session.user) {
+//     return res.json(session.user);
+//   }
 // };

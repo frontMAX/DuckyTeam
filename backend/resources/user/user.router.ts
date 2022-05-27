@@ -6,8 +6,7 @@ import {
   updateUser,
   deleteUser,
   loginUser,
-  testlogin,
-  logOut,
+  logout,
 } from "./user.controller";
 
 export const userRouter = express
@@ -15,6 +14,6 @@ export const userRouter = express
   .get("/user", /* adminSecure, */ getUsers)
   .post("/user", addUser)
   .put("/user/:id", updateUser)
-  .post("/user/login", loginUser, testlogin)
+  .post("/user/login", loginUser)
   .delete("/user/:id", deleteUser)
-  .delete("/user/logout", logOut);
+  .delete("/user/logout", logout);

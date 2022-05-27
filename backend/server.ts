@@ -25,6 +25,7 @@ app.use(
     name: "session",
     secret: "s3cretkey",
     resave: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 200,
       httpOnly: true,
