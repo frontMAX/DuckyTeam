@@ -19,15 +19,16 @@ function ProductCard({ product }: any) {
   const { cart, dispatch } = useCart()
   const [ratingValue] = useState(5)
 
+console.log(product)
   return (
-    <Card key={product.id} sx={{ borderRadius: '1rem', padding: '1rem'}}>
+    <Card key={product._id} sx={{ borderRadius: '1rem', padding: '1rem'}}>
       <CardActionArea>
-        <Link to={`/products/${product.id}`}>
+        <Link to={`/products/${product._id}`}>
           <CardContent sx={{ padding: '0' }}>
             <CardMedia
               component="img"
               height="240"
-              image={product.imgURL}
+              image={product.imageUrl}
               sx={{ objectFit: 'contain', objectPosition: 'center top' }}
             />
             <Box
@@ -48,7 +49,7 @@ function ProductCard({ product }: any) {
                 fontWeight="700"
                 sx={{ marginRight: '.4rem' }}
               >
-                {product.title}
+                {product.name}
               </Typography>
               <Box component="span">
                 <Rating name="read-only" value={ratingValue} readOnly />
@@ -63,7 +64,7 @@ function ProductCard({ product }: any) {
           padding: '0',
         }}
       >
-        <Link to={`/products/${product.id}`}>
+        <Link to={`/products/${product._id}`}>
           <Button sx={{
               mt: 2,
               mb: 2,

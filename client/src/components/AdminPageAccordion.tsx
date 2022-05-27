@@ -11,7 +11,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { Product, Categories } from '../Api/Data';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import Save from '@mui/icons-material/Save';
@@ -23,26 +22,28 @@ import {
   ProductEditReducerType,
   ProductEditState,
 } from '../contexts/Reducers';
+import { Categories, Product } from '../contexts/product/ProductContext';
+
 
 function createProductEditState(product: Product): ProductEditState {
   const productEditState: ProductEditState = {
     ...product,
-    titleValid: product.title !== '',
-    informationValid: product.information !== '',
-    categoryValid: product.category !== '',
+    titleValid: product.name !== '',
+    informationValid: product.details !== '',
+    categoryValid: product.category !== [],
     priceValid: !isNaN(product.price),
-    imgURLValid: product.imgURL !== '',
+    imgURLValid: product.imageUrl !== '',
   };
 
   return productEditState;
 }
 
 const isProductEdited = (product: Product, productState: ProductEditState) =>
-  productState.title !== product.title ||
-  productState.information !== product.information ||
+  productState.name !== product.name ||
+  productState.details !== product.details ||
   productState.category !== product.category ||
   productState.price !== product.price ||
-  productState.imgURL !== product.imgURL;
+  productState.imageUrl !== product.imageUrl;
 
 const isFormValid = (productState: ProductEditState) =>
   productState.titleValid &&
@@ -117,16 +118,16 @@ function AdminPageAccordion({
               },
             }}
           >
-            <img src={productState.imgURL} width="48px" alt=""></img>
+            <img src={productState.imageUrl} width="48px" alt=""></img>
             {open ? (
               <>
                 <input
                   type="text"
-                  value={productState.title}
+                  value={productState.name}
                   onChange={(e) => {
                     dispatch({
                       type: ProductEditReducerType.Update,
-                      payload: { key: 'title', value: e.target.value },
+                      payload: { key: 'name', value: e.target.value },
                     });
                   }}
                   onClick={(e) => e.stopPropagation()}
@@ -138,7 +139,7 @@ function AdminPageAccordion({
                 )}
               </>
             ) : (
-              <Typography>{productState.title}</Typography>
+              <Typography>{productState.name}</Typography>
             )}
           </Box>
           {open ? (
@@ -157,18 +158,18 @@ function AdminPageAccordion({
         <Box sx={{ margin: '1rem 0' }}>
           <img
             style={{ width: 100, height: 100 }}
-            src={productState.imgURL}
+            src={productState.imageUrl}
             alt=""
           ></img>
         </Box>
         <Typography sx={{ marginBottom: '2ex' }}>Bild URL:&nbsp;</Typography>
         <input
           type="url"
-          value={productState.imgURL}
+          value={productState.imageUrl}
           onChange={(e) => {
             dispatch({
               type: ProductEditReducerType.Update,
-              payload: { key: 'imgURL', value: e.target.value },
+              payload: { key: 'imageUrl', value: e.target.value },
             });
           }}
         />
@@ -183,10 +184,10 @@ function AdminPageAccordion({
             onChange={(e) => {
               dispatch({
                 type: ProductEditReducerType.Update,
-                payload: { key: 'information', value: e.target.value },
+                payload: { key: 'details', value: e.target.value },
               });
             }}
-            value={productState.information}
+            value={productState.details}
           />
           {!productState.informationValid && (
             <Typography sx={{ color: 'red' }}>
@@ -235,7 +236,7 @@ function AdminPageAccordion({
                 <Button
                   key={index}
                   variant={
-                    category === productState.category
+                   productState.category.includes(category)
                       ? 'contained'
                       : 'outlined'
                   }
@@ -310,7 +311,7 @@ function AdminPageAccordion({
               </Typography>
               <Button
                 onClick={(e) => {
-                  deleteAction(product.id);
+                  deleteAction(product._id);
                   setOpenModal(false);
                   setOpen(false);
                   e.stopPropagation();
