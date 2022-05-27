@@ -1,8 +1,9 @@
 import { createContext, FC, useContext, useState } from "react";
-import { Delivery } from "../InterFaces";
+
+import { DeliveryInterface } from "../InterFaces";
 
 export interface ContextValue {
-  delivery?: Delivery;
+  delivery?: DeliveryInterface;
 }
 
 export const DeliveryContext = createContext<ContextValue>({
@@ -14,7 +15,7 @@ export const DeliveryContext = createContext<ContextValue>({
 });
 
 const DeliveryProvider: FC = (props) => {
-  const [delivery, setDelivery] = useState<Delivery>();
+  const [delivery, setDelivery] = useState<DeliveryInterface>();
 
   return (
     <DeliveryContext.Provider value={{ delivery }}>

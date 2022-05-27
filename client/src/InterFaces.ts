@@ -1,6 +1,6 @@
 export interface test {}
 
-export interface Delivery {
+export interface DeliveryInterface {
   name: string;
   price: number;
   time: number;
