@@ -1,7 +1,8 @@
 // import { initialState } from './ProductsInCartContext'
 
-import { Product } from '../Api/Data'
-import { ProductType } from './ProductsContext'
+import { Product } from "./product/ProductContext"
+
+
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -101,7 +102,7 @@ type ProductPayload = {
   }
 }
 
-const initialStateProd = [] as ProductType[]
+const initialStateProd = [] as Product[]
 export type Data = typeof initialStateProd
 
 export type ProductActions =
@@ -118,7 +119,7 @@ export const productReducer = (state: Data, action: ProductActions) => {
     case ProductTypes.Update:
       const products = [...state]
       let productIndex = products.findIndex(
-        (product) => product.id === action.payload.product.id
+        (product) => product._id === action.payload.product._id
       )
       if (productIndex !== -1) {
         products[productIndex] = action.payload.product
@@ -127,7 +128,7 @@ export const productReducer = (state: Data, action: ProductActions) => {
       return products
     case ProductTypes.Delete:
       const productsAfterDeletion = state.filter(
-        (product) => product.id !== action.payload.id
+        (product) => product._id !== action.payload.id
       )
 
       return productsAfterDeletion
