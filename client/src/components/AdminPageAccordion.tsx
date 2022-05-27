@@ -28,7 +28,7 @@ import { Categories, Product } from '../contexts/product/ProductContext';
 function createProductEditState(product: Product): ProductEditState {
   const productEditState: ProductEditState = {
     ...product,
-    titleValid: product.name !== '',
+    nameValid: product.name !== '',
     informationValid: product.details !== '',
     categoryValid: product.category !== [],
     priceValid: !isNaN(product.price),
@@ -46,7 +46,7 @@ const isProductEdited = (product: Product, productState: ProductEditState) =>
   productState.imageUrl !== product.imageUrl;
 
 const isFormValid = (productState: ProductEditState) =>
-  productState.titleValid &&
+  productState.nameValid &&
   productState.informationValid &&
   productState.categoryValid &&
   productState.priceValid &&
@@ -56,7 +56,7 @@ interface AdminPageAccordionProps {
   product: Product;
   expanded?: boolean;
   saveAction: (product: Product) => void;
-  deleteAction: (productId: number) => void;
+  deleteAction: (productId: string) => void;
 }
 
 function AdminPageAccordion({
@@ -132,7 +132,7 @@ function AdminPageAccordion({
                   }}
                   onClick={(e) => e.stopPropagation()}
                 />
-                {!productState.titleValid && (
+                {!productState.nameValid && (
                   <Typography sx={{ color: 'red' }}>
                     Vänligen ange en titel.
                   </Typography>
@@ -290,7 +290,7 @@ function AdminPageAccordion({
           <Modal
             open={openModal}
             onClose={() => setOpenModal(false)}
-            aria-labelledby="modal-modal-title"
+            aria-labelledby="modal-modal-name"
             aria-describedby="modal-modal-description"
           >
             <Box

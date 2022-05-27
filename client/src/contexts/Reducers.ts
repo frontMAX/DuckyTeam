@@ -24,7 +24,7 @@ export enum Types {
 }
 
 export type CartType = {
-  id: number
+  _id: string
   title: string
   description: string
   price: number
@@ -34,7 +34,7 @@ export type CartType = {
 
 type CartPayload = {
   [Types.AddToCart]: {
-    id: number
+    _id: string
     title: string
     description: string
     price: number
@@ -43,10 +43,10 @@ type CartPayload = {
   }
 
   [Types.DeleteFromCart]: {
-    id: number
+    _id: string
   }
   [Types.UpdateQty]: {
-    id: number
+    _id: string
     qty: number
   }
   [Types.ResetCart]: {}
@@ -62,11 +62,11 @@ export const cartReducer = (state: State, action: CartActions) => {
     case Types.AddToCart:
       return [...state, { ...action.payload, qty: 1 }]
     case Types.DeleteFromCart:
-      return state.filter((c: { id: number }) => c.id !== action.payload.id)
+      return state.filter((c: { _id: string }) => c._id !== action.payload._id)
     case Types.UpdateQty:
       return [
         ...state.filter((cartItem: CartType) => {
-          return cartItem.id === action.payload.id
+          return cartItem._id === action.payload._id
             ? (cartItem.qty = action.payload.qty)
             : cartItem.qty
         }),
@@ -92,13 +92,13 @@ type ProductPayload = {
     product: Product
   }
   [ProductTypes.Read]: {
-    id: number
+    _id: string
   }
   [ProductTypes.Update]: {
     product: Product
   }
   [ProductTypes.Delete]: {
-    id: number
+    _id: string
   }
 }
 
@@ -128,7 +128,7 @@ export const productReducer = (state: Data, action: ProductActions) => {
       return products
     case ProductTypes.Delete:
       const productsAfterDeletion = state.filter(
-        (product) => product._id !== action.payload.id
+        (product) => product._id !== action.payload._id
       )
 
       return productsAfterDeletion
@@ -139,7 +139,7 @@ export const productReducer = (state: Data, action: ProductActions) => {
 }
 
 export interface ProductEditState extends Product {
-  titleValid: boolean
+  nameValid: boolean
   informationValid: boolean
   categoryValid: boolean
   priceValid: boolean

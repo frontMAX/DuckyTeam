@@ -79,7 +79,7 @@ console.log(product)
               },
             }}variant="outlined">Visa</Button>
         </Link>
-        {cart && cart.some((p: CartType) => p.id === product.id) ? (
+        {cart && cart.some((p: CartType) => p._id === product._id) ? (
           <Button>I kundkorgen</Button>
         ) : (
           <BuyButton dispatch={dispatch} product={product} />

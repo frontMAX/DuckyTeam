@@ -3,17 +3,22 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { Link } from "react-router-dom";
 import AdminPageAccordion from "../components/AdminPageAccordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useProduct, Product } from "../contexts/product/ProductContext";
 
 function AdminPage() {
-  const { products, createProduct, updateProduct, deleteProduct } =
+  const { products, fetchProducts, createProduct, updateProduct, deleteProduct } =
     useProduct();
   const [addingProduct, setAddingProduct] = useState(false);
 
+    
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+  
   const newProduct = () => {
-    const id = Math.max(...products.map((p) => p._id)) + 1;
+    const id = '';
 
     const product: Product = {
       name: "",
@@ -28,9 +33,10 @@ function AdminPage() {
     return product;
   };
 
+  
   const createNewProduct = (product: Product) => {
     setAddingProduct(false);
-    // createProduct(product);
+    createProduct();
   };
 
   const deleteNewProduct = () => setAddingProduct(false);
