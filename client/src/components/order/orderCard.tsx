@@ -26,7 +26,7 @@ export function OrderCard() {
             console.log('jklajknsdh',)
             fetchOrder(id)
         }
-    }, [fetchOrder]);
+    }, [fetchOrder, id]);
 
     return (
 
