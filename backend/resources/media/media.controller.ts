@@ -78,7 +78,7 @@ export const addMedia = async (req: Request, res: Response, next: NextFunction) 
             res.status(201).json(media)
         })
 
-        res.status(200).json('media added')
+        // res.status(200).json('media added')
     })
 }
 
