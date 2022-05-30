@@ -28,7 +28,7 @@ function CartList({ handleClose }: any) {
       <List>
         {cart && cart.length > 0 ? (
           cart.map((product: CartType) => (
-            <ListItem key={product.id} sx={{bgcolor:"#fffff"}}>
+            <ListItem key={product._id} sx={{bgcolor:"#fffff"}}>
               <ListItemAvatar>
                 <img
                   src={product.imgURL}
@@ -66,7 +66,7 @@ function CartList({ handleClose }: any) {
                     dispatch({
                       type: Types.UpdateQty,
                       payload: {
-                        id: product.id,
+                        _id: product._id,
                         qty: (product.qty -= 1),
                       },
                     });
@@ -96,7 +96,7 @@ function CartList({ handleClose }: any) {
                     dispatch({
                       type: Types.UpdateQty,
                       payload: {
-                        id: product.id,
+                        _id: product._id,
                         qty: (product.qty += 1),
                       },
                     });

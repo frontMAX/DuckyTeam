@@ -1,15 +1,15 @@
-import { Grid } from '@mui/material';
-import { useState } from 'react';
-import { useProduct, ProductType } from '../../contexts/ProductsContext';
-import ProductCard from './ProductCard';
+import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Product, useProduct } from "../../contexts/product/ProductContext";
+import ProductCard from "./ProductCard";
 
 function getRandomProducts(
-  products: ProductType[],
+  products: Product[],
   requestedNumberOfIndicies: number
 ) {
   const numberOfIndicies = Math.min(requestedNumberOfIndicies, products.length);
   let productsCopy = [...products];
-  let randomProducts: ProductType[] = new Array<ProductType>(numberOfIndicies);
+  let randomProducts: Product[] = new Array<Product>(numberOfIndicies);
 
   for (let i = 0; i < numberOfIndicies; i++) {
     let index = Math.floor(Math.random() * productsCopy.length);
@@ -21,18 +21,23 @@ function getRandomProducts(
 }
 
 function PopularDucks() {
-  const { products } = useProduct();
+  const { products, fetchProducts } = useProduct();
+
+  // TODO  make sure this runs on start page to actually render products...
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const [popularProducts] = useState(getRandomProducts(products, 3));
 
   return (
     <Grid
       container
-      sx={{ gap: '1rem', alignItems: 'center', justifyContent: 'center' }}
+      sx={{ gap: "1rem", alignItems: "center", justifyContent: "center" }}
     >
-      {popularProducts &&
-        popularProducts.map((product: ProductType) => (
-          <ProductCard key={product.id} product={product} />
+      {!!popularProducts.length &&
+        popularProducts.map((product: Product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
     </Grid>
   );
