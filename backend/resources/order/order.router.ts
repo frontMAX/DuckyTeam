@@ -5,12 +5,12 @@ import {
     addOrder,
     updateOrder,
     deleteOrder,
-    // getOrder
+    getOrder
 } from "./order.controller"
 
 export const orderRouter = express
     .Router()
-    // .get("/order/:id", getOrder)
+    .get("/order/:id", getOrder)
     .get("/order", getOrders)
     .post("/order", addOrder)
     .put("/order/:id", updateOrder)

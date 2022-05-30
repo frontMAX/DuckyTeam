@@ -2,6 +2,10 @@ GET http://localhost:5001/api/order
 
 ###
 
+GET http://localhost:5001/api/order/628c97c3e9e990fb2d4737e1
+
+###
+
 POST http://localhost:5001/api/order
 Content-Type: application/json
 

@@ -6,6 +6,7 @@ import { Delivery } from "../delivery/delivery.model";
 
 export interface Order {
     id: string;
+    email: string;
     orderNumber: string;
     products: Product[];
     // shipping: Address;
