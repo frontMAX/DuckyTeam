@@ -11,16 +11,23 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Link, useParams } from 'react-router-dom'
 import BuyButton from '../components/BuyButton'
-import { ProductType, useProduct } from '../contexts/ProductsContext'
 import { useCart } from '../contexts/CartContext'
+import { Product, useProduct } from '../contexts/product/ProductContext'
+import { useEffect } from 'react'
 
 function ProductPage() {
   let { id } = useParams()
   const { cart, dispatch } = useCart()
-  const { products } = useProduct()
+  const { products, fetchProduct } = useProduct()
   const product = products.find(
-    (item: ProductType) => item.id.toString() === id
+    (item: Product) => item._id.toString() === id
   )
+
+  useEffect(() => {
+    if(id){
+    fetchProduct(id);
+  }
+  }, [fetchProduct]);
 
   return (
     <Container maxWidth="md">
@@ -41,7 +48,7 @@ function ProductPage() {
             <CardMedia
               component="img"
               height="480"
-              image={product.imgURL}
+              image={product.imageUrl}
               sx={{ objectFit: 'contain', maxWidth: '20rem' }}
             />
             <Box
@@ -49,15 +56,15 @@ function ProductPage() {
             >
               <CardContent sx={{ flexGrow: '1' }}>
                 <Typography variant="h5" component="div" gutterBottom>
-                  {product.title}
+                  {product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {product.information}
+                  {product.details}
                 </Typography>
                 {/* <Rating name="read-only" value={ratingValue} readOnly /> */}
               </CardContent>
               <CardActions>
-                {cart.some((p: any) => p.id === product.id) ? (
+                {cart.some((p: any) => p.id === product._id) ? (
                   <Button>I kundkorgen</Button>
                 ) : (
                   <BuyButton dispatch={dispatch} product={product} />
