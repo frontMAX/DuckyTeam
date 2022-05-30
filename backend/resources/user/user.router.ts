@@ -7,6 +7,7 @@ import {
   deleteUser,
   loginUser,
   logout,
+  //getCurrentUser,
 } from "./user.controller";
 
 export const userRouter = express
@@ -16,4 +17,5 @@ export const userRouter = express
   .put("/user/:id", updateUser)
   .post("/user/login", loginUser)
   .delete("/user/:id", deleteUser)
-  .delete("/user/logout", logout);
+  .delete("/user/logout/:id", logout);
+//.get("/", getCurrentUser);

@@ -1,21 +1,7 @@
 import { NextFunction, Request, Response, Express } from "express";
-import { Session, SessionData } from "express-session";
 import { UserModel, User } from "./user.model";
 import bcrypt from "bcrypt";
-import mongoose from "mongoose";
-//import { v4 as uuidv4 } from "uuid";
-//let uuid = uuidv4;
-declare module "express-session" {
-  interface SessionData {
-    user: User;
-    email: string;
-    role: Boolean;
-    logindate: Date;
-    userid: string;
-  }
-}
-
-let session: Session & Partial<SessionData>;
+import mongoose, { ObjectId } from "mongoose";
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await UserModel.find({});
@@ -35,15 +21,11 @@ export const addUser = async (
       // fill in all fields
       return;
     }
-
     const userExist = await UserModel.findOne({ email: req.body.email });
-
     if (userExist) {
       // user already exist bla bla bla
       return;
-    }
-
-    // encryption of password
+    } // encryption of password
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -51,15 +33,11 @@ export const addUser = async (
       email: req.body.email,
       password: encryptedPassword,
       isAdmin,
+      id: mongoose.Types.ObjectId,
     });
-
     // const user = new UserModel(req.body);
-
-    // user.password = encryptedPassword
-
+    // user.password = encryptedPassworr
     // await user.save();
-
-    console.log(user);
     console.log(user);
     res.status(200).json(user);
   } catch (err) {
@@ -101,9 +79,17 @@ export const loginUser = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.session) {
+    throw new Error("Session object not initialized");
+  }
+
   const user = await UserModel.findOne({ email: req.body.email }).select(
     "+password"
   );
+
+  if (req.session?.user) {
+    return res.json(req.session.user);
+  }
   // No user found, can't log in.
   if (!user) {
     return res.status(401).json("you typed in wrong password or name");
@@ -113,38 +99,39 @@ export const loginUser = async (
   if (!checkPassword) {
     return res.status(401).json("you typed in wrong password or name");
   }
+
   //passwordceck worked, right password
   if (checkPassword) {
+    const userID = await UserModel.findById(req.params.id);
     console.log(checkPassword + " check");
     // setting up user session
-    session = req.session;
-    session.user = user;
-    session.email = req.body.email;
-    session.userid = user.email;
+    req.session.user = user;
     console.log(req.session.id + " the sessionID");
     console.log(req.session.cookie);
-    return res.status(201).json(session);
+    console.log(req.session.userid);
+    console.log(req.session.isLoggedin);
+    return res.status(201).json(user);
   }
   //if user is logged in send them a message ans show they are logged in already
-  if (req.session.user) {
-    console.log(session.user);
-    res.json("you only need to log in once");
-  }
 };
 
+// export const getCurrentUser = async (req: Request, res: Response) => {
+//   try {
+//     const loggedInUser = await UserModel.findById(req.session.user);
+//     res.json(loggedInUser);
+//   } catch (err) {
+//     console.log(err);
+//     res.json("Other error...");
+//   }
+// };
+
 export const logout = async (
-  req: Request<mongoose.Schema.Types.ObjectId>,
-  res: Response
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
-  if (req.session.userid) {
-    session.destroy;
-    res.json("logged out");
-  }
-  res.status(400).json("unable to log out");
-  if (!req.session.userid) {
-    return res.status(404).json("you have to login to logout");
-  }
-  res.json("other error");
+  req.session = null;
+  return res.json("logged out");
 };
 
 // export const logOut = async (req: Request<SessionData>, res: Response) => {
@@ -159,6 +146,7 @@ export const logout = async (
 //   }
 //   res.json("other error");
 // };
+
 //sees if user is logged in or not
 // export const testlogin = async (req: Request, res: Response) => {
 //   if (req.session.user) {
