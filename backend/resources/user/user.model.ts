@@ -4,13 +4,10 @@ import mongoose from "mongoose";
 // import { userInfo } from "os";
 
 export interface User {
-<<<<<<< HEAD
   id: string;
   firstname: string;
   lastname: string;
-=======
   email: string;
->>>>>>> main
   /** Virtual */ fullname: string;
   password: string;
   isAdmin: boolean;
