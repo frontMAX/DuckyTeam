@@ -3,7 +3,7 @@ import { OrderCard } from "../components/order/orderCard";
 import { useOrder } from "../contexts/Order/orderContext";
 import { Grid } from "@mui/material";
 
-function orderListPage() {
+function OrderListPage() {
   const { orders, fetchOrders } = useOrder();
 
   useEffect(() => {
@@ -19,4 +19,4 @@ function orderListPage() {
   );
 }
 
-export default orderListPage;
+export default OrderListPage;
