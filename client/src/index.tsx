@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import CartProvider from "./contexts/CartContext";
 import { UserProvider } from "./contexts/UserContext";
 import ProductsProvider from "./contexts/ProductsContext";
-import DeliveryProvider from "./contexts/DeliveryContetxt";
+import { DeliveryProvider } from "./contexts/DeliveryContetxt";
 
 ReactDOM.render(
   <React.StrictMode>
