@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+// import cors from "cors";
 import mongoose from "mongoose";
 import cookieSession from "cookie-session";
 
@@ -15,8 +15,6 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
 
 app.use("/api", userRouter, productRouter,deliveryRouter, orderRouter);
 
