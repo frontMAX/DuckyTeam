@@ -25,7 +25,6 @@ export interface Delivery {
   price: number;
   logo: string;
   id: string;
-  time: number;
 }
 
 export const DeliveryContext = React.createContext<DeliveryContextValue>({
