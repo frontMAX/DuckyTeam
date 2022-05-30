@@ -7,7 +7,7 @@ export interface Product {
   price: number;
   quantity: number;
   details: string;
-  category: string;
+  category: string[];
   imageId: Types.ObjectId;
   imageUrl: string;
   orderedQuantity?: Number;
@@ -19,8 +19,8 @@ export const productSchema = new Schema<Product>(
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
     details: { type: String, required: true },
-    category: { type: String, required: true },
-    imageId: { type: Schema.Types.ObjectId, required: true },
+    category: [{ type: String, required: true }],
+    imageId: { type: Schema.Types.ObjectId, required: false },
     orderedQuantity: { type: Number }
   },
   {

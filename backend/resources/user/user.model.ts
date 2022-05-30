@@ -1,10 +1,16 @@
 import mongoose from "mongoose";
 //import { Address, addressSchema } from "./address.schema";
+// import bcrypt from "bcrypt";
+// import { userInfo } from "os";
 
 export interface User {
+<<<<<<< HEAD
   id: string;
   firstname: string;
   lastname: string;
+=======
+  email: string;
+>>>>>>> main
   /** Virtual */ fullname: string;
   password: string;
   isAdmin: boolean;
@@ -15,8 +21,7 @@ export interface User {
 
 const userSchema = new mongoose.Schema(
   {
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
+    email: { type: String, required: true },
     password: { type: String, required: true, select: false },
     isAdmin: { type: Boolean, required: true, default: false },
     //address: { type: addressSchema, required: true },
@@ -28,16 +33,30 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("fullname").get(function (this: User) {
-  return this.firstname + " " + this.lastname;
-});
+// userSchema.virtual("fullname").get(function (this: User) {
+//   return this.firstname + " " + this.lastname;
+// });
 
-userSchema.pre("save", encryptPassword);
-userSchema.pre("updateOne", encryptPassword);
+// userSchema.pre("save", encryptPassword);
+// userSchema.pre("updateOne", encryptPassword);
 
-function encryptPassword(this: User, next: Function) {
-  this.password = "qwerty"; // TODO: use bcrypt...
-  next();
-}
+// async function encryptPassword(this: User, next: Function) {
+//   const passwordCrypted = bcrypt.hashSync("pa$$w0rd", 10);
+//   this.passwordCrypted = passwordCrypted;
+//   this.password = bcrypt.hashSync("pa$$w0rd", 10);
+//   // saving this function for later to compare hashed with password
+//   const verified = bcrypt.compareSync("pa$$w0rd", passwordCrypted);
+
+//   next();
+
+//   // function for hashing password
+//   //let passwordCrypted = bcrypt.hashSync("pa$$w0rd", 10);
+//   //verifying hashed password
+//   // saving this function for later to compare hashed with password
+//   // const verified = bcrypt.compareSync("pa$$w0rd", passwordCrypted);
+//   //hashed password
+//   // this.passwordCrypted = bcrypt.hashSync(this.password, 10);
+//   //this.password = bcrypt.hashSync("pa$$w0rd", 10);
+// }
 
 export const UserModel = mongoose.model<User>("user", userSchema);

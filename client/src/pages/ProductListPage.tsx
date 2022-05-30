@@ -6,12 +6,15 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-} from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Categories, MockedCategories } from '../Api/Data';
-import ProductCard from '../components/Cards/ProductCard';
-import { useProduct } from '../contexts/product/ProductContext';
+} from "@mui/material";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import ProductCard from "../components/Cards/ProductCard";
+import {
+  Categories,
+  MockedCategories,
+  useProduct,
+} from "../contexts/product/ProductContext";
 
 interface CategoryState {
   [key: string]: any;
@@ -19,7 +22,7 @@ interface CategoryState {
 
 function createCategoryState(categoryParam: string | null) {
   const categoryParamValues =
-    categoryParam === null ? [] : categoryParam.split(',');
+    categoryParam === null ? [] : categoryParam.split(",");
 
   const categories = Categories.filter(
     (a) =>
@@ -68,40 +71,41 @@ function handleCategoryClick(
 function ProductListPage() {
   const { products, fetchProducts } = useProduct();
   const [searchParams] = useSearchParams();
-  const categoryParam = searchParams.get('category');
+  const categoryParam = searchParams.get("category") ?? "all";
 
   const [categoryState, setCategoryState] = useState(
     createCategoryState(categoryParam)
   );
 
-  const matches = useMediaQuery('(max-width: 440px)');
+  const matches = useMediaQuery("(max-width: 440px)");
 
   const filteredCategories = categoryState.all
     ? Categories
     : Categories.filter((category) => categoryState[category]);
-
+  console.log(filteredCategories);
+  
   useEffect(() => {
-    fetchProducts()
+    fetchProducts();
   }, [fetchProducts]);
 
   return (
     <Container maxWidth="lg">
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginBottom: '1rem',
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "1rem",
         }}
       >
         <Typography gutterBottom variant="h6">
           Kategorier
         </Typography>
         <ButtonGroup
-          orientation={matches ? 'vertical' : 'horizontal'}
+          orientation={matches ? "vertical" : "horizontal"}
           aria-label="button group"
         >
           <Button
-            variant={categoryState.all ? 'contained' : 'outlined'}
+            variant={categoryState.all ? "contained" : "outlined"}
             onClick={() => handleCategoryAllClick(setCategoryState)}
           >
             Alla
@@ -109,7 +113,7 @@ function ProductListPage() {
           {Categories.map((category, index) => (
             <Button
               key={index}
-              variant={categoryState[category] ? 'contained' : 'outlined'}
+              variant={categoryState[category] ? "contained" : "outlined"}
               onClick={() =>
                 handleCategoryClick(categoryState, setCategoryState, category)
               }
@@ -121,12 +125,20 @@ function ProductListPage() {
       </Box>
       <Grid container spacing={2}>
         {products
-          .filter((product) =>
-            filteredCategories.includes(product.category as MockedCategories)
-          )
+          .filter((product) => {
+            for (const productCategory of product.category) {
+              console.log(productCategory)
+              if (
+                filteredCategories.includes(productCategory as MockedCategories)
+              ) {
+                return true;
+              }
+            }
+            return false;
+          })
           .map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-              <ProductCard key={product.id} product={product} />
+            <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
+              <ProductCard key={product._id} product={product} />
             </Grid>
           ))}
       </Grid>

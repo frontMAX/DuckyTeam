@@ -1,48 +1,54 @@
-import { Box, Button, Container, List } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, Button, Container, List } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { Link } from 'react-router-dom';
-import { Product } from '../Api/Data';
-import { useProduct } from '../contexts/ProductsContext';
-import AdminPageAccordion from '../components/AdminPageAccordion';
-import { useState } from 'react';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { Link } from "react-router-dom";
+import AdminPageAccordion from "../components/AdminPageAccordion";
+import { useEffect, useState } from "react";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { useProduct, Product } from "../contexts/product/ProductContext";
 
 function AdminPage() {
-  const { products, createProduct, updateProduct, deleteProduct } =
+  const { products, fetchProducts, createProduct, updateProduct, deleteProduct } =
     useProduct();
   const [addingProduct, setAddingProduct] = useState(false);
 
+    
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+  
   const newProduct = () => {
-    const id = Math.max(...products.map((p) => p.id)) + 1;
+    const id = '';
 
     const product: Product = {
-      title: '',
-      information: '',
-      id,
-      category: '',
+      name: "",
+      details: "",
+      _id: id,
+      category: [],
       price: 0,
-      imgURL: '',
+      quantity: 0,
+      imageUrl: "",
     };
 
     return product;
   };
 
+  
   const createNewProduct = (product: Product) => {
     setAddingProduct(false);
-    createProduct(product);
+    createProduct();
   };
 
   const deleteNewProduct = () => setAddingProduct(false);
 
   return (
-    <Container maxWidth="xl" sx={{ height: '100%' }}>
+    <Container maxWidth="xl" sx={{ height: "100%" }}>
       <Link to="/">
         <Button startIcon={<ArrowBackIcon />}>Tillbaka till startsidan</Button>
       </Link>
       <Box
         sx={{
-          height: '100%',
+          height: "100%",
         }}
       >
         <List>

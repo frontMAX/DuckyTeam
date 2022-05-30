@@ -6,19 +6,7 @@ import klarna from '../assets/PaymentLogos/klarna-square.jpg';
 import swish from '../assets/PaymentLogos/swish.svg';
 import { SvgIcon } from '@mui/material';
 
-export enum MockedCategories {
-  Famous = 'Kända',
-  Animals = 'Djur',
-  Hobby = 'Hobby',
-  Misc = 'Övriga',
-}
 
-export const Categories: MockedCategories[] = [
-  MockedCategories.Famous,
-  MockedCategories.Animals,
-  MockedCategories.Hobby,
-  MockedCategories.Misc,
-];
 
 // export const mockedProducts: Product[] = [
 //   {

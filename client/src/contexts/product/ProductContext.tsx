@@ -2,28 +2,43 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import axios, { AxiosResponse } from 'axios';
 
 import { ProductFetch } from '../../Api/Api';
-import { ProductInterface } from '../../InterFaces';
 
 interface ProductContextValue {
   isLoading: boolean;
-  products: ProductInterface[];
+  products: Product[];
   fetchProducts: () => void;
+  fetchProduct: (id: string) => void;
+  createProduct: () => void;
+  updateProduct: (product: Product) => void;
+  deleteProduct: (id: string) => void;
 }
+
+export enum MockedCategories {
+  Famous = 'Kända',
+  Animals = 'Djur',
+  Hobby = 'Hobby',
+  Misc = 'Övriga',
+}
+
+export const Categories: MockedCategories[] = [
+  MockedCategories.Famous,
+  MockedCategories.Animals,
+  MockedCategories.Hobby,
+  MockedCategories.Misc,
+];
 
 /** Remember this is used backendside as well, update both of needed. */
 export interface Product {
-  id: Number;
+  _id: string;
   name: string;
   price: number;
   quantity: number;
   details: string;
-  category: string;
+  category: MockedCategories[];
   imageUrl: string;
-  orderedQuantity?: Number;
+  orderedQuantity?: number;
 }
 
-
-export interface ProductType extends Product {}
 
 // type PContext = {
 //   products: ProductType[];
@@ -36,35 +51,68 @@ export interface ProductType extends Product {}
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   products: [],
-  fetchProducts: () => {}
+  fetchProducts: () => {},
+  fetchProduct: (id: string) => {},
+  createProduct: () => {},
+  updateProduct: (product: Product) => {},
+  deleteProduct: (id: string) => {}
 });
 
 export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
-  const [products, setProducts] = React.useState<ProductInterface[]>([]);
+  const [products, setProducts] = React.useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
 
 
-  const getProduct = async (product: Promise<ProductInterface>) => {
+  const getProduct = async (product: Promise<Product>) => {
     setIsLoading(true);
 
     return ProductFetch(product)
       .then((product) => {
         setProducts(product);
         setIsLoading(false);
-	    
-        // throw e;
       });
   };
 
   const fetchProducts = useCallback(() => {
-    axios.get<ProductInterface[]>("http://localhost:5001/api/product").then((res) => {
+    axios.get<Product[]>("http://localhost:5001/api/product").then((res) => {
       setProducts(res.data);
     })
   }, [])
 
+  const fetchProduct = useCallback((id: string) => {
+    axios.get<Product>(`http://localhost:5001/api/product/${id}`).then((res) => {
+      setProducts([res.data]);
+    })
+  }, [])
+
+  const createProduct = useCallback(() => {
+    axios.post<Product>("http://localhost:5001/api/product").then((res) => {
+      setProducts([...products, res.data]);
+    })
+  }, [])
+
+  const updateProduct = useCallback((newProductData: Product) => {
+    axios.put<Product>(`http://localhost:5001/api/product/${newProductData._id}`,{newProductData}).then((res) => {
+      const productIndex = products.findIndex((product: Product)=>{
+        return product._id = newProductData._id
+      })
+      products[productIndex] = res.data
+      setProducts(products);
+    })
+  }, [])
+
+  const deleteProduct =useCallback((id: string) => {
+    axios.delete<Product>(`http://localhost:5001/api/product/${id}`).then((res) => {
+      const productIndex = products.findIndex((product: Product)=>{
+        return product._id = id
+      })
+      setProducts([...products.splice(productIndex, 1)]);
+    })
+  }, [])
+
   return (
-    <ProductContext.Provider value={{ products, isLoading, fetchProducts }}>
+    <ProductContext.Provider value={{ products, isLoading, fetchProduct, fetchProducts, createProduct, updateProduct, deleteProduct }}>
       {children}
     </ProductContext.Provider>
   );
