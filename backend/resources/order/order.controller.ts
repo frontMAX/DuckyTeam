@@ -7,7 +7,7 @@ export const getOrders = async (req: Request, res: Response) => {
 
     // component som kan återanvändas, admin 
 
-    const orders = await OrderModel.find({}).populate('order');
+    const orders = await OrderModel.find({});
     res.status(200).json(orders);
 };
 
