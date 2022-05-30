@@ -11,8 +11,7 @@ import TermsOfUsePage from '../pages/TermsOfUsePage'
 import AdminPage from '../pages/AdminPage'
 import SupportPage from '../pages/SupportPage'
 import ConfirmedOrderPage from '../pages/ConfirmedPage'
-import orderPage from '../pages/orderPage'
-
+import OrderPage from '../pages/orderPage'
 function App() {
   return (
     <Routes>
@@ -29,7 +28,8 @@ function App() {
         <Route path="termsOfUse" element={<TermsOfUsePage />} />
         <Route path="support" element={<SupportPage />} />
         <Route path="login" element={<LoginPage />} />
-
+        {/* <Route path="orderPage" element={<OrderListPage />} /> - alla ordrar sen typ*/}
+        <Route path="orderPage/:id" element={<OrderPage />} />
       </Route>
       <Route path="admin" element={<AdminPage />} />
     </Routes>

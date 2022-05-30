@@ -2,20 +2,45 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useOrder } from '../../contexts/Order/OrderContext';
+import { Order } from '@shared/types';
+import { useParams } from 'react-router-dom';
+// import { getOrders } from '../../../../backend/resources/order/order.controller';
 
 export function OrderCard() {
+
+    //sälva contexten, typ "usecontext"
+    const { orders, fetchOrder } = useOrder();
+
+    const { id } = useParams()
+
+    const order = orders.find(
+        (item: Order) => item.id.toString() === id
+    )
+    // funktionen som hämtar ordrar i context
+    React.useEffect(() => {
+        if (id) {
+            fetchOrder(id)
+        }
+    }, [fetchOrder]);
+
     return (
-        <Card sx={{ maxWidth: 345, marginTop: 5, }}>
+
+        // <Card sx={{ maxWidth: 345, marginTop: 5, }}>
+        //fast order då, verkar inte finnas ett corresponding interface med allt som behövs
+        <Card key={order?.id} sx={{ borderRadius: '1rem', padding: '1rem' }}>
+            {/* "orders.map yada yada, key: order.id, key: order.name, yada yada" */}
             <Typography>
+                {order?.orderNumber}
                 OrderNummer
             </Typography>
             <Typography>
                 Bild på produkten eller bara i text vilken produkt som behövs?!
             </Typography>
             <Typography>
+                {order?.createdAt}
                 Vilket datum den skapades ?
             </Typography>
             <Typography>
