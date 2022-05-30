@@ -4,9 +4,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useOrder } from '../../contexts/Order/OrderContext';
+
 import { Order } from '@shared/types';
 import { useParams } from 'react-router-dom';
+import { useOrder } from '../../contexts/Order/orderContext';
 // import { getOrders } from '../../../../backend/resources/order/order.controller';
 
 export function OrderCard() {
@@ -22,6 +23,7 @@ export function OrderCard() {
     // funktionen som hämtar ordrar i context
     React.useEffect(() => {
         if (id) {
+            console.log('jklajknsdh',)
             fetchOrder(id)
         }
     }, [fetchOrder]);

@@ -7,16 +7,16 @@ export const getOrders = async (req: Request, res: Response) => {
 
     // component som kan återanvändas, admin 
 
-    const orders = await OrderModel.find({}).populate('user');
+    const orders = await OrderModel.find({}).populate('order');
     res.status(200).json(orders);
 };
 
 
 // Get a single order by id
-export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
-    const { id } = req.params
+export const getOrder = async (req: Request<{ _id: string }>, res: Response) => {
+    const { _id } = req.params
 
-    const order = await OrderModel.findById(id)
+    const order = await OrderModel.findById(_id)
     if (!order) {
         res.status(400)
         throw new Error('order not found')

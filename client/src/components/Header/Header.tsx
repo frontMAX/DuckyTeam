@@ -72,7 +72,7 @@ const Header: FC<HeaderProps> = () => {
               },
             }}
           >
-            <Link to={"/orderPage"} >
+            <Link to={"/order"} >
               Order sidan
             </Link>
 
