@@ -75,25 +75,25 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   // };
 
   const fetchProducts = useCallback(() => {
-    axios.get<Product[]>("http://localhost:5001/api/product").then((res) => {
+    axios.get<Product[]>("/api/product").then((res) => {
       setProducts(res.data);
     })
   }, [])
 
   const fetchProduct = useCallback((id: string) => {
-    axios.get<Product>(`http://localhost:5001/api/product/${id}`).then((res) => {
+    axios.get<Product>(`/api/product/${id}`).then((res) => {
       setProducts([res.data]);
     })
   }, [])
 
   const createProduct = useCallback(() => {
-    axios.post<Product>("http://localhost:5001/api/product").then((res) => {
+    axios.post<Product>("/api/product").then((res) => {
       setProducts([...products, res.data]);
     })
   }, [])
 
   const updateProduct = useCallback((newProductData: Product) => {
-    axios.put<Product>(`http://localhost:5001/api/product/${newProductData._id}`, { newProductData }).then((res) => {
+    axios.put<Product>(`/api/product/${newProductData._id}`, { newProductData }).then((res) => {
       const productIndex = products.findIndex((product: Product) => {
         return product._id = newProductData._id
       })
@@ -103,7 +103,7 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, [])
 
   const deleteProduct = useCallback((id: string) => {
-    axios.delete<Product>(`http://localhost:5001/api/product/${id}`).then((res) => {
+    axios.delete<Product>(`/api/product/${id}`).then((res) => {
       const productIndex = products.findIndex((product: Product) => {
         return product._id = id
       })
