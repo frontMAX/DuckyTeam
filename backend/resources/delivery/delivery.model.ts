@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 export interface Delivery {
   name: string;
+  altText: string;
   price: number;
   time: number;
 }
@@ -9,6 +10,7 @@ export interface Delivery {
 const deliverySchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    altText: { type: String, required: true },
     price: { type: Number, required: true },
     time: { type: Number, required: true },
   },
