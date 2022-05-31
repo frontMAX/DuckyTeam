@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { deliveryOptions, paymentOptions } from '../Api/Data';
 import { AllOrderData } from '../components/Forms/OrderForm';
-import { CartType } from '../contexts/Reducers';
+import { CartType } from '../contexts/CartReducer';
 import useLocalStorage from '../Hooks/useLocalStorage';
 
 // randomizes a 6 digit order number

@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import OrderForm from "../components/Forms/OrderForm";
 import useLocalStorage from "../Hooks/useLocalStorage";
-import { CartType } from "../contexts/Reducers";
 import { useState } from "react";
 import { deliveryOptions } from "../Api/Data";
 import { useNavigate } from "react-router-dom";
+import { CartType } from "../contexts/CartReducer";
 
 function CheckOutPage() {
   // get cart and total price from cart

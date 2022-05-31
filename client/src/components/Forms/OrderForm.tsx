@@ -20,8 +20,8 @@ import { placeOrderFetch } from "../../Api/Api";
 import useLocalStorage from "../../Hooks/useLocalStorage";
 import React from "react";
 import { useCart } from "../../contexts/CartContext";
-import { CartType, Types } from "../../contexts/Reducers";
 import { deliveryOptions } from "../../Api/Data";
+import { CartType, Types } from "../../contexts/CartReducer";
 
 export interface OrderData {
   shippingAdress: ShippingAdress;

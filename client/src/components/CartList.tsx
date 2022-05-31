@@ -18,7 +18,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
-import { CartType, Types } from "../contexts/Reducers";
+import { Types } from "mongoose";
+import { CartType } from "../contexts/CartReducer";
 
 function CartList({ handleClose }: any) {
   const { cart, dispatch, total } = useCart();
@@ -63,13 +64,13 @@ function CartList({ handleClose }: any) {
                     },
                   }}
                   onClick={() => {
-                    dispatch({
-                      type: Types.UpdateQty,
-                      payload: {
-                        _id: product._id,
-                        qty: (product.qty -= 1),
-                      },
-                    });
+                    // dispatch({
+                    //   type: Types.UpdateQty,
+                    //   payload: {
+                    //     _id: product._id,
+                    //     qty: (product.qty -= 1),
+                    //   },
+                    // });
                   }}
                 >
                   <RemoveIcon />
@@ -93,13 +94,13 @@ function CartList({ handleClose }: any) {
                     },
                   }}
                   onClick={() => {
-                    dispatch({
-                      type: Types.UpdateQty,
-                      payload: {
-                        _id: product._id,
-                        qty: (product.qty += 1),
-                      },
-                    });
+                    // dispatch({
+                    //   type: Types.UpdateQty,
+                    //   payload: {
+                    //     _id: product._id,
+                    //     qty: (product.qty += 1),
+                    //   },
+                    // });
                   }}
                 >
                   <AddIcon />
@@ -127,10 +128,10 @@ function CartList({ handleClose }: any) {
                     aria-label="delete"
                     edge="end"
                     onClick={() => {
-                      dispatch({
-                        type: Types.DeleteFromCart,
-                        payload: product,
-                      });
+                    //   dispatch({
+                    //     type: Types.DeleteFromCart,
+                    //     payload: product,
+                    //   });
                     }}
                   >
                     <RemoveCircleIcon color="error" />
