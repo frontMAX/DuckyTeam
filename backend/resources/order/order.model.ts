@@ -6,6 +6,7 @@ import { Delivery } from "../delivery/delivery.model";
 import { Address } from "cluster";
 
 export interface Order {
+
   orderNumber: string;
   products: Product[];
   shipping: Address;
@@ -13,6 +14,7 @@ export interface Order {
   updatedAt: Date;
   user: User;
   delivery: Delivery;
+
 
 
 

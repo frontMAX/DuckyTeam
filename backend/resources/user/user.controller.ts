@@ -101,7 +101,7 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(401).json("you typed in wrong password or name");
   }
 
-  delete user.password;
+  delete (user as any).password;
   console.log("yay, you logged in!");
   return res.status(200).json(user);
 };
