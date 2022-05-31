@@ -6,6 +6,7 @@
   "scripts": {
     "start-server": "cd ./backend && npm start"
   },
+  "proxy": "http://localhost:5001/",
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-session": "^2.0.44",
