@@ -7,7 +7,19 @@ export const getDeliveries = async (req: Request, res: Response) => {
   res.status(200).json(deliveries);
 };
 
-export const getDelivery = async (req: Request, res: Response) => {};
+export const getDelivery = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const delivery = await DeliveryModel.findById(id);
+  if (!delivery) {
+    res.status(400);
+    throw new Error("delivery not found");
+  }
+  res.status(200).json(delivery);
+};
 
 export const registerDelivery = async (
   req: Request,
