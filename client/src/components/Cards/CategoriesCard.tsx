@@ -8,18 +8,17 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Categories } from '../../Api/Data';
-import { useProduct } from '../../contexts/ProductsContext';
+import { Categories, useProduct } from '../../contexts/product/ProductContext';
 
 function CategoriesCard() {
   const { products } = useProduct();
   const displayCategories = Categories.filter(
-    (c) => c !== 'Övriga' && products.findIndex((p) => p.category === c) >= 0
+    (c) => c !== 'Övriga' && products.findIndex((p) => p.category.includes(c)) >= 0
   );
 
   displayCategories.splice(Math.min(displayCategories.length, 3));
   const categoryImages = displayCategories.map(
-    (c) => products.find((p) => p.category === c)?.imgURL
+    (c) => products.find((p) => p.category.includes(c))?.imageUrl
   );
 
   return (

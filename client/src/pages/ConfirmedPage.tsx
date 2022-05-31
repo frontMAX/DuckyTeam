@@ -40,7 +40,7 @@ function ConfirmedOrderPage() {
       <List dense>
         {orderDetails.products?.length &&
           orderDetails.products.map((c: CartType) => (
-            <ListItem key={c.id}>
+            <ListItem key={c._id}>
               <ListItemAvatar>
                 <img
                   src={c.imgURL}

@@ -6,13 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import CartProvider from "./contexts/CartContext";
 import { UserProvider } from "./contexts/UserContext";
-import ProductsProvider from "./contexts/ProductsContext";
+import { ProductProvider } from "./contexts/product/ProductContext";
 import { DeliveryProvider } from "./contexts/DeliveryContetxt";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ProductsProvider>
+      <ProductProvider>
         <UserProvider>
           <CartProvider>
             <DeliveryProvider>
@@ -20,7 +20,7 @@ ReactDOM.render(
             </DeliveryProvider>
           </CartProvider>
         </UserProvider>
-      </ProductsProvider>
+      </ProductProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
