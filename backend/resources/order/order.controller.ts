@@ -13,10 +13,10 @@ export const getOrders = async (req: Request, res: Response) => {
 
 
 // Get a single order by id
-export const getOrder = async (req: Request<{ _id: string }>, res: Response) => {
-    const { _id } = req.params
+export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
+    const { id } = req.params
 
-    const order = await OrderModel.findById(_id)
+    const order = await OrderModel.findById(id)
     if (!order) {
         res.status(400)
         throw new Error('order not found')

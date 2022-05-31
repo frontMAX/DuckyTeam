@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Order } from '@shared/types';
 import { useParams } from 'react-router-dom';
 import { useOrder } from '../../contexts/Order/orderContext';
-import { Categories } from '../../contexts/product/ProductContext';
+
 // import { getOrders } from '../../../../backend/resources/order/order.controller';
 
 export function OrderCard() {
@@ -34,39 +34,36 @@ export function OrderCard() {
         //fast order då, verkar inte finnas ett corresponding interface med allt som behövs
         <Card key={order?.id} sx={{ borderRadius: '1rem', padding: '1rem' }}>
             {/* "orders.map yada yada, key: order.id, key: order.name, yada yada" */}
-            <Typography>
-                OrderNummer
+
+
+
+            <><Typography>
                 {order?.orderNumber}
-            </Typography>
-            <Typography>
+            </Typography><Typography>
 
-            </Typography>
-
-            <Typography>
-                {order?.orderNumber}
-                Vilket datum den skapades ?
-            </Typography>
-
-            <Typography>
-                Användaren
-            </Typography>
-            <Typography>
-                Leverans
-            </Typography>
-
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-
+                </Typography><Typography>
+                    {order?.orderNumber}
+                    Vilket datum den skapades ?
+                </Typography><Typography>
+                    Användaren
+                </Typography><Typography>
+                    Leverans
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
-            </CardActions>
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Lizards are a widespread group of squamate reptiles, with over 6,000
+                        species, ranging across all continents except Antarctica
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button size="small">Share</Button>
+                    <Button size="small">Learn More</Button>
+                </CardActions></>
+
         </Card>
+
     );
 }
