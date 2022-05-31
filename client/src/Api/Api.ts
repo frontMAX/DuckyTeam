@@ -1,3 +1,4 @@
+
 // import axios from "axios";
 import { User, mockedUsers } from "../Api/Data";
 // import { LoginDetails } from "../components/Forms/LoginForm";
@@ -20,6 +21,8 @@ import { LoginDetails } from "../components/Forms/LoginForm";
 // //   const res = await axios.get("http://localhost:5001/api/delivery");
 // // }
 
+
+
 export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
   await wait(1000);
   const foundUsers = mockedUsers.filter((user) => {
@@ -39,6 +42,7 @@ export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
   return foundUser;
 }
 
+
 // export async function ProductFetch(product: Promise<Product>) {
 //   const res = await axios.get("http://localhost:5001/api/product");
 
@@ -50,3 +54,4 @@ export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
 // export async function placeOrderFetch() {
 //   return await wait(1000);
 // }
+

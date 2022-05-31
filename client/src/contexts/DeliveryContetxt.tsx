@@ -8,6 +8,7 @@ import React, {
 import axios, { AxiosResponse } from "axios";
 
 interface DeliveryContextValue {
+
   deliveries: Delivery[];
   fetchDeliveries: () => void;
   fetchDelivery: (id: string) => void;
@@ -23,9 +24,11 @@ export interface Delivery {
   shippingTime: number;
   price: number;
   logo: string;
+
 }
 
 export const DeliveryContext = React.createContext<DeliveryContextValue>({
+
   deliveries: [],
   fetchDelivery: (id: string) => {},
   fetchDeliveries: () => {},
@@ -37,18 +40,23 @@ export const DeliveryContext = React.createContext<DeliveryContextValue>({
 export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [deliveries, setDeliveries] = React.useState<Delivery[]>([]);
 
+
   const fetchDeliveries = useCallback(() => {
     axios.get<Delivery[]>("http://localhost:5001/api/delivery").then((res) => {
+
+ 
       setDeliveries(res.data);
     });
   }, []);
 
   const fetchDelivery = useCallback((id: string) => {
+
     axios
       .get<Delivery>(`http://localhost:5001/api/delivery/${id}`)
       .then((res) => {
         setDeliveries([res.data]);
       });
+
   }, []);
 
   const createDelivery = useCallback(() => {
@@ -60,7 +68,9 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   const updateDelivery = useCallback((newDeliveryData: Delivery) => {
     axios
       .put<Delivery>(
+
         `http://localhost:5001/api/delivery/${newDeliveryData._id}`,
+
         {
           newDeliveryData,
         }
@@ -89,6 +99,7 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
     <DeliveryContext.Provider
       value={{
         deliveries,
+
         fetchDeliveries,
         fetchDelivery,
         createDelivery,
@@ -104,3 +115,4 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
 export default DeliveryContext;
 
 export const useDelivery = () => useContext(DeliveryContext);
+
