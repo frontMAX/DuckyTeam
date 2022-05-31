@@ -7,15 +7,18 @@ import { BrowserRouter } from 'react-router-dom'
 import CartProvider from './contexts/CartContext'
 import { UserProvider } from './contexts/UserContext'
 import { ProductProvider } from './contexts/product/ProductContext'
+import { OrderProvider } from './contexts/Order/orderContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ProductProvider>
         <UserProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
+          <OrderProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </OrderProvider>
         </UserProvider>
       </ProductProvider>
     </BrowserRouter>

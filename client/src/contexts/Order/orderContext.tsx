@@ -1,10 +1,9 @@
 import { Order } from "@shared/types";
 
 import axios from "axios";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext } from "react";
 
 interface OrderContextValue {
-  isLoading: boolean;
   orders: Order[];
   // getOrders: () => void;
   fetchOrders: () => void;
@@ -17,16 +16,14 @@ interface OrderContextValue {
 // }
 
 export const OrderContext = React.createContext<OrderContextValue>({
-  isLoading: false, // hur ska vi ha det här ?   osäker om behövs..
   orders: [],
   // getOrders: () => { },
-  fetchOrder: (id: string) => { },
   fetchOrders: () => { },
+  fetchOrder: (id: string) => { }
 });
 
 export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [orders, setOrders] = React.useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(false); // Behövs denna ?
 
   const fetchOrders = useCallback(() => {
     axios.get<Order[]>("/api/order").then((res) => {
@@ -44,7 +41,7 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   return (
     <OrderContext.Provider
-      value={{ orders, isLoading, fetchOrders, fetchOrder }}
+      value={{ orders, fetchOrders, fetchOrder }}
     >
       {children}
     </OrderContext.Provider>
