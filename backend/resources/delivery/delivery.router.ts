@@ -10,7 +10,8 @@ import {
 
 export const deliveryRouter = express
   .Router()
-  .get("/delivery", getDeliveries, getDelivery)
+  .get("/delivery", getDeliveries)
+  .get("/delivery/:id", getDelivery)
   .post("/delivery", registerDelivery)
   .put("/delivery/:id", /* adminSecure, */ updateDelivery)
   .delete("/delivery/:id", /* adminSecure, */ deleteDelivery);

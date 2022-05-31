@@ -8,7 +8,6 @@ import React, {
 import axios, { AxiosResponse } from "axios";
 
 interface DeliveryContextValue {
-  isLoading: boolean;
   deliveries: Delivery[];
   fetchDeliveries: () => void;
   fetchDelivery: (id: string) => void;
@@ -28,7 +27,6 @@ export interface Delivery {
 }
 
 export const DeliveryContext = React.createContext<DeliveryContextValue>({
-  isLoading: false,
   deliveries: [],
   fetchDelivery: (id: string) => {},
   fetchDeliveries: () => {},
@@ -39,7 +37,6 @@ export const DeliveryContext = React.createContext<DeliveryContextValue>({
 
 export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [deliveries, setDeliveries] = React.useState<Delivery[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const fetchDeliveries = useCallback(() => {
     axios.get<Delivery[]>("/api/delivery").then((res) => {
@@ -54,19 +51,16 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const createDelivery = useCallback(() => {
-    axios.post<Delivery>("http://localhost:5001/api/delivery").then((res) => {
+    axios.post<Delivery>("/api/delivery").then((res) => {
       setDeliveries([...deliveries, res.data]);
     });
   }, []);
 
   const updateDelivery = useCallback((newDeliveryData: Delivery) => {
     axios
-      .put<Delivery>(
-        `http://localhost:5001/api/deliveries/${newDeliveryData._id}`,
-        {
-          newDeliveryData,
-        }
-      )
+      .put<Delivery>(`/api/delivery/${newDeliveryData._id}`, {
+        newDeliveryData,
+      })
       .then((res) => {
         const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
           return (delivery._id = newDeliveryData._id);
@@ -77,21 +71,18 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const deleteDelivery = useCallback((id: string) => {
-    axios
-      .delete<Delivery>(`http://localhost:5001/api/delivery/${id}`)
-      .then((res) => {
-        const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
-          return (delivery._id = id);
-        });
-        setDeliveries([...deliveries.splice(deliveryIndex, 1)]);
+    axios.delete<Delivery>(`/api/delivery/${id}`).then((res) => {
+      const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
+        return (delivery._id = id);
       });
+      setDeliveries([...deliveries.splice(deliveryIndex, 1)]);
+    });
   }, []);
 
   return (
     <DeliveryContext.Provider
       value={{
         deliveries,
-        isLoading,
         fetchDeliveries,
         fetchDelivery,
         createDelivery,
@@ -106,4 +97,4 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
 
 export default DeliveryContext;
 
-export const useOrder = () => useContext(DeliveryContext);
+export const useDelivery = () => useContext(DeliveryContext);

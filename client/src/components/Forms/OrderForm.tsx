@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 import ShipmentBox from "./ShipmentBox";
 import { Link, useNavigate } from "react-router-dom";
-import { placeOrderFetch } from "../../Api/Api";
+// import { placeOrderFetch } from "../../Api/Api";
 import useLocalStorage from "../../Hooks/useLocalStorage";
 import React from "react";
 import { useCart } from "../../contexts/CartContext";
 import { CartType, Types } from "../../contexts/Reducers";
-import { deliveryOptions } from "../../Api/Data";
+import { useDelivery } from "../../contexts/DeliveryContetxt";
 
 export interface OrderData {
   shippingAdress: ShippingAdress;
@@ -85,6 +85,8 @@ interface Props {
 }
 
 function OrderForm(props: Props) {
+  const { deliveries } = useDelivery();
+
   let navigate = useNavigate();
   const { dispatch } = useCart();
   const [isLoading, setLoading] = React.useState<boolean>(false);
@@ -111,7 +113,7 @@ function OrderForm(props: Props) {
       orderTotal:
         sumDetails +
         (typeof orderDetails.shippingMethod === "number"
-          ? deliveryOptions[orderDetails.shippingMethod].price
+          ? deliveries[orderDetails.shippingMethod].price
           : 0),
       products: productsDetails,
     };
@@ -129,48 +131,45 @@ function OrderForm(props: Props) {
 
   // fetches api to check if order went through, navigates to confirmed-order if successful
   async function confirmOrder() {
-    const success = await placeOrderFetch();
-    if (success) {
-      dispatch({
-        type: Types.ResetCart,
-        payload: {},
-      });
-      setLoading(false);
-      navigate("/confirmed-order");
-    }
+    // const success = await placeOrderFetch();
+    // if (success) {
+    //   dispatch({
+    //     type: Types.ResetCart,
+    //     payload: {},
+    //   });
+    //   setLoading(false);
+    //   navigate("/confirmed-order");
+    // }
   }
 
   return (
     <>
       {!isLoading ? (
         <>
-          <Box sx={{ bgcolor: "#ffffff", mt: 3, alignItems:"center", display:"flex",flexDirection:"column"}}>
-            <Typography
-              variant="h6"
-              sx={{ padding: 2, fontWeight: "bold" }}
-            >
+          <Box
+            sx={{
+              bgcolor: "#ffffff",
+              mt: 3,
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Typography variant="h6" sx={{ padding: 2, fontWeight: "bold" }}>
               Välj dina betal och leveransmetoder
             </Typography>
             {/* RANDOM INFO TEXT, DOESN'T ACTUALLY DO/MEAN ANYTHING */}
-           
 
             {/* The full order form */}
-            <form
-            onSubmit={formikProps.handleSubmit}>
+            <form onSubmit={formikProps.handleSubmit}>
               {/* Shipping adress */}
-              <Typography
-                variant="body1"
-                sx={{ mt:1,fontWeight: "bold"}}
-              >
+              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
                 Leveransadress
               </Typography>
               <ShippingForm formikProps={formikProps} />
 
               {/* Shipping methods */}
-              <Typography
-                variant="body1"
-                sx={{ mt:1, fontWeight: "bold" }}
-              >
+              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
                 Leveransmetod
               </Typography>
 
@@ -184,10 +183,7 @@ function OrderForm(props: Props) {
               />
 
               {/* Payment methods (and payment details) */}
-              <Typography
-                variant="body1"
-                sx={{ mt:1, fontWeight: "bold" }}
-              >
+              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
                 Betalningsmetod{" "}
               </Typography>
 
@@ -196,7 +192,6 @@ function OrderForm(props: Props) {
                 formikProps.errors.paymentMethod}
 
               <PaymentBox formikProps={formikProps} />
-
 
               {/* conditions checkbox, does nothing for now */}
               <div>
@@ -211,10 +206,10 @@ function OrderForm(props: Props) {
 
               <Button
                 sx={{
-                  mt:2,
-                  mb:2,
-                  height:"3rem",
-                  width:"100%",
+                  mt: 2,
+                  mb: 2,
+                  height: "3rem",
+                  width: "100%",
                   bgcolor: "#0EDFE6",
                   border: "none",
                   color: " black",
@@ -225,8 +220,8 @@ function OrderForm(props: Props) {
                   },
                   "@media screen and (max-width: 440px)": {
                     borderRadius: "0",
-                    mt:2,
-                    mb:0,
+                    mt: 2,
+                    mb: 0,
                   },
                 }}
                 variant="outlined"

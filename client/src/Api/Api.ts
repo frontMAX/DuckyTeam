@@ -1,20 +1,24 @@
-import axios from "axios";
+// import axios from "axios";
 import { User, mockedUsers } from "../Api/Data";
+// import { LoginDetails } from "../components/Forms/LoginForm";
+// // import { DeliveryInterface } from "../InterFaces";
+// import { Product } from "../contexts/product/ProductContext";
+
+import { wait } from "@testing-library/user-event/dist/utils";
 import { LoginDetails } from "../components/Forms/LoginForm";
-import { DeliveryInterface } from "../InterFaces";
-import { Product } from "../contexts/product/ProductContext";
+// import { mockedUsers } from "./Data";
 
-function wait(time: number) {
-  return new Promise<boolean>((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-}
+// function wait(time: number) {
+//   return new Promise<boolean>((resolve) => {
+//     setTimeout(() => {
+//       resolve(true);
+//     }, time);
+//   });
+// }
 
-export async function DeliveryFetch(delivery: Promise<DeliveryInterface>) {
-  const res = await axios.get("http://localhost:5001/api/delivery");
-}
+// // export async function DeliveryFetch(delivery: Promise<DeliveryInterface>) {
+// //   const res = await axios.get("http://localhost:5001/api/delivery");
+// // }
 
 export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
   await wait(1000);
@@ -35,14 +39,14 @@ export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
   return foundUser;
 }
 
-export async function ProductFetch(product: Promise<Product>) {
-  const res = await axios.get("http://localhost:5001/api/product");
+// export async function ProductFetch(product: Promise<Product>) {
+//   const res = await axios.get("http://localhost:5001/api/product");
 
-  const result = await res.data.product;
-  console.log(result.product);
-  return result;
-}
+//   const result = await res.data.product;
+//   console.log(result.product);
+//   return result;
+// }
 
-export async function placeOrderFetch() {
-  return await wait(1000);
-}
+// export async function placeOrderFetch() {
+//   return await wait(1000);
+// }
