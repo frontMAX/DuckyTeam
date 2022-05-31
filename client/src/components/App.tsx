@@ -13,6 +13,7 @@ import ConfirmedOrderPage from "../pages/ConfirmedPage";
 import AdminOrdersPage from "./Admin/AdminOrdersPage";
 import AdminProductsPage from "./Admin/AdminProductsPage";
 import AdminPage from "./Admin/AdminPage";
+import AddNewProductCard from "./Admin/AddNewProductCard";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
       <Route index element={<AdminPage />} />
       <Route path="orders" element={<AdminOrdersPage />} />
       <Route path="products" element={<AdminProductsPage />} />
-
+      <Route path="products/new" element={<AddNewProductCard />} />
       </Route>
       
     </Routes>
