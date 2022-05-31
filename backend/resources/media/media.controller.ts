@@ -1,51 +1,72 @@
 import { NextFunction, Request, Response } from "express";
 import { Readable } from 'stream'
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { GridFSFile } from "mongoose/node_modules/mongodb";
 import multer from "multer";
-import { request } from "http";
-// import bucket from "./media.model";
 
-export const getMedia = async (req: Request, res: Response) => {
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage }).single('file')
+
+/**@desc get all media in database */
+export const getAllMedia = async (req: Request, res: Response) => {
     const bucket = new mongoose.mongo.GridFSBucket(
         mongoose.connection.db
         , { bucketName: "files" }
 
     )
 
-    // @ts-ignore
-    const _id = new mongoose.Types.ObjectId(req.params.id)
-    const media = await bucket.find({ _id }).next()
-
-
-    if (!media || media.contentType || typeof media.contentType === "undefined") {
-        return res.status(404).json('does not exist')
+    const medias = await bucket.find().toArray();
+    if (!medias || medias.length === 0) {
+        return res.status(200).json({
+            success: false,
+            message: 'No files found',
+        });
     }
 
+    res.status(200).json({
+        success: true,
+        medias,
+    });
 
-    res.setHeader('Content-Type', media.contentType)
-
-    const readableStream = bucket.openDownloadStream(_id)
-    readableStream.pipe(res)
-    res.status(200).json('')
 }
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage }).single('media')
 
+/**@desc get media by id */
+export const getMedia = async (req: Request, res: Response) => {
+    const bucket = new mongoose.mongo.GridFSBucket(
+        mongoose.connection.db
+        , { bucketName: "files" }
+    )
+
+    // @ts-ignore
+    const _id = new mongoose.Types.ObjectId(req.params.id);
+
+    const file = await bucket.find({ _id }).next();
+
+    if (!file || !file.contentType) {
+        return res.status(404).json('media file with this id does not exist');
+    }
+
+    res.setHeader('Content-Type', file.contentType);
+
+    const readableStream = bucket.openDownloadStream(_id);
+    readableStream.pipe(res);
+};
+
+
+/**@desc add new media to database */
 export const addMedia = async (req: Request, res: Response, next: NextFunction) => {
 
-    upload(req, res, function() {
+    upload(req, res, function () {
         console.log(upload)
 
         console.log('starting adding...')
         const bucket = new mongoose.mongo.GridFSBucket(
             mongoose.connection.db
             , { bucketName: "files" }
-
         )
 
         console.log('starting adding...')
-        // throw error
+
         if (!req.file) {
             console.log('no file sent')
             return
@@ -55,11 +76,13 @@ export const addMedia = async (req: Request, res: Response, next: NextFunction) 
         const thumbnailName = 'thumb' + originalname
 
         const readableStream = Readable.from(buffer)
+
         const writeableStream = bucket.openUploadStream(originalname,
             {
                 contentType: mimetype,
                 metadata: { thumbnail: false }
             })
+
         bucket.openUploadStream(thumbnailName, {
             contentType: mimetype,
             metadata: { thumbnail: true }
@@ -77,27 +100,27 @@ export const addMedia = async (req: Request, res: Response, next: NextFunction) 
         readableStream.pipe(writeableStream).on('finish', (media: GridFSFile) => {
             res.status(201).json(media)
         })
-
-        // res.status(200).json('media added')
     })
 }
 
+/**@desc delete media by id */
 export const deleteMedia = async (req: Request, res: Response) => {
     const bucket = new mongoose.mongo.GridFSBucket(
         mongoose.connection.db
         , { bucketName: "files" }
-
     )
 
-
     // @ts-ignore
-    const _id = new mongoose.Types.ObjectId(req.params.id)
-    const media = await bucket.find({ _id }).next()
+    const _id = new mongoose.Types.ObjectId(req.params.id);
 
-    if (!media || media.contentType) {
-        return res.status(404).json('does not exist')
+    const file = await bucket.find({ _id }).next();
+
+    if (!file || !file.contentType) {
+        return res.status(404).json('cant delete file, does not exist');
     }
+
     await bucket.delete(_id)
 
     res.status(204).json('deleted media')
+    console.log('media deleted')
 }
