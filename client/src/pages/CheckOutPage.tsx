@@ -12,7 +12,6 @@ import {
 import OrderForm from "../components/Forms/OrderForm";
 import useLocalStorage from "../Hooks/useLocalStorage";
 
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartType } from "../contexts/CartReducer";
 import { useEffect, useState } from "react";

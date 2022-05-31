@@ -8,13 +8,10 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import {  paymentOptions } from '../Api/Data';
 import { AllOrderData } from '../components/Forms/OrderForm';
 import { CartType } from '../contexts/CartReducer';
-} from "@mui/material";
 import { useEffect } from "react";
 import { paymentOptions } from "../Api/Data";
-import { AllOrderData } from "../components/Forms/OrderForm";
 import { useDelivery } from "../contexts/DeliveryContetxt";
 import useLocalStorage from "../Hooks/useLocalStorage";
 
