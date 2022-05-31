@@ -54,6 +54,7 @@ export const ProductContext = React.createContext<ProductContextValue>({
   createProduct: (newProductData: BaseProduct) => {},
   updateProduct: (product: Product) => {},
   deleteProduct: (id: string) => {},
+
 });
 
 export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
