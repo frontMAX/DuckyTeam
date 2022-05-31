@@ -10,87 +10,53 @@ import {
   Chip,
   useMediaQuery,
 } from "@mui/material";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
 import Save from "@mui/icons-material/Save";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Product, Categories } from "../../contexts/product/ProductContext";
 import {
-  ProductEditState,
-  ProductEditAction,
-  ProductEditReducer,
-  ProductEditReducerType,
-} from "../../contexts/Reducers";
-
-function createProductEditState(product: Product): ProductEditState {
-  const productEditState: ProductEditState = {
-    ...product,
-    nameValid: product.name !== "",
-    informationValid: product.details !== "",
-    categoryValid: product.category !== [],
-    priceValid: !isNaN(product.price),
-    imgURLValid: product.imageUrl !== "",
-  };
-
-  return productEditState;
-}
-
-const isProductEdited = (product: Product, productState: ProductEditState) =>
-  productState.name !== product.name ||
-  productState.details !== product.details ||
-  productState.category !== product.category ||
-  productState.price !== product.price ||
-  productState.imageUrl !== product.imageUrl;
-
-const isFormValid = (productState: ProductEditState) =>
-  productState.nameValid &&
-  productState.informationValid &&
-  productState.categoryValid &&
-  productState.priceValid &&
-  productState.imgURLValid;
+  Product,
+  Categories,
+  useProduct,
+} from "../../contexts/product/ProductContext";
+import { useParams } from "react-router-dom";
 
 interface AdminPageAccordionProps {
-  product: Product;
   expanded?: boolean;
-  saveAction: (product: Product) => void;
-  deleteAction: (productId: string) => void;
 }
 
-function EditProductCardAccordion({
-  product,
-  expanded,
-  saveAction,
-  deleteAction,
-}: AdminPageAccordionProps) {
+function EditProductCardAccordion({ expanded }: AdminPageAccordionProps) {
   const [open, setOpen] = useState(expanded ?? false);
   const [openModal, setOpenModal] = useState(false);
 
-  const [productState, dispatch] = useReducer<
-    React.Reducer<ProductEditState, ProductEditAction>
-  >(ProductEditReducer, createProductEditState(product));
+  let { id } = useParams();
+  const { products, fetchProduct, updateProduct, deleteProduct } = useProduct();
 
-  const firstUpdate = useRef(true);
+  const product = products.find((item: Product) => item._id.toString() === id);
+
   useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
+    if (id) {
+      fetchProduct(id);
     }
+  }, [fetchProduct]);
 
-    dispatch({
-      type: ProductEditReducerType.Reset,
-      payload: { product },
-    });
-  }, [product]);
+  useEffect(() => {
+    if (id) {
+      updateProduct(id);
+    }
+  }, [updateProduct]);
+
+  useEffect(() => {
+    if (id) {
+      deleteProduct(id);
+    }
+  }, [deleteProduct]);
 
   const handleOpen = (
     event: React.SyntheticEvent<Element, Event>,
     expanded: boolean
   ) => setOpen(!open);
-
-  const formValid = isFormValid(productState);
-  const matches = useMediaQuery("(max-width: 440px)");
 
   return (
     <Accordion onChange={handleOpen} expanded={open}>
@@ -117,37 +83,24 @@ function EditProductCardAccordion({
               },
             }}
           >
-            <img src={productState.imageUrl} width="48px" alt=""></img>
+            <img src={product?.imageUrl} width="48px" alt=""></img>
             {open ? (
               <>
-                <input
-                  type="text"
-                  value={productState.name}
-                  onChange={(e) => {
-                    dispatch({
-                      type: ProductEditReducerType.Update,
-                      payload: { key: "name", value: e.target.value },
-                    });
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                />
-                {!productState.nameValid && (
+                <input type="text" value={product?.name} />
+                {!product?.name && (
                   <Typography sx={{ color: "red" }}>
                     Vänligen ange en titel.
                   </Typography>
                 )}
               </>
             ) : (
-              <Typography>{productState.name}</Typography>
+              <Typography>{product?.name}</Typography>
             )}
           </Box>
           {open ? (
             <Button>Stäng</Button>
           ) : (
             <Box>
-              {isProductEdited(product, productState) ? (
-                <Chip label="OSPARAD" variant="outlined" />
-              ) : null}
               <Button startIcon={<EditIcon />}>Redigera</Button>
             </Box>
           )}
@@ -157,60 +110,25 @@ function EditProductCardAccordion({
         <Box sx={{ margin: "1rem 0" }}>
           <img
             style={{ width: 100, height: 100 }}
-            src={productState.imageUrl}
+            src={product?.imageUrl}
             alt=""
           ></img>
         </Box>
         <Typography sx={{ marginBottom: "2ex" }}>Bild URL:&nbsp;</Typography>
-        <input
-          type="url"
-          value={productState.imageUrl}
-          onChange={(e) => {
-            dispatch({
-              type: ProductEditReducerType.Update,
-              payload: { key: "imageUrl", value: e.target.value },
-            });
-          }}
-        />
-        {!productState.imgURLValid && (
-          <Typography sx={{ color: "red" }}>
-            Vänligen ange en bildadress.
-          </Typography>
-        )}
+        <input type="url" value={product?.imageUrl} />
+
         <Box>
           <Typography>Beskrivning</Typography>
-          <textarea
-            onChange={(e) => {
-              dispatch({
-                type: ProductEditReducerType.Update,
-                payload: { key: "details", value: e.target.value },
-              });
-            }}
-            value={productState.details}
-          />
-          {!productState.informationValid && (
+          <textarea value={product?.details} />
+          {!product?.details && (
             <Typography sx={{ color: "red" }}>
               Vänligen ange en beskrivning.
             </Typography>
           )}
           <Box sx={{ margin: "1rem 0" }}>
             <Typography>Redigera pris</Typography>
-            <input
-              type="number"
-              min="1"
-              value={!isNaN(productState.price) ? productState.price : ""}
-              onChange={(e) => {
-                const price = parseFloat(e.target.value);
-                dispatch({
-                  type: ProductEditReducerType.Update,
-                  payload: {
-                    key: "price",
-                    value: price > 0 ? price : NaN,
-                  },
-                });
-              }}
-            />
-            {!productState.priceValid && (
+            <input type="number" min="1" value={product?.price} />
+            {!product?.price && (
               <Typography>Vänligen ange ett pris.</Typography>
             )}
           </Box>
@@ -219,7 +137,6 @@ function EditProductCardAccordion({
           <Typography>Redigera kategori</Typography>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <ButtonGroup
-              orientation={matches ? "vertical" : "horizontal"}
               sx={{
                 bgcolor: "#fffff",
                 borderColor: "#0EDFE6",
@@ -235,15 +152,9 @@ function EditProductCardAccordion({
                 <Button
                   key={index}
                   variant={
-                    productState.category.includes(category)
+                    product?.category.includes(category)
                       ? "contained"
                       : "outlined"
-                  }
-                  onClick={() =>
-                    dispatch({
-                      type: ProductEditReducerType.Update,
-                      payload: { key: "category", value: category },
-                    })
                   }
                 >
                   {category}
@@ -251,7 +162,7 @@ function EditProductCardAccordion({
               ))}
             </ButtonGroup>
           </Box>
-          {!productState.categoryValid && (
+          {!product?.category && (
             <Typography sx={{ color: "red" }}>
               Vänligen välj kategori.
             </Typography>
@@ -259,27 +170,16 @@ function EditProductCardAccordion({
         </Box>
         <Box>
           <Button
-            disabled={!formValid}
+            // disabled={!formValid}
             startIcon={<Save />}
             onClick={() => {
-              saveAction(productState);
+              updateProduct(id);
               setOpen(false);
             }}
           >
             Spara
           </Button>
-          <Button
-            disabled={!formValid}
-            startIcon={<RestartAltIcon />}
-            onClick={() =>
-              dispatch({
-                type: ProductEditReducerType.Reset,
-                payload: { product: product },
-              })
-            }
-          >
-            Återställ
-          </Button>
+
           <Button
             startIcon={<DeleteForeverIcon />}
             onClick={() => setOpenModal(true)}
@@ -310,7 +210,7 @@ function EditProductCardAccordion({
               </Typography>
               <Button
                 onClick={(e) => {
-                  deleteAction(product._id);
+                  deleteProduct(id);
                   setOpenModal(false);
                   setOpen(false);
                   e.stopPropagation();

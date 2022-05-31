@@ -56,9 +56,7 @@ function AdminProductsPage() {
             return (
               <EditProductCardAccordion
                 key={i}
-                product={p}
-                saveAction={updateProduct}
-                deleteAction={deleteProduct}
+                
               />
             );
           })}
@@ -66,9 +64,6 @@ function AdminProductsPage() {
             <EditProductCardAccordion
               key="new"
               expanded={true}
-              product={newProduct()}
-              saveAction={createNewProduct}
-              deleteAction={deleteNewProduct}
             />
           )}
         </List>
