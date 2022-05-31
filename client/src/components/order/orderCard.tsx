@@ -12,7 +12,7 @@ import { Box } from '@mui/material';
 
 // import { getOrders } from '../../../../backend/resources/order/order.controller';
 
-export function OrderCard() {
+export function OrderCard({ rder }: any) {
 
     //sälva contexten, typ "usecontext"
     const { orders, fetchOrder, fetchOrders } = useOrder();
@@ -23,18 +23,22 @@ export function OrderCard() {
         (item: Order) => item.id.toString() === id
     )
 
-    useEffect(() => {
-        fetchOrders()
-    }, [fetchOrders]);
+
 
 
     // funktionen som hämtar en order i context
     useEffect(() => {
+
         if (id) {
             fetchOrder(id)
         }
     }, [fetchOrder, id]);
 
+
+    if (!id) {
+
+        return <div>...blehh</div>
+    }
     return (
 
         // <Card sx={{ maxWidth: 345, marginTop: 5, }}>

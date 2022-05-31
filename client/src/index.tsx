@@ -9,16 +9,6 @@ import CartProvider from './contexts/CartContext'
 import { UserProvider } from './contexts/UserContext'
 import { ProductProvider } from './contexts/product/ProductContext'
 import { OrderProvider } from './contexts/Order/orderContext'
-
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./components/App";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
-import CartProvider from "./contexts/CartContext";
-import { UserProvider } from "./contexts/UserContext";
-import { ProductProvider } from "./contexts/product/ProductContext";
 import { DeliveryProvider } from "./contexts/DeliveryContetxt";
 
 
@@ -29,14 +19,14 @@ ReactDOM.render(
         <UserProvider>
 
           <CartProvider>
-                 <OrderProvider>
-            <DeliveryProvider>
-              <App />
-            </DeliveryProvider>
+            <OrderProvider>
+              <DeliveryProvider>
+                <App />
+              </DeliveryProvider>
             </OrderProvider>
           </CartProvider>
 
-   </UserProvider>
+        </UserProvider>
       </ProductProvider>
     </BrowserRouter>
   </React.StrictMode>,
