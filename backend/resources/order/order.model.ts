@@ -41,13 +41,10 @@ const OrderSchema = new mongoose.Schema<Order>(
     products: { type: [productSchema], required: false },
     shipping: AddressSchema,
     user: { type: Schema.Types.ObjectId, ref: "user", required: false },
-
+    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
     // delivery: { type: Delivery}
   },
   {
-
-    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
-}, {
 
     timestamps: true,
     toJSON: { virtuals: true },
