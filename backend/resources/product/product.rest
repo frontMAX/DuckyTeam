@@ -1,7 +1,7 @@
 http://localhost:5001/api/product
 
 ### Get specific product (get the id from product you want to find)
-GET http://localhost:5001/api/product/id
+GET http://localhost:5001/api/product/6295cc33bad9f5114e123f84
 
 ### register new product
 
@@ -11,10 +11,10 @@ Content-Type: application/json
 {
     "name": "product 1", 
     "price": "20", 
-    "category":"ugly", 
+    "category":"Kända", 
     "quantity": "3",
     "details": "this is a uggly duck",
-    "images": "null"
+    "imageId": "6295cc2cbad9f5114e123f81"
 }
 
 ###  update product (get the id from product you want to update)
@@ -25,10 +25,10 @@ Content-Type: application/json
 {
     "name": "product 1", 
     "price": "25", 
-    "category":"ugly", 
+    "category":"Kända", 
     "quantity": "3",
     "details": "this is a uggly duck",
-    "images": "null"
+    "imageId": "6295cc2cbad9f5114e123f81"
 }
 
 ### Delete product (get the id from product you want to delete)

@@ -48,7 +48,7 @@ function ProductPage() {
             <CardMedia
               component="img"
               height="480"
-              image={product.imageUrl}
+              image={`http://localhost:5001${product.imageUrl}`}
               sx={{ objectFit: 'contain', maxWidth: '20rem' }}
             />
             <Box

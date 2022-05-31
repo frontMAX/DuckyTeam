@@ -1,7 +1,9 @@
+
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
 // import { ProductFetch } from '../../Api/Api';
+
 
 interface ProductContextValue {
   isLoading: boolean;
@@ -14,10 +16,10 @@ interface ProductContextValue {
 }
 
 export enum MockedCategories {
-  Famous = 'Kända',
-  Animals = 'Djur',
-  Hobby = 'Hobby',
-  Misc = 'Övriga',
+  Famous = "Kända",
+  Animals = "Djur",
+  Hobby = "Hobby",
+  Misc = "Övriga",
 }
 
 export const Categories: MockedCategories[] = [
@@ -39,7 +41,6 @@ export interface Product {
   orderedQuantity?: number;
 }
 
-
 // type PContext = {
 //   products: ProductType[];
 //   dispatch: React.Dispatch<ProductActions>;
@@ -51,16 +52,19 @@ export interface Product {
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   products: [],
+
   fetchProducts: () => { },
   fetchProduct: (id: string) => { },
   createProduct: () => { },
   updateProduct: (product: Product) => { },
   deleteProduct: (id: string) => { }
+
 });
 
 export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
 
 
 
@@ -73,26 +77,29 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   //       setIsLoading(false);
   //     });
   // };
-
   const fetchProducts = useCallback(() => {
     axios.get<Product[]>("/api/product").then((res) => {
       setProducts(res.data);
-    })
-  }, [])
+    });
+  }, []);
 
   const fetchProduct = useCallback((id: string) => {
+
     axios.get<Product>(`/api/product/${id}`).then((res) => {
       setProducts([res.data]);
     })
   }, [])
 
+
+
   const createProduct = useCallback(() => {
     axios.post<Product>("/api/product").then((res) => {
       setProducts([...products, res.data]);
-    })
-  }, [])
+    });
+  }, []);
 
   const updateProduct = useCallback((newProductData: Product) => {
+
     axios.put<Product>(`/api/product/${newProductData._id}`, { newProductData }).then((res) => {
       const productIndex = products.findIndex((product: Product) => {
         return product._id = newProductData._id
@@ -106,13 +113,44 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
     axios.delete<Product>(`/api/product/${id}`).then((res) => {
       const productIndex = products.findIndex((product: Product) => {
         return product._id = id
+
+    axios
+      .put<Product>(`http://localhost:5001/api/product/${newProductData._id}`, {
+        newProductData,
+
       })
-      setProducts([...products.splice(productIndex, 1)]);
-    })
-  }, [])
+      .then((res) => {
+        const productIndex = products.findIndex((product: Product) => {
+          return (product._id = newProductData._id);
+        });
+        products[productIndex] = res.data;
+        setProducts(products);
+      });
+  }, []);
+
+  const deleteProduct = useCallback((id: string) => {
+    axios
+      .delete<Product>(`http://localhost:5001/api/product/${id}`)
+      .then((res) => {
+        const productIndex = products.findIndex((product: Product) => {
+          return (product._id = id);
+        });
+        setProducts([...products.splice(productIndex, 1)]);
+      });
+  }, []);
 
   return (
-    <ProductContext.Provider value={{ products, isLoading, fetchProduct, fetchProducts, createProduct, updateProduct, deleteProduct }}>
+    <ProductContext.Provider
+      value={{
+        products,
+        isLoading,
+        fetchProduct,
+        fetchProducts,
+        createProduct,
+        updateProduct,
+        deleteProduct,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );

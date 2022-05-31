@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
@@ -9,17 +10,33 @@ import { UserProvider } from './contexts/UserContext'
 import { ProductProvider } from './contexts/product/ProductContext'
 import { OrderProvider } from './contexts/Order/orderContext'
 
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./components/App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+import CartProvider from "./contexts/CartContext";
+import { UserProvider } from "./contexts/UserContext";
+import { ProductProvider } from "./contexts/product/ProductContext";
+import { DeliveryProvider } from "./contexts/DeliveryContetxt";
+
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ProductProvider>
         <UserProvider>
-          <OrderProvider>
-            <CartProvider>
+
+          <CartProvider>
+                 <OrderProvider>
+            <DeliveryProvider>
               <App />
-            </CartProvider>
-          </OrderProvider>
-        </UserProvider>
+            </DeliveryProvider>
+            </OrderProvider>
+          </CartProvider>
+
+   </UserProvider>
       </ProductProvider>
     </BrowserRouter>
   </React.StrictMode>,
