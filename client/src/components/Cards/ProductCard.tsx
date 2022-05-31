@@ -28,7 +28,7 @@ console.log(product)
             <CardMedia
               component="img"
               height="240"
-              image={product.imageUrl}
+              image={`http://localhost:5001${product.imageUrl}`}
               sx={{ objectFit: 'contain', objectPosition: 'center top' }}
             />
             <Box
