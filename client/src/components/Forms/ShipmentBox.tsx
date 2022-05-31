@@ -6,6 +6,7 @@ import {
   ListItemAvatar,
   Avatar,
   Typography,
+  ListItem,
 } from "@mui/material";
 import addDays from "date-fns/addDays";
 import format from "date-fns/format";
@@ -57,9 +58,9 @@ function ShipmentBox(props: Props) {
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <List component="nav" aria-label="Shipping options list">
         {/* loops through array of delivery options */}
-        {deliveries.length !== 0 &&
-          deliveries.map((delivery: Delivery, index) => (
-            <React.Fragment key={delivery._id}>
+        {deliveries
+          .map((delivery: Delivery, index) => (
+            <ListItem key={delivery._id}>
               {/* displays all objects in array based on index */}
               <ListItemButton
                 selected={selectedIndex === index}
@@ -94,8 +95,16 @@ function ShipmentBox(props: Props) {
                         variant="body2"
                       >{`Leveranskostnad: ${delivery.price} kr`}</Typography>
 
+
+
+
+                      {/* LOOK THIS OVER!!!! */}
+
+
+
+
                       {/* delivery time */}
-                      <Typography
+                      {/* <Typography
                         sx={{ display: "block" }}
                         component="span"
                         variant="body2"
@@ -105,12 +114,12 @@ function ShipmentBox(props: Props) {
                         addDays(new Date(), delivery.shippingTime),
                         "d MMMM",
                         { locale: sv }
-                      )}`}</Typography>
+                      )}`}</Typography> */}
                     </>
                   }
                 />
               </ListItemButton>
-            </React.Fragment>
+            </ListItem>
           ))}
       </List>
     </Box>
