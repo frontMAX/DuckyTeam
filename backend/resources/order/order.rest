@@ -2,7 +2,7 @@ GET http://localhost:5001/api/order
 
 ###
 
-GET http://localhost:5001/api/order/628c97c3e9e990fb2d4737e1
+GET http://localhost:5001/api/order
 
 ###
 
@@ -27,4 +27,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5001/api/order/628c9aee99fb488257ddcbc2
+DELETE http://localhost:5001/api/order/628c9d38c8344f8818d51b84

@@ -20,20 +20,13 @@ export const OrderContext = React.createContext<OrderContextValue>({
   isLoading: false, // hur ska vi ha det här ?   osäker om behövs..
   orders: [],
   // getOrders: () => { },
-  fetchOrder: (id: string) => {},
-  fetchOrders: () => {},
+  fetchOrder: (id: string) => { },
+  fetchOrders: () => { },
 });
 
 export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false); // Behövs denna ?
-
-  // const getOrders = async () => {
-  //     setIsLoading(true);
-  //     const response = await axios.get<Order[]>('/api/product');
-  //     setOrders(response.data);
-  //     setIsLoading(false);
-  // };
 
   const fetchOrders = useCallback(() => {
     axios.get<Order[]>("/api/order").then((res) => {

@@ -29,7 +29,7 @@ function App() {
         <Route path="termsOfUse" element={<TermsOfUsePage />} />
         <Route path="support" element={<SupportPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="order" element={<OrderPage />} >
+        <Route path="order" >
           <Route path="all" element={<OrderListPage />} /> - alla ordrar sen
           typ
           <Route path=":id" element={<OrderPage />} />

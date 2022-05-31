@@ -4,10 +4,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
 import { Order } from '@shared/types';
 import { useParams } from 'react-router-dom';
 import { useOrder } from '../../contexts/Order/orderContext';
+import { Categories } from '../../contexts/product/ProductContext';
 // import { getOrders } from '../../../../backend/resources/order/order.controller';
 
 export function OrderCard() {
@@ -35,16 +35,18 @@ export function OrderCard() {
         <Card key={order?.id} sx={{ borderRadius: '1rem', padding: '1rem' }}>
             {/* "orders.map yada yada, key: order.id, key: order.name, yada yada" */}
             <Typography>
-                {order?.orderNumber}
                 OrderNummer
+                {order?.orderNumber}
             </Typography>
             <Typography>
-                Bild på produkten eller bara i text vilken produkt som behövs?!
+
             </Typography>
+
             <Typography>
-                {order?.createdAt}
+                {order?.orderNumber}
                 Vilket datum den skapades ?
             </Typography>
+
             <Typography>
                 Användaren
             </Typography>
