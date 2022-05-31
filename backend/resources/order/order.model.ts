@@ -13,10 +13,6 @@ export interface Order {
   updatedAt: Date;
   user: User;
   delivery: Delivery;
-
-
-
-
 }
 
 const AddressSchema = new mongoose.Schema(
@@ -41,18 +37,14 @@ const OrderSchema = new mongoose.Schema<Order>(
     products: { type: [productSchema], required: false },
     shipping: AddressSchema,
     user: { type: Schema.Types.ObjectId, ref: "user", required: false },
-
+    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
     // delivery: { type: Delivery}
   },
   {
-
-    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
-}, {
-
     timestamps: true,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+    toObject: { virtuals: true }
+}
 );
 
 export const OrderModel = mongoose.model("order", OrderSchema);
