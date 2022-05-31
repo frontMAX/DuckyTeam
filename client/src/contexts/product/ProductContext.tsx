@@ -43,14 +43,6 @@ export interface Product {
   orderedQuantity?: number;
 }
 
-// type PContext = {
-//   products: ProductType[];
-//   dispatch: React.Dispatch<ProductActions>;
-//   createProduct: (product: Product) => void;
-//   updateProduct: (product: Product) => void;
-//   deleteProduct: (id: number) => void;
-// };
-
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   products: [],
