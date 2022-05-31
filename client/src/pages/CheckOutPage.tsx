@@ -11,10 +11,12 @@ import {
 } from "@mui/material";
 import OrderForm from "../components/Forms/OrderForm";
 import useLocalStorage from "../Hooks/useLocalStorage";
+
 import { useState } from "react";
-import { deliveryOptions } from "../Api/Data";
 import { useNavigate } from "react-router-dom";
 import { CartType } from "../contexts/CartReducer";
+import { useEffect, useState } from "react";
+import { useDelivery } from "../contexts/DeliveryContetxt";
 
 function CheckOutPage() {
   // get cart and total price from cart
@@ -23,6 +25,12 @@ function CheckOutPage() {
   const [shippingMethod, setShippingMethod] = useState<number | undefined>(
     undefined
   );
+
+  const { deliveries, fetchDeliveries } = useDelivery();
+
+  useEffect(() => {
+    fetchDeliveries();
+  }, [fetchDeliveries]);
 
   let navigate = useNavigate();
 
@@ -99,7 +107,7 @@ function CheckOutPage() {
           {`${
             total +
             (typeof shippingMethod === "number"
-              ? deliveryOptions[shippingMethod].price
+              ? deliveries[shippingMethod].price
               : 0)
           }`}{" "}
           kr

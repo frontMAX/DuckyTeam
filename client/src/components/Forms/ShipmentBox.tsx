@@ -11,18 +11,34 @@ import addDays from "date-fns/addDays";
 import format from "date-fns/format";
 import sv from "date-fns/locale/sv";
 import { FormikProps } from "formik";
-import React from "react";
-import { Delivery, deliveryOptions } from "../../Api/Data";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Delivery, useDelivery } from "../../contexts/DeliveryContetxt";
 import { OrderData } from "./OrderForm";
 
 interface Props {
   formikProps: FormikProps<OrderData>;
-  setShippingMethod: React.Dispatch<React.SetStateAction<number | undefined>>
+  setShippingMethod: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 function ShipmentBox(props: Props) {
+  let { id } = useParams();
+  const { deliveries, fetchDelivery } = useDelivery();
+
+  const delivery = deliveries.find(
+    (item: Delivery) => item._id.toString() === id
+  );
+
+  useEffect(() => {
+    if (id) {
+      fetchDelivery(id);
+    }
+  }, [fetchDelivery]);
+
   // the state to  handle clicks
-  const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(
+    undefined
+  );
 
   // Checks which button is clicked
   const handleListItemClick = (
@@ -32,7 +48,7 @@ function ShipmentBox(props: Props) {
     // if clicked, sets value (seen in orderDetails) to chosen method
     {
       setSelectedIndex(index);
-      props.setShippingMethod(index)
+      props.setShippingMethod(index);
       props.formikProps.setFieldValue("shippingMethod", index);
     };
 
@@ -41,11 +57,11 @@ function ShipmentBox(props: Props) {
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <List component="nav" aria-label="Shipping options list">
         {/* loops through array of delivery options */}
-        {deliveryOptions.length !== 0 &&
-          deliveryOptions.map((delivery: Delivery, index) => (
-            <React.Fragment key={delivery.id}>
+        {deliveries.length !== 0 &&
+          deliveries.map((delivery: Delivery, index) => (
+            <React.Fragment key={delivery._id}>
               {/* displays all objects in array based on index */}
-              <ListItemButton 
+              <ListItemButton
                 selected={selectedIndex === index}
                 onClick={(
                   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -53,7 +69,10 @@ function ShipmentBox(props: Props) {
               >
                 {/* logo for delivery-option */}
                 <ListItemAvatar>
-                  <Avatar src={delivery.logo} alt={`${delivery.name} logo`} />
+                  <Avatar
+                    src={`http://localhost:5001${delivery.logo}`}
+                    alt={`${delivery.name} logo`}
+                  />
                 </ListItemAvatar>
 
                 {/* name of delivery-option */}
