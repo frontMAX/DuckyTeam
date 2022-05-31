@@ -12,7 +12,7 @@ interface ProductContextValue {
   products: Product[];
   fetchProducts: () => void;
   fetchProduct: (id: string) => void;
-  createProduct: () => void;
+  createProduct: (newProductData: BaseProduct) => void;
   updateProduct: (product: Product) => void;
   deleteProduct: (id: string) => void;
 }
@@ -32,8 +32,7 @@ export const Categories: MockedCategories[] = [
 ];
 
 /** Remember this is used backendside as well, update both of needed. */
-export interface Product {
-  _id: string;
+export interface BaseProduct {
   name: string;
   price: number;
   quantity: number;
@@ -43,12 +42,16 @@ export interface Product {
   orderedQuantity?: number;
 }
 
+export interface Product extends BaseProduct {
+  _id: string;
+}
+
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   products: [],
   fetchProducts: () => {},
   fetchProduct: (id: string) => {},
-  createProduct: () => {},
+  createProduct: (newProductData: BaseProduct) => {},
   updateProduct: (product: Product) => {},
   deleteProduct: (id: string) => {},
 });
@@ -58,48 +61,60 @@ export const ProductProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchProducts = useCallback(() => {
-    axios.get<Product[]>("http://localhost:5001/api/product").then((res) => {
+    axios.get<Product[]>("/api/product").then((res) => {
       setProducts(res.data);
     });
   }, []);
 
   const fetchProduct = useCallback((id: string) => {
-    axios
-      .get<Product>(`http://localhost:5001/api/product/${id}`)
-      .then((res) => {
-        setProducts([res.data]);
+    axios.get<Product>(`/api/product/${id}`).then((res) => {
+      const productIndex = products.findIndex((product: Product) => {
+        return (product._id = res.data._id);
       });
+      if (productIndex === -1) {
+        setProducts([...products, res.data]);
+      } else {
+        products[productIndex] = res.data;
+        setProducts(products);
+      }
+    });
   }, []);
 
-  const createProduct = useCallback(() => {
-    axios.post<Product>("http://localhost:5001/api/product").then((res) => {
+  const createProduct = useCallback((newProductData: BaseProduct) => {
+    axios.post<Product>("/api/product", newProductData).then((res) => {
       setProducts([...products, res.data]);
     });
   }, []);
 
   const updateProduct = useCallback((newProductData: Product) => {
     axios
-      .put<Product>(`http://localhost:5001/api/product/${newProductData._id}`, {
+      .put<Product>(`/api/product/${newProductData._id}`, {
         newProductData,
       })
       .then((res) => {
         const productIndex = products.findIndex((product: Product) => {
           return (product._id = newProductData._id);
         });
-        products[productIndex] = res.data;
-        setProducts(products);
+        if (productIndex === -1) {
+          setProducts([...products, res.data]);
+        } else {
+          products[productIndex] = res.data;
+          setProducts(products);
+        }
       });
   }, []);
 
   const deleteProduct = useCallback((id: string) => {
-    axios
-      .delete<Product>(`http://localhost:5001/api/product/${id}`)
-      .then((res) => {
-        const productIndex = products.findIndex((product: Product) => {
-          return (product._id = id);
-        });
-        setProducts([...products.splice(productIndex, 1)]);
+    axios.delete<Product>(`/api/product/${id}`).then((res) => {
+      const productIndex = products.findIndex((product: Product) => {
+        return (product._id = id);
       });
+      if (productIndex === -1) {
+        setProducts(products);
+      } else {
+      setProducts([...products.splice(productIndex, 1)]);
+      }
+    });
   }, []);
 
   return (
