@@ -23,7 +23,6 @@ export interface Delivery {
   shippingTime: number;
   price: number;
   logo: string;
-  id: string;
 }
 
 export const DeliveryContext = React.createContext<DeliveryContextValue>({
@@ -39,28 +38,33 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [deliveries, setDeliveries] = React.useState<Delivery[]>([]);
 
   const fetchDeliveries = useCallback(() => {
-    axios.get<Delivery[]>("/api/delivery").then((res) => {
+    axios.get<Delivery[]>("http://localhost:5001/api/delivery").then((res) => {
       setDeliveries(res.data);
     });
   }, []);
 
   const fetchDelivery = useCallback((id: string) => {
-    axios.get<Delivery>(`/api/delivery/${id}`).then((res) => {
-      setDeliveries([res.data]);
-    });
+    axios
+      .get<Delivery>(`http://localhost:5001/api/delivery/${id}`)
+      .then((res) => {
+        setDeliveries([res.data]);
+      });
   }, []);
 
   const createDelivery = useCallback(() => {
-    axios.post<Delivery>("/api/delivery").then((res) => {
+    axios.post<Delivery>("http://localhost:5001/api/delivery").then((res) => {
       setDeliveries([...deliveries, res.data]);
     });
   }, []);
 
   const updateDelivery = useCallback((newDeliveryData: Delivery) => {
     axios
-      .put<Delivery>(`/api/delivery/${newDeliveryData._id}`, {
-        newDeliveryData,
-      })
+      .put<Delivery>(
+        `http://localhost:5001/api/delivery/${newDeliveryData._id}`,
+        {
+          newDeliveryData,
+        }
+      )
       .then((res) => {
         const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
           return (delivery._id = newDeliveryData._id);
@@ -71,12 +75,14 @@ export const DeliveryProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const deleteDelivery = useCallback((id: string) => {
-    axios.delete<Delivery>(`/api/delivery/${id}`).then((res) => {
-      const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
-        return (delivery._id = id);
+    axios
+      .delete<Delivery>(`http://localhost:5001/api/delivery/${id}`)
+      .then((res) => {
+        const deliveryIndex = deliveries.findIndex((delivery: Delivery) => {
+          return (delivery._id = id);
+        });
+        setDeliveries([...deliveries.splice(deliveryIndex, 1)]);
       });
-      setDeliveries([...deliveries.splice(deliveryIndex, 1)]);
-    });
   }, []);
 
   return (

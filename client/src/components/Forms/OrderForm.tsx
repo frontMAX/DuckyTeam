@@ -18,7 +18,7 @@ import ShipmentBox from "./ShipmentBox";
 import { Link, useNavigate } from "react-router-dom";
 // import { placeOrderFetch } from "../../Api/Api";
 import useLocalStorage from "../../Hooks/useLocalStorage";
-import React from "react";
+import React, { useEffect } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { CartType, Types } from "../../contexts/Reducers";
 import { useDelivery } from "../../contexts/DeliveryContetxt";
@@ -85,11 +85,16 @@ interface Props {
 }
 
 function OrderForm(props: Props) {
-  const { deliveries } = useDelivery();
-
   let navigate = useNavigate();
   const { dispatch } = useCart();
   const [isLoading, setLoading] = React.useState<boolean>(false);
+
+  const { deliveries, fetchDeliveries } = useDelivery();
+
+  useEffect(() => {
+    fetchDeliveries();
+  }, [fetchDeliveries]);
+
   let [allOrderDetails, setAllDetails] = useLocalStorage<AllOrderData>(
     "orderDetails",
     ""

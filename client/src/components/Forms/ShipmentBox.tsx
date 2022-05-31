@@ -24,6 +24,7 @@ interface Props {
 function ShipmentBox(props: Props) {
   let { id } = useParams();
   const { deliveries, fetchDelivery } = useDelivery();
+
   const delivery = deliveries.find(
     (item: Delivery) => item._id.toString() === id
   );
@@ -58,7 +59,7 @@ function ShipmentBox(props: Props) {
         {/* loops through array of delivery options */}
         {deliveries.length !== 0 &&
           deliveries.map((delivery: Delivery, index) => (
-            <React.Fragment key={delivery.id}>
+            <React.Fragment key={delivery._id}>
               {/* displays all objects in array based on index */}
               <ListItemButton
                 selected={selectedIndex === index}
