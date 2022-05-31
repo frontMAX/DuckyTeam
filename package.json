@@ -20,6 +20,7 @@
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2",
     "nodemon": "^2.0.16",
+    "react-hook-form": "^7.31.3",
     "ts-node": "^10.7.0"
   }
 }
