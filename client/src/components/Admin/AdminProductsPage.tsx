@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Product, useProduct } from "../../contexts/product/ProductContext";
-import EditProductCardAccordion from "./EditProductCardAccordion";
+import EditProductCard from "./EditProductCard"
+import { Add } from "@mui/icons-material";
 
 function AdminProductsPage() {
-  const { products, fetchProducts, createProduct, updateProduct, deleteProduct } =
+  const { products, fetchProducts } =
     useProduct();
   const [addingProduct, setAddingProduct] = useState(false);
 
@@ -17,29 +18,7 @@ function AdminProductsPage() {
     fetchProducts();
   }, [fetchProducts]);
   
-  const newProduct = () => {
-    const id = '';
 
-    const product: Product = {
-      name: "",
-      details: "",
-      _id: id,
-      category: [],
-      price: 0,
-      quantity: 0,
-      imageUrl: "",
-    };
-
-    return product;
-  };
-
-  
-  const createNewProduct = (product: Product) => {
-    setAddingProduct(false);
-    createProduct();
-  };
-
-  const deleteNewProduct = () => setAddingProduct(false);
 
   return (
     <Container maxWidth="xl" sx={{ height: "100%" }}>
@@ -51,21 +30,18 @@ function AdminProductsPage() {
           height: "100%",
         }}
       >
+        <Link to="/admin/products/new">
+        <Button startIcon={<Add/>}>Add new product</Button>
+      </Link>
         <List>
           {products.map((p, i) => {
             return (
-              <EditProductCardAccordion
+              <EditProductCard
                 key={i}
-                
+                product={p}
               />
             );
           })}
-          {addingProduct && (
-            <EditProductCardAccordion
-              key="new"
-              expanded={true}
-            />
-          )}
         </List>
         {!addingProduct && (
           <Button
