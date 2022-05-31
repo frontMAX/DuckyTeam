@@ -8,6 +8,8 @@ import { userRouter } from "./resources/user/user.router";
 import { deliveryRouter } from "./resources/delivery/delivery.router";
 import { productRouter } from "./resources/product/product.router";
 import { orderRouter } from "./resources/order/order.router";
+import { mediaRouter } from "./resources/media";
+import cors from "cors";
 
 const port = 5001;
 const app = express();
@@ -15,7 +17,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api", userRouter, productRouter, deliveryRouter, orderRouter);
+app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
+
+app.use(
+  "/api",
+  userRouter,
+  productRouter,
+  deliveryRouter,
+  orderRouter,
+  mediaRouter
+);
 
 mongoose.connect(
   "mongodb+srv://frontMAX:bomberbomber@cluster0.ycxia.mongodb.net/duckybase",
