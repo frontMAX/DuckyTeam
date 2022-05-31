@@ -1,44 +1,48 @@
-import { User, mockedUsers } from '../Api/Data'
-import { LoginDetails } from '../components/Forms/LoginForm';
-import axios from 'axios';
-import { Product } from '../contexts/product/ProductContext';
+import axios from "axios";
+import { User, mockedUsers } from "../Api/Data";
+import { LoginDetails } from "../components/Forms/LoginForm";
+import { DeliveryInterface } from "../InterFaces";
+import { Product } from "../contexts/product/ProductContext";
 
 function wait(time: number) {
   return new Promise<boolean>((resolve) => {
     setTimeout(() => {
-      resolve(true)
-    }, time)
-  })
+      resolve(true);
+    }, time);
+  });
 }
+
+export async function DeliveryFetch(delivery: Promise<DeliveryInterface>) {
+  const res = await axios.get("http://localhost:5001/api/delivery");
+}
+
 export async function FakeUserFetch(loginDetails: LoginDetails): Promise<User> {
-  await wait(1000)
+  await wait(1000);
   const foundUsers = mockedUsers.filter((user) => {
-    return user.username === loginDetails.username
-  })
+    return user.username === loginDetails.username;
+  });
 
   if (!foundUsers.length) {
-    throw new Error('Tyvärr så finns inte denna användare.')
+    throw new Error("Tyvärr så finns inte denna användare.");
   }
 
-  const foundUser = foundUsers[0]
+  const foundUser = foundUsers[0];
 
   if (foundUser.password !== loginDetails.password) {
-    throw new Error('Tyvärr så stämmer ej lösenordet.')
+    throw new Error("Tyvärr så stämmer ej lösenordet.");
   }
 
-  return foundUser
+  return foundUser;
 }
 
 export async function ProductFetch(product: Promise<Product>) {
-  const res = await axios.get(
-    'http://localhost:5001/api/product'
-  )
+  const res = await axios.get("http://localhost:5001/api/product");
 
-  const result = await res.data.product
-  console.log(result.product)
-  return result
+  const result = await res.data.product;
+  console.log(result.product);
+  return result;
 }
 
 export async function placeOrderFetch() {
-  return await wait(1000)
+  return await wait(1000);
 }
