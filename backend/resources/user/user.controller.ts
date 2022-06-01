@@ -23,7 +23,7 @@ export const addUser = async (
     }
     const userExist = await UserModel.findOne({ email: req.body.email });
     if (userExist) {
-      // user already exist bla bla bla
+      res.json("user already exist, pick another.").status(409);
       return;
     } // encryption of password
     const salt = await bcrypt.genSalt(10);

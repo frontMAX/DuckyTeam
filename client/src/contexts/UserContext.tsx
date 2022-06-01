@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
-import { FakeUserFetch } from "../Api/Api";
+import React, { useCallback, useContext, useState } from "react";
+import { userFetch } from "../Api/Api";
 import { User } from "../Api/Data";
 import { LoginDetails } from "../components/Forms/LoginForm";
+import axios, { AxiosResponse } from "axios";
 
 interface UserContextValue {
   isLoading: boolean;
@@ -12,7 +13,7 @@ interface UserContextValue {
 
 export const UserContext = React.createContext<UserContextValue>({
   isLoading: false,
-  user: { username: "", password: "", isAdmin: false },
+  user: { email: "", password: "", isAdmin: false },
   login: (_loginDetails: LoginDetails): Promise<boolean> => {
     return new Promise(() => {});
   },
@@ -24,9 +25,20 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const login = async (loginDetails: LoginDetails) => {
+    axios
+      .post("http://localhost:5001/api/user/login")
+      .then((res) => {
+        let user = res.data.user;
+        return user;
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
     setIsLoading(true);
 
-    return FakeUserFetch(loginDetails)
+    return userFetch(loginDetails)
       .then((user) => {
         setUser(user);
         setIsLoading(false);
@@ -37,6 +49,45 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
         throw e;
       });
   };
+
+  // const login = useCallback(async (_loginDetails: LoginDetails) => {
+  //   axios
+  //     .post("http://localhost:5001/api/user/login")
+  //     .then((res) => {
+  //       let user = res;
+  //       console.log(user);
+  //       return user;
+  //     })
+  //     .catch((err) => {
+  //       if (err) {
+  //         setIsLoading(false);
+  //         setUser(undefined);
+  //         console.log(err);
+  //       }
+  //     });
+  //   setIsLoading(true);
+  //   setUser(user);
+  //   try {
+  //     const thisUser = await userFetch(_loginDetails);
+  //     setUser(thisUser);
+  //     setIsLoading(false);
+  //     return true;
+  //   } catch (e) {
+  //     setIsLoading(false);
+  //     throw e;
+  //   }
+  // }, []);
+
+  //   try {
+  //     const user = await userFetch(loginDetails);
+  //     setUser(user);
+  //     setIsLoading(false);
+  //     return true;
+  //   } catch (e) {
+  //     setIsLoading(false);
+  //     throw e;
+
+  // },
 
   const logout = async () => {
     setUser(undefined);

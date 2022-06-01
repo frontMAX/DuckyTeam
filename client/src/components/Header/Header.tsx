@@ -34,9 +34,13 @@ const Header: FC<HeaderProps> = () => {
     <>
       {!!user?.isAdmin && <AdminBar />}
 
-      <Container maxWidth="md" sx={{ padding: "0,2rem", mb:1,mt:2 }}>
+      <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
-          {!!user && <Typography sx={{color:"#c900c1"}}>Du är nu inloggad som: {user?.username}</Typography>}
+          {!!user && (
+            <Typography sx={{ color: "#c900c1" }}>
+              Du är nu inloggad som: {user?.email}
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
