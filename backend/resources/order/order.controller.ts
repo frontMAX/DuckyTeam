@@ -15,11 +15,12 @@ export const getOrders = async (req: Request, res: Response) => {
 // Get a single order by id
 export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params
-
+    // Glöm inte att dubbel kolla det blir en socket hang up vid fel id nr ?! 
     const order = await OrderModel.findById(id)
     if (!order) {
-        res.status(400)
-        throw new Error('order not found')
+        return res
+            .status(400)
+            .send({ error: true, msg: 'order not found' })
     }
     res.status(200).json(order)
 };
@@ -41,6 +42,7 @@ export const addOrder = async (
         next(err);
     }
 };
+
 export const updateOrder = async (
     req: Request<{ id: string }>,
     res: Response
