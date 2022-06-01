@@ -6,15 +6,23 @@ import { Delivery } from "../delivery/delivery.model";
 import { Address } from "cluster";
 
 export interface Order {
-  id: any;
-
+  id: string;
   orderNumber: string;
+
+  // should be virtual product  !!!! IMPORTANT TO FIX
   products: Product[];
+
+  // shipping adress
   shipping: Address;
   createdAt: Date;
   updatedAt: Date;
   user: User;
+
+  // delivery method
   delivery: Delivery;
+
+  // the total for all products and shipping   !!!! IMPORTANT TO FIX
+  orderTotal: number;
 }
 
 const AddressSchema = new mongoose.Schema(
@@ -35,13 +43,21 @@ const AddressSchema = new mongoose.Schema(
 const OrderSchema = new mongoose.Schema<Order>(
   {
     orderNumber: { type: String, required: true },
-    products: { type: [productSchema], required: false },
-    shipping: AddressSchema,
-    user: { type: Schema.Types.ObjectId, ref: "user", required: false },
-    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
-    // delivery: { type: Delivery}
-  }, {
 
+    // All products ordered, virtual schema   !!!! IMPORTANT TO FIX
+    products: { type: [productSchema], required: true },
+
+    // shipping adress
+    shipping: { type: AddressSchema, required: true },
+
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+
+    // delivery method
+    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
+
+    // total for the full order, products and shipping included !!!! IMPORTANT TO FIX
+    orderTotal: { type: Number, required: true }
+  }, {
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
