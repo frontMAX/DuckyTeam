@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useCart } from '../../contexts/CartContext'
 import BuyButton from '../BuyButton'
-import { CartType } from '../../contexts/CartReducer'
+import { CartType } from '../../contexts/Reducers'
 
 function ProductCard({ product }: any) {
   const { cart, dispatch } = useCart()

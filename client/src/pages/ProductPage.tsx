@@ -20,7 +20,7 @@ function ProductPage() {
   const { cart, dispatch } = useCart()
   const { products, fetchProduct } = useProduct()
   const product = products.find(
-    (item: Product) => item._id?.toString() === id
+    (item: Product) => item._id.toString() === id
   )
 
   useEffect(() => {
