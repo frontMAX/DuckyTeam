@@ -22,19 +22,20 @@ import React, { useEffect } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { CartType, Types } from "../../contexts/Reducers";
 import { useDelivery } from "../../contexts/DeliveryContetxt";
-import { useOrder } from "../../contexts/Order/orderContext";
-export interface OrderData {
-  shippingAdress: ShippingAdress;
-  paymentMethod: string | number | readonly string[] | undefined;
-  shippingMethod: number | undefined;
-  cardNumber: string;
-  cvc: string;
-  expDate: string;
-  personalNumber: string;
-  phoneNumber: string;
-}
+import { useOrder, BaseOrder } from "../../contexts/Order/orderContext";
 
-const emptyForm: OrderData = {
+// export interface OrderData {
+//   shippingAdress: ShippingAdress;
+//   paymentMethod: string | number | readonly string[] | undefined;
+//   shippingMethod: number | undefined;
+//   cardNumber: string;
+//   cvc: string;
+//   expDate: string;
+//   personalNumber: string;
+//   phoneNumber: string;
+// }
+
+const emptyForm: BaseOrder {
   shippingAdress: emptyShippingForm,
   paymentMethod: "",
   shippingMethod: undefined,
@@ -45,42 +46,42 @@ const emptyForm: OrderData = {
   phoneNumber: "",
 };
 
-export type OrderSchemaType = Record<keyof OrderData, Yup.AnySchema>;
+export type OrderSchemaType = Record<keyof BaseOrder, Yup.AnySchema>;
 
-const OrderFormSchema = Yup.object().shape<OrderSchemaType>({
-  shippingAdress: AdressFormSchema,
-  paymentMethod: Yup.string().required("Du måste välja ett betalsätt"),
-  shippingMethod: Yup.string().required("Du måste välja ett fraktsätt"),
-  cardNumber: Yup.string().when("paymentMethod", {
-    is: "card",
-    then: (schema) => schema.required("Vänligen fyll i ditt kortnummer."),
-  }),
-  cvc: Yup.string().when("paymentMethod", {
-    is: "card",
-    then: (schema) => schema.required("Vänligen fyll i din CVC-kod."),
-  }),
-  expDate: Yup.string().when("paymentMethod", {
-    is: "card",
-    then: (schema) => schema.required("Vänligen fyll i utgångsdatum."),
-  }),
-  personalNumber: Yup.string().when("paymentMethod", {
-    is: "klarna",
-    then: (schema) => schema.required("Vänligen fyll i ditt personnummer."),
-  }),
-  phoneNumber: Yup.string().when("paymentMethod", {
-    is: "swish",
-    then: (schema) => schema.required("Vänligen fyll i ditt telefonnummer."),
-  }),
-});
+// const OrderFormSchema = Yup.object().shape<OrderSchemaType>({
+//   shippingAdress: AdressFormSchema,
+//   paymentMethod: Yup.string().required("Du måste välja ett betalsätt"),
+//   shippingMethod: Yup.string().required("Du måste välja ett fraktsätt"),
+//   cardNumber: Yup.string().when("paymentMethod", {
+//     is: "card",
+//     then: (schema) => schema.required("Vänligen fyll i ditt kortnummer."),
+//   }),
+//   cvc: Yup.string().when("paymentMethod", {
+//     is: "card",
+//     then: (schema) => schema.required("Vänligen fyll i din CVC-kod."),
+//   }),
+//   expDate: Yup.string().when("paymentMethod", {
+//     is: "card",
+//     then: (schema) => schema.required("Vänligen fyll i utgångsdatum."),
+//   }),
+//   personalNumber: Yup.string().when("paymentMethod", {
+//     is: "klarna",
+//     then: (schema) => schema.required("Vänligen fyll i ditt personnummer."),
+//   }),
+//   phoneNumber: Yup.string().when("paymentMethod", {
+//     is: "swish",
+//     then: (schema) => schema.required("Vänligen fyll i ditt telefonnummer."),
+//   }),
+// });
 
 export interface AllOrderData {
-  orderDetails: OrderData;
+  orderDetails: BaseOrder
   orderTotal: number;
   products: CartType[];
 }
 
 interface Props {
-  defaultOrderData?: OrderData;
+  defaultOrderData?: BaseOrder;
   setShippingMethod: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
@@ -104,7 +105,7 @@ function OrderForm(props: Props) {
   let [productsDetails] = useLocalStorage<CartType[]>("cart", "");
 
   // successful submit
-  function handleSubmit(orderData: OrderData) {
+  function handleSubmit(orderData: BaseOrder) {
     setLoading(true);
     setOrderDetails(orderData);
 
@@ -113,13 +114,13 @@ function OrderForm(props: Props) {
   }
 
   //populate a full Local storage key with all order details
-  function setOrderDetails(orderDetails: OrderData) {
+  function setOrderDetails(orderDetails: BaseOrder) {
     allOrderDetails = {
       orderDetails: orderDetails,
       orderTotal:
         sumDetails +
-        (typeof orderDetails.shippingMethod === "number"
-          ? deliveries[orderDetails.shippingMethod].price
+        (typeof orderDetails.delivery === "number"
+          ? deliveries[orderDetails.delivery].price
           : 0),
       products: productsDetails,
     };
@@ -127,130 +128,128 @@ function OrderForm(props: Props) {
     setAllDetails(allOrderDetails);
   }
 
-  const formikProps = useFormik<OrderData>({
+  const formikProps = useFormik<BaseOrder>({
     initialValues: emptyForm,
-    validationSchema: OrderFormSchema,
+    validationSchema: OrderFormSchema
+  },
     onSubmit: (orderData) => {
       handleSubmit(orderData);
     },
   });
 
-  // fetches api to check if order went through, navigates to confirmed-order if successful
-  async function confirmOrder(orderData: orderData) {
-    const success = createOrder(orderData);
-    if (success) {
-      dispatch({
-        type: Types.ResetCart,
-        payload: {},
-      });
-      setLoading(false);
-      navigate("/confirmed-order");
-    }
-  }
+// fetches api to check if order went through, navigates to confirmed-order if successful
+async function confirmOrder(orderData: OrderData) {
+  const order = createOrder(orderData);
+  // if (order) {
+  //   dispatch({
+  //     type: Types.ResetCart,
+  //     payload: {},
+  //   });
+  setLoading(false);
+  navigate("/confirmed-order");
+}
+}
 
-  return (
-    <>
-      {!isLoading ? (
-        <>
-          <Box
-            sx={{
-              bgcolor: "#ffffff",
-              mt: 3,
-              alignItems: "center",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Typography variant="h6" sx={{ padding: 2, fontWeight: "bold" }}>
-              Välj dina betal och leveransmetoder
+return (
+  <>
+    {!isLoading ? (
+      <>
+        <Box
+          sx={{
+            bgcolor: "#ffffff",
+            mt: 3,
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="h6" sx={{ padding: 2, fontWeight: "bold" }}>
+            Välj dina betal och leveransmetoder
+          </Typography>
+          {/* RANDOM INFO TEXT, DOESN'T ACTUALLY DO/MEAN ANYTHING */}
+
+          {/* The full order form */}
+          <form onSubmit={formikProps.handleSubmit}>
+            {/* Shipping adress */}
+            <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
+              Leveransadress
             </Typography>
-            {/* RANDOM INFO TEXT, DOESN'T ACTUALLY DO/MEAN ANYTHING */}
+            <ShippingForm formikProps={formikProps} />
 
-            {/* The full order form */}
-            <form onSubmit={formikProps.handleSubmit}>
-              {/* Shipping adress */}
-              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
-                Leveransadress
-              </Typography>
-              <ShippingForm formikProps={formikProps} />
+            {/* Shipping methods */}
+            <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
+              Leveransmetod
+            </Typography>
 
-              {/* Shipping methods */}
-              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
-                Leveransmetod
-              </Typography>
+            {/* Show error if no shipping method is selected */}
+            {formikProps.touched.shippingMethod &&
+              formikProps.errors.shippingMethod}
 
-              {/* Show error if no shipping method is selected */}
-              {formikProps.touched.shippingMethod &&
-                formikProps.errors.shippingMethod}
+            <ShipmentBox
+              formikProps={formikProps}
+              setShippingMethod={props.setShippingMethod}
+            />
 
-              <ShipmentBox
-                formikProps={formikProps}
-                setShippingMethod={props.setShippingMethod}
+            {/* Payment methods (and payment details) */}
+            <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
+              Betalningsmetod{" "}
+            </Typography>
+
+            {/* Show error if no payment method is selected */}
+            {formikProps.touched.paymentMethod &&
+              formikProps.errors.paymentMethod}
+
+            <PaymentBox formikProps={formikProps} />
+
+            {/* conditions checkbox, does nothing for now */}
+            <div>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Jag godkänner"
               />
+              <Link to="/termsOfUse">Köpvillkoren.</Link>
+            </div>
 
-              {/* Payment methods (and payment details) */}
-              <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
-                Betalningsmetod{" "}
-              </Typography>
+            {/* Post form */}
 
-              {/* Show error if no payment method is selected */}
-              {formikProps.touched.paymentMethod &&
-                formikProps.errors.paymentMethod}
-
-              <PaymentBox formikProps={formikProps} />
-
-              {/* conditions checkbox, does nothing for now */}
-              <div>
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="Jag godkänner"
-                />
-                <Link to="/termsOfUse">Köpvillkoren.</Link>
-              </div>
-
-              {/* Post form */}
-
-              <Button
-                sx={{
-                  mt: 2,
-                  mb: 2,
-                  height: "3rem",
-                  width: "100%",
-                  bgcolor: "#0EDFE6",
+            <Button
+              sx={{
+                mt: 2,
+                mb: 2,
+                height: "3rem",
+                width: "100%",
+                bgcolor: "#0EDFE6",
+                border: "none",
+                color: " black",
+                "&:hover": {
+                  bgcolor: "#eaa0ff",
                   border: "none",
-                  color: " black",
-                  "&:hover": {
-                    bgcolor: "#eaa0ff",
-                    border: "none",
-                    color: "black",
-                  },
-                  "@media screen and (max-width: 440px)": {
-                    borderRadius: "0",
-                    mt: 2,
-                    mb: 0,
-                  },
-                }}
-                variant="outlined"
-                type="submit"
-              >
-                Slutför beställning
-              </Button>
-            </form>
-          </Box>
-        </>
-      ) : (
-        <>
-          {" "}
-          <LinearProgress /> <br />
-          Kontrollerar beställning...
-        </>
-      )}
-    </>
-  );
+                  color: "black",
+                },
+                "@media screen and (max-width: 440px)": {
+                  borderRadius: "0",
+                  mt: 2,
+                  mb: 0,
+                },
+              }}
+              variant="outlined"
+              type="submit"
+            >
+              Slutför beställning
+            </Button>
+          </form>
+        </Box>
+      </>
+    ) : (
+      <>
+        {" "}
+        <LinearProgress /> <br />
+        Kontrollerar beställning...
+      </>
+    )}
+  </>
+);
 }
 
 export default OrderForm;
-function newOrderData(newOrderData: any) {
-  throw new Error("Function not implemented.");
-}
 

@@ -1,27 +1,42 @@
-import { Order } from "@shared/types";
-
 import axios from "axios";
+import { Address } from "cluster";
 import React, { useCallback, useContext } from "react";
+import { User } from "../../../../backend/resources/user/user.model";
+import { Delivery } from "../DeliveryContetxt";
+import { Product } from "../product/ProductContext";
 
 interface OrderContextValue {
   orders: Order[];
   // getOrders: () => void;
   fetchOrders: () => void;
   fetchOrder: (id: string) => void;
-  createOrder: (newOrderData: Order) => void;
+  createOrder: (orderData: Order) => void;
 }
 
-// den är ju shared, men vet iinte hur jag får in..
-// export interface Order {
-//     id: number
-// }
+
+
+export interface BaseOrder {
+  // should be virtual product  !!!! IMPORTANT TO FIX
+  products: Product[];
+  // shipping adress
+  shippingAdress: Address;
+
+  // delivery method
+  delivery: Delivery;
+}
+export interface Order extends BaseOrder {
+  id: number;
+  orderNumber: string;
+  orderTotal: number;
+  user: User;
+}
 
 export const OrderContext = React.createContext<OrderContextValue>({
   orders: [],
   // getOrders: () => { },
   fetchOrders: () => { },
   fetchOrder: (id: string) => { },
-  createOrder: (newOrderData: Order) => { }
+  createOrder: (orderData: Order) => { }
 });
 
 export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
@@ -33,8 +48,8 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  const createOrder = useCallback((newOrderData: Order) => {
-    axios.post<Order>("/api/order", newOrderData).then((res) => {
+  const createOrder = useCallback((orderData: Order) => {
+    axios.post<Order>("/api/order", orderData).then((res) => {
       setOrders([...orders, res.data]);
     });
   }, []);
