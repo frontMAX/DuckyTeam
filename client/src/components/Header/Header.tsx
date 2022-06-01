@@ -1,9 +1,9 @@
 import { Box, Tabs, Tab, Container, Button, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import { useUser } from "../../contexts/UserContext";
+import { User, useUser } from "../../contexts/UserContext";
 import AdminBar from "./AdminBar";
 import CartButton from "./CartButton";
 
@@ -28,7 +28,18 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
-  const { user, logout } = useUser();
+  const { users, fetchUser } = useUser();
+
+// does not work.... fix to be able to work for now
+  const user = users.find(
+    (item: User) => item._id.toString()
+  )
+
+  // useEffect(() => {
+  //   // if(id){
+  //   fetchUser();
+  //   // }
+  // }, [fetchUser]);
 
   return (
     <>
@@ -36,7 +47,7 @@ const Header: FC<HeaderProps> = () => {
 
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
-          {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.username}</Typography>}
+          {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.email}</Typography>}
         </Box>
         <Box
           sx={{
@@ -150,7 +161,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-                onClick={() => logout()}
+                // onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>

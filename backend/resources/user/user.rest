@@ -2,13 +2,17 @@ GET http://localhost:5001/api/user
 
 ###
 
+
+GET http://localhost:5001/api/user/628c908008610e7fba64c0dc
+
 POST http://localhost:5001/api/user
 Content-Type: application/json
 
 {
 
-  "email" : "hej",
-  "password": "gröten"
+  "email" : "hej@hej@hej",
+  "password": "gröten",
+  "isAdmin": "false"
 }
 
 ###
@@ -30,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5001/api/user/628c940d709da0ca1961f0fe
+DELETE http://localhost:5001/api/user/628c8dd2b3eac60aef73974e
 
 ###
 
@@ -39,6 +43,12 @@ POST http://localhost:5001/api/user/login
 Content-Type: application/json
 
 {   
-  "email": "hej",
+  "email" : "hej@hej.hej",
   "password": "gröten"
 }
+
+###
+
+DELETE http://localhost:5001/api/user/logout/628c908008610e7fba64c0dc
+
+###
