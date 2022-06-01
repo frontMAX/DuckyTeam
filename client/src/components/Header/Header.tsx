@@ -7,7 +7,7 @@ import { useUser } from "../../contexts/UserContext";
 import AdminBar from "./AdminBar";
 import CartButton from "./CartButton";
 
-interface HeaderProps { }
+interface HeaderProps {}
 
 const TabValues: string[] = ["/", "/products", "/about"];
 
@@ -36,7 +36,11 @@ const Header: FC<HeaderProps> = () => {
 
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
-          {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.username}</Typography>}
+          {!!user && (
+            <Typography sx={{ color: "#c900c1" }}>
+              Du är nu inloggad som: {user?.email}
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
@@ -72,9 +76,7 @@ const Header: FC<HeaderProps> = () => {
               },
             }}
           >
-            <Link to={"/order"} >
-              Order sidan
-            </Link>
+            <Link to={"/order"}>Order sidan</Link>
 
             {!user ? (
               <Link to="/login">

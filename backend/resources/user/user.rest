@@ -42,3 +42,9 @@ Content-Type: application/json
   "email": "hej",
   "password": "gröten"
 }
+
+###
+
+DELETE http://localhost:5001/api/user/logout/629728e16d148c0cd2696314
+
+###

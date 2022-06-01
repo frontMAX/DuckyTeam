@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { FakeUserFetch } from "../Api/Api";
+import { userFetch } from "../Api/Api";
 import { User } from "../Api/Data";
 import { LoginDetails } from "../components/Forms/LoginForm";
 
@@ -12,7 +12,7 @@ interface UserContextValue {
 
 export const UserContext = React.createContext<UserContextValue>({
   isLoading: false,
-  user: { username: "", password: "", isAdmin: false },
+  user: { email: "", password: "", isAdmin: false },
   login: (_loginDetails: LoginDetails): Promise<boolean> => {
     return new Promise(() => {});
   },
@@ -26,7 +26,7 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const login = async (loginDetails: LoginDetails) => {
     setIsLoading(true);
 
-    return FakeUserFetch(loginDetails)
+    return userFetch(loginDetails)
       .then((user) => {
         setUser(user);
         setIsLoading(false);

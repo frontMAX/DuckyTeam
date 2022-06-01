@@ -127,23 +127,23 @@ import { SvgIcon } from "@mui/material";
 // // ];
 
 export interface User {
-  username: string;
+  email: string;
   password: string;
   isAdmin: boolean;
 }
 
-export const mockedUsers: User[] = [
-  {
-    username: "Regular-User",
-    password: "User",
-    isAdmin: false,
-  },
-  {
-    username: "Admin-User",
-    password: "Admin",
-    isAdmin: true,
-  },
-];
+// export const mockedUsers: User[] = [
+//   {
+//     username: "Regular-User",
+//     password: "User",
+//     isAdmin: false,
+//   },
+//   {
+//     username: "Admin-User",
+//     password: "Admin",
+//     isAdmin: true,
+//   },
+// ];
 
 // // export interface Delivery {
 // //   name: string;
