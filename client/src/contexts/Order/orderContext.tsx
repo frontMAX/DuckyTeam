@@ -8,6 +8,7 @@ interface OrderContextValue {
   // getOrders: () => void;
   fetchOrders: () => void;
   fetchOrder: (id: string) => void;
+  createOrder: (newOrderData: Order) => void;
 }
 
 // den är ju shared, men vet iinte hur jag får in..
@@ -19,7 +20,8 @@ export const OrderContext = React.createContext<OrderContextValue>({
   orders: [],
   // getOrders: () => { },
   fetchOrders: () => { },
-  fetchOrder: (id: string) => { }
+  fetchOrder: (id: string) => { },
+  createOrder: (newOrderData: Order) => { }
 });
 
 export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
@@ -28,6 +30,12 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
   const fetchOrders = useCallback(() => {
     axios.get<Order[]>("/api/order").then((res) => {
       setOrders(res.data);
+    });
+  }, []);
+
+  const createOrder = useCallback((newOrderData: Order) => {
+    axios.post<Order>("/api/order", newOrderData).then((res) => {
+      setOrders([...orders, res.data]);
     });
   }, []);
 
@@ -41,7 +49,7 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   return (
     <OrderContext.Provider
-      value={{ orders, fetchOrders, fetchOrder }}
+      value={{ orders, fetchOrders, fetchOrder, createOrder }}
     >
       {children}
     </OrderContext.Provider>

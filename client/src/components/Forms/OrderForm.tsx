@@ -22,7 +22,7 @@ import React, { useEffect } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { CartType, Types } from "../../contexts/Reducers";
 import { useDelivery } from "../../contexts/DeliveryContetxt";
-
+import { useOrder } from "../../contexts/Order/orderContext";
 export interface OrderData {
   shippingAdress: ShippingAdress;
   paymentMethod: string | number | readonly string[] | undefined;
@@ -90,6 +90,7 @@ function OrderForm(props: Props) {
   const [isLoading, setLoading] = React.useState<boolean>(false);
 
   const { deliveries, fetchDeliveries } = useDelivery();
+  const { orders, createOrder } = useOrder();
 
   useEffect(() => {
     fetchDeliveries();
@@ -108,7 +109,7 @@ function OrderForm(props: Props) {
     setOrderDetails(orderData);
 
     // fetch api and navigate to confirmed-order page if successful
-    confirmOrder();
+    confirmOrder(orderData);
   }
 
   //populate a full Local storage key with all order details
@@ -135,16 +136,16 @@ function OrderForm(props: Props) {
   });
 
   // fetches api to check if order went through, navigates to confirmed-order if successful
-  async function confirmOrder() {
-    // const success = await placeOrderFetch();
-    // if (success) {
-    //   dispatch({
-    //     type: Types.ResetCart,
-    //     payload: {},
-    //   });
-    //   setLoading(false);
-    //   navigate("/confirmed-order");
-    // }
+  async function confirmOrder(orderData: orderData) {
+    const success = createOrder(orderData);
+    if (success) {
+      dispatch({
+        type: Types.ResetCart,
+        payload: {},
+      });
+      setLoading(false);
+      navigate("/confirmed-order");
+    }
   }
 
   return (
@@ -249,3 +250,7 @@ function OrderForm(props: Props) {
 }
 
 export default OrderForm;
+function newOrderData(newOrderData: any) {
+  throw new Error("Function not implemented.");
+}
+
