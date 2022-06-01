@@ -20,7 +20,6 @@ export function OrderCard() {
         (item: Order) => item.id.toString() === id
     )
 
-    // funktionen som hämtar en order i context
     useEffect(() => {
         if (id) {
             fetchOrder(id)
