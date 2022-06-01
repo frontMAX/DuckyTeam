@@ -1,6 +1,6 @@
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Button } from "@mui/material";
-import { Types } from "../contexts/Reducers";
+import { Types } from "../contexts/CartReducer";
 
 function BuyButton({ dispatch, product }: any) {
   return (

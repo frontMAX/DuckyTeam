@@ -18,10 +18,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": { "@shared/*": ["../backend/shared/*"] }
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
-, "src/contexts/Order/orderContext.tsx"  ]
+  ]
 }

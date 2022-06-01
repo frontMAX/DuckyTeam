@@ -4,9 +4,6 @@ import mongoose from "mongoose";
 // import { userInfo } from "os";
 
 export interface User {
-  id: string;
-  firstname: string;
-  lastname: string;
   email: string;
   /** Virtual */ fullname: string;
   password: string;

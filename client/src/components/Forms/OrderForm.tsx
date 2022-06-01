@@ -20,8 +20,9 @@ import { Link, useNavigate } from "react-router-dom";
 import useLocalStorage from "../../Hooks/useLocalStorage";
 import React, { useEffect } from "react";
 import { useCart } from "../../contexts/CartContext";
-import { CartType, Types } from "../../contexts/Reducers";
+import { CartType, Types } from "../../contexts/CartReducer";
 import { useDelivery } from "../../contexts/DeliveryContetxt";
+
 
 export interface OrderData {
   shippingAdress: ShippingAdress;

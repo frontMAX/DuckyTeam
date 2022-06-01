@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
 import useLocalStorage from '../Hooks/useLocalStorage'
-import { cartReducer, CartActions, CartType, initialState } from './Reducers'
+import { CartActions, cartReducer, CartType, initialState } from './CartReducer'
 
 type Context = {
   cart: CartType[]

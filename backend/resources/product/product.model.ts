@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 /** Remember this is used clientside as well, update both of needed. */
 export interface Product {
-  id: string;
+  id: Number;
   name: string;
   price: number;
   quantity: number;
@@ -15,6 +15,7 @@ export interface Product {
 
 export const productSchema = new Schema<Product>(
   {
+    id: { type: Number },
     name: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },

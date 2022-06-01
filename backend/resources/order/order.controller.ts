@@ -3,28 +3,9 @@ import { OrderModel, Order } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
-    // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
-
-    // component som kan återanvändas, admin 
-
     const orders = await OrderModel.find({});
     res.status(200).json(orders);
 };
-
-
-// Get a single order by id
-export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
-    const { id } = req.params
-
-    const order = await OrderModel.findById(id)
-    if (!order) {
-        res.status(400)
-        throw new Error('order not found')
-    }
-    res.status(200).json(order)
-};
-
-
 
 export const addOrder = async (
     req: Request<{}, {}, Order>,
