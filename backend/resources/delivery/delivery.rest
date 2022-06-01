@@ -1,15 +1,20 @@
 GET http://localhost:5001/api/delivery
 
-###
+### 6297319850c803c159aa7969 (instabox)
+### 629733dcb66ee974442ec4e5 (schenker)
+### 6297321550c803c159aa796c (postnord)
+
+
 
 POST http://localhost:5001/api/delivery
 Content-Type: application/json
 
 {
-    "name": "PostNord",
-    "price": 39,
-    "time": 48
-
+    "name": "Instabox",
+    "altText": "Leverans till box, 1-2 arbetsdagar",
+    "price": 29,
+    "shippingTime": 2,
+    "logoId": "6297319850c803c159aa7969"
 }
 
 ###
@@ -20,7 +25,7 @@ Content-Type: application/json
 {  
     "name": "Bring",
     "price": 0,
-    "time": 72
+    "shippingTime": 72
 }
 
 ###

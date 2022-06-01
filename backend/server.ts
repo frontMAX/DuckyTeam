@@ -18,7 +18,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
 
 app.use(
   cookieSession({
@@ -54,6 +53,7 @@ mongoose.connect(
     }
   }
 );
+
 
 // import express from "express";
 
@@ -105,3 +105,4 @@ mongoose.connect(
 // app.listen(port, () => {
 //   console.log(`server running on port ${port}`);
 // });
+

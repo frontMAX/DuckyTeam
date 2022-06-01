@@ -12,7 +12,6 @@ function wait(time: number) {
     }, time);
   });
 }
-
 // import axios from "axios";
 // import { LoginDetails } from "../components/Forms/LoginForm";
 // // import { DeliveryInterface } from "../InterFaces";

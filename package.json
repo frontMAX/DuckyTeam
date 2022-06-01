@@ -3,6 +3,7 @@
     "@types/node": "^17.0.34",
     "eslint": "^8.16.0"
   },
+  "proxy": "http://localhost:5001/",
   "scripts": {
     "start-server": "cd ./backend && npm start"
   },

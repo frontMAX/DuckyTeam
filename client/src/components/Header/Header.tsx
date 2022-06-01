@@ -76,7 +76,6 @@ const Header: FC<HeaderProps> = () => {
               },
             }}
           >
-            <Link to={"/order"}>Order sidan</Link>
 
             {!user ? (
               <Link to="/login">

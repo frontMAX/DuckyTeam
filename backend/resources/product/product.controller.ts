@@ -46,7 +46,7 @@ export const registerProduct = async (
         const product = new ProductModel(req.body);
         await product.save();
         console.log(product.name);
-        res.status(200).json(product);
+        res.status(201).json(product);
     } catch (err) {
         next(err);
     }
@@ -71,7 +71,8 @@ export const updateProduct = async (
         throw new Error('Product not found')
     }
 
-    const updatedProduct = await ProductModel.findByIdAndUpdate(req.params.id, req.body, {
+    console.log(req.body)
+    const updatedProduct = await ProductModel.findByIdAndUpdate(req.params.id, req.body.newProductData, {
         new: true
     })
 

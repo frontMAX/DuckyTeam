@@ -26,6 +26,11 @@ export const registerDelivery = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.body) {
+    res.status(400);
+    console.log("Fill in required fields.");
+    throw new Error("Fill in required fields.");
+  }
   try {
     const delivery = new DeliveryModel(req.body);
     await delivery.save();
