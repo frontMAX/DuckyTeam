@@ -16,6 +16,7 @@ import AdminProductsPage from "./Admin/AdminProductsPage";
 import EditProductPage from "./Admin/EditProductPage";
 import AdminPage from "./Admin/AdminPage";
 import { OrderCard } from "./Cards/OrderCard";
+import OrderPage from "../pages/OrderPage";
 function App() {
   return (
     <Routes>
@@ -27,7 +28,7 @@ function App() {
         </Route>
         <Route path="cartPage" element={<CartPage />} />
         <Route path="checkoutPage" element={<CheckOutPage />} />
-        <Route path="confirmed-order" element={<ConfirmedOrderPage />} />
+        <Route path="confirmed-order/:id" element={<ConfirmedOrderPage />} />
         <Route path="faq" element={<FaqPage />} />
         <Route path="termsOfUse" element={<TermsOfUsePage />} />
         <Route path="support" element={<SupportPage />} />
@@ -38,7 +39,7 @@ function App() {
       <Route path="admin">
         <Route index element={<AdminPage />} />
         <Route path="orders" element={<AdminOrdersPage />} />
-        <Route path="orders/:id" element={<OrderCard />} />
+        <Route path="orders/:id" element={<OrderPage />} />
         <Route path="products" element={<AdminProductsPage />} />
         <Route path="products/:id" element={<EditProductPage />} />
         <Route path="products/new" element={<AddNewProductCard />} />

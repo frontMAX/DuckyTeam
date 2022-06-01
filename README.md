@@ -8,6 +8,7 @@
 * *Max Andersson* (https://github.com/frontMAX)
 * *Jannie Bäckman Kuurne* (https://github.com/Jannie87)
 * *Esther Reichmann* (https://github.com/ezzequ)
+* *Github repo* (https://github.com/frontMAX/DuckyTeam)
 
 ## Kom igång:
 1. Öppna terminalen, skriv `cd backend` och därefter `npm i` & `npm start`.

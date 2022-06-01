@@ -29,7 +29,7 @@ export type CartType = {
   description: string
   price: number
   qty: number
-  imgURL: string
+  imageUrl: string
 }
 
 type CartPayload = {
@@ -39,7 +39,7 @@ type CartPayload = {
     description: string
     price: number
     qty: number
-    imgURL: string
+    imageUrl: string
   }
 
   [Types.DeleteFromCart]: {

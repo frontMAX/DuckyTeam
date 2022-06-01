@@ -20,11 +20,21 @@ function CheckOutPage() {
   // get cart and total price from cart
   const [cart] = useLocalStorage<CartType[]>("cart", "");
   const [total] = useLocalStorage<number>("cartSum", 0);
-  const [shippingMethod, setShippingMethod] = useState<number | undefined>(
-    undefined
-  );
+  const [selectedDeliveryId, setSelectedDeliveryId] = useState<
+    string | undefined
+  >(undefined);
 
   const { deliveries, fetchDeliveries } = useDelivery();
+
+  const getShippingPrice = (selectedDeliveryId?: string) => {
+    const selectedDelivery = deliveries.find((delivery) => {
+      return delivery._id === selectedDeliveryId;
+    });
+    if (selectedDelivery) {
+      return selectedDelivery?.price;
+    }
+    return 0;
+  };
 
   useEffect(() => {
     fetchDeliveries();
@@ -48,7 +58,7 @@ function CheckOutPage() {
               <ListItem key={c._id}>
                 <ListItemAvatar>
                   <img
-                    src={c.imgURL}
+                    src={c.imageUrl}
                     alt={c.title}
                     style={{
                       width: "70px",
@@ -102,13 +112,8 @@ function CheckOutPage() {
           Totalpris (inkl moms & frakt)
         </Typography>
         <Typography variant="body2">
-          {`${
-            total +
-            (typeof shippingMethod === "number"
-              ? deliveries[shippingMethod].price
-              : 0)
-          }`}{" "}
-          kr
+
+          {`${total + getShippingPrice(selectedDeliveryId)}`} kr
         </Typography>
         <Button
           variant="outlined"
@@ -136,7 +141,10 @@ function CheckOutPage() {
 
       {/* the full form with adress, payment and shipping */}
       <Divider sx={{ mt: 2, mb: 2 }} />
-      <OrderForm setShippingMethod={setShippingMethod} />
+      <OrderForm
+        setSelectedDeliveryId={setSelectedDeliveryId}
+        selectedDeliveryId={selectedDeliveryId}
+      />
     </Container>
   );
 

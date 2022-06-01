@@ -31,7 +31,7 @@ function CartList({ handleClose }: any) {
             <ListItem key={product._id} sx={{bgcolor:"#fffff"}}>
               <ListItemAvatar>
                 <img
-                  src={product.imgURL}
+                  src={`http://localhost:5001${product.imageUrl}`}
                   alt={product.title}
                   style={{
                     width: "70px",
