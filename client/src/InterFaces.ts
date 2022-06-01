@@ -14,5 +14,4 @@ export interface DeliveryInterface {
   shippingTime: number;
   price: number;
   logo: string;
-  id: string;
 }
