@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import addDays from "date-fns/addDays";
 import format from "date-fns/format";
+import { id } from "date-fns/locale";
 import sv from "date-fns/locale/sv";
 import { FormikProps } from "formik";
 import React, { useEffect } from "react";
@@ -22,18 +23,11 @@ interface Props {
 }
 
 function ShipmentBox(props: Props) {
-  let { id } = useParams();
-  const { deliveries, fetchDelivery } = useDelivery();
-
-  const delivery = deliveries.find(
-    (item: Delivery) => item._id.toString() === id
-  );
+  const { deliveries, fetchDeliveries } = useDelivery();
 
   useEffect(() => {
-    if (id) {
-      fetchDelivery(id);
-    }
-  }, [fetchDelivery]);
+    fetchDeliveries();
+  }, [fetchDeliveries]);
 
   // the state to  handle clicks
   const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(
@@ -70,7 +64,7 @@ function ShipmentBox(props: Props) {
                 {/* logo for delivery-option */}
                 <ListItemAvatar>
                   <Avatar
-                    src={`http://localhost:5001${delivery.logo}`}
+                    src={`http://localhost:5001${delivery.logoUrl}`}
                     alt={`${delivery.name} logo`}
                   />
                 </ListItemAvatar>
@@ -95,7 +89,7 @@ function ShipmentBox(props: Props) {
                       >{`Leveranskostnad: ${delivery.price} kr`}</Typography>
 
                       {/* delivery time */}
-                      <Typography
+                      {/* <Typography
                         sx={{ display: "block" }}
                         component="span"
                         variant="body2"
@@ -105,7 +99,7 @@ function ShipmentBox(props: Props) {
                         addDays(new Date(), delivery.shippingTime),
                         "d MMMM",
                         { locale: sv }
-                      )}`}</Typography>
+                      )}`}</Typography> */}
                     </>
                   }
                 />

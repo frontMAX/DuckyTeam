@@ -1,23 +1,32 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 export interface Delivery {
+  id: number;
   name: string;
+  altText: string;
+  shippingTime: number;
   price: number;
-  time: number;
+  logoId: Types.ObjectId;
+  logoUrl: string;
 }
 
 const deliverySchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    time: { type: Number, required: true },
+    shippingTime: { type: Number, required: true },
+    altText: { type: String, required: true },
+    logoId: { type: Schema.Types.ObjectId, required: false },
   },
   {
-    timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
+
+deliverySchema.virtual("logoUrl").get(function () {
+  return "api/media/" + this.logoId;
+});
 
 export const DeliveryModel = mongoose.model<Delivery>(
   "delivery",
