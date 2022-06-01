@@ -11,10 +11,9 @@ import {
 } from "@mui/material";
 import OrderForm from "../components/Forms/OrderForm";
 import useLocalStorage from "../Hooks/useLocalStorage";
-
-import { useNavigate } from "react-router-dom";
-import { CartType } from "../contexts/CartReducer";
+import { CartType } from "../contexts/Reducers";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDelivery } from "../contexts/DeliveryContetxt";
 
 function CheckOutPage() {

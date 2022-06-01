@@ -7,12 +7,12 @@ import {
   ListItemAvatar,
   ListItemText,
   Typography,
-} from '@mui/material';
-import { AllOrderData } from '../components/Forms/OrderForm';
-import { CartType } from '../contexts/CartReducer';
+} from "@mui/material";
 import { useEffect } from "react";
 import { paymentOptions } from "../Api/Data";
+import { AllOrderData } from "../components/Forms/OrderForm";
 import { useDelivery } from "../contexts/DeliveryContetxt";
+import { CartType } from "../contexts/Reducers";
 import useLocalStorage from "../Hooks/useLocalStorage";
 
 // randomizes a 6 digit order number

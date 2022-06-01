@@ -6,6 +6,8 @@ import { Delivery } from "../delivery/delivery.model";
 import { Address } from "cluster";
 
 export interface Order {
+  id: any;
+
   orderNumber: string;
   products: Product[];
   shipping: Address;
@@ -13,10 +15,6 @@ export interface Order {
   updatedAt: Date;
   user: User;
   delivery: Delivery;
-
-
-
-
 }
 
 const AddressSchema = new mongoose.Schema(
@@ -34,7 +32,6 @@ const AddressSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-
 const OrderSchema = new mongoose.Schema<Order>(
   {
     orderNumber: { type: String, required: true },
@@ -43,13 +40,12 @@ const OrderSchema = new mongoose.Schema<Order>(
     user: { type: Schema.Types.ObjectId, ref: "user", required: false },
     delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
     // delivery: { type: Delivery}
-  },
-  {
+  }, {
 
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+}
 );
 
 export const OrderModel = mongoose.model("order", OrderSchema);
