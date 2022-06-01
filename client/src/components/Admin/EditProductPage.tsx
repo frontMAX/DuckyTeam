@@ -1,67 +1,62 @@
 import {
-  Accordion,
   Typography,
   Button,
-  AccordionDetails,
-  AccordionSummary,
   Box,
-  ButtonGroup,
   Modal,
-  CardMedia,
   TextField,
   MenuItem,
   OutlinedInput,
   Select,
 } from "@mui/material";
-
-import { useEffect, useState } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import EditIcon from "@mui/icons-material/Edit";
-import Save from "@mui/icons-material/Save";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useEffect, useState } from "react";
+import Save from "@mui/icons-material/Save";
+
 import {
   Product,
   Categories,
   useProduct,
+  BaseProduct,
 } from "../../contexts/product/ProductContext";
 
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface EditProductCardProps {
   expanded?: boolean;
-  product: Product;
 }
 
-// export interface ProductData {
-//   _id: string;
-//   name: string;
-//   price: number;
-//   quantity: number;
-//   details: string;
-//   category: string[];
-//   imageUrl: string;
-// }
-
-export type ProductSchemaType = Record<keyof Product, Yup.AnySchema>;
+// export type ProductSchemaType = Record<keyof BaseProduct, Yup.AnySchema>;
 
 // const ProductFormSchema = Yup.object().shape<ProductSchemaType>({
 //   name: Yup.string().required("Du måste skriva ett namn"),
 //   price: Yup.number().required("Du måste skriva ett pris"),
 //   quantity: Yup.number().required("Du måste skriva ett antal"),
+//   orderedQuantity: Yup.number().notRequired(),
 //   details: Yup.string().required("Du måste skriva en beskrivande text"),
-//   category: Yup.string[].required("Du måste välja en eller flera kategorier"),
 //   imageUrl: Yup.string().required("Du måste välja en bild"),
-//   _id:
+//   category: Yup.array(Yup.string()).required(
+//     "Du måste välja en eller flera kategorier"
+//   ),
 // });
 
-function EditProductCard({ expanded, product }: EditProductCardProps) {
+function EditProductPage({ expanded }: EditProductCardProps) {
   const [open, setOpen] = useState(expanded ?? false);
   const [openModal, setOpenModal] = useState(false);
-
+  const { id } = useParams();
   const { products, fetchProduct, updateProduct, deleteProduct } = useProduct();
+
+  const product = products.find((item: Product) => item._id?.toString() === id);
+
+  useEffect(() => {
+    if (id) {
+      fetchProduct(id);
+    }
+  }, [fetchProduct]);
+
+  const navigate = useNavigate();
 
   const handleOpen = (
     event: React.SyntheticEvent<Element, Event>,
@@ -70,7 +65,7 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
 
   const formik = useFormik({
     initialValues: {
-      _id: product._id,
+      _id: product?._id || "",
       name: product?.name || "",
       price: product?.price || 0,
       details: product?.details || "",
@@ -84,6 +79,7 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
         ...values,
       };
       updateProduct(newProductData);
+      navigate("/admin");
     },
   });
 
@@ -109,8 +105,8 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      {!product._id ? (
-        <div>blä</div>
+      {!product?._id ? (
+        <div>This product doesn't exist.</div>
       ) : (
         <>
           <img
@@ -183,8 +179,14 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
             error={formik.touched.quantity && Boolean(formik.errors.quantity)}
             helperText={formik.touched.quantity && formik.errors.quantity}
           />
-          <Button color="primary" variant="contained" fullWidth type="submit">
-            Submit
+          <Button
+            endIcon={<Save />}
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit"
+          >
+            Save product
           </Button>
           <Button
             startIcon={<DeleteForeverIcon />}
@@ -198,22 +200,32 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
             aria-labelledby="modal-modal-name"
             aria-describedby="modal-modal-description"
           >
-            <Box>
+            <Box
+              sx={{
+                background: "white",
+                height: "10rem",
+                width: "25rem",
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <Typography>
                 Är du säker på att du vill ta bort produkten?
               </Typography>
-              {typeof product._id !=="undefined" &&
-              <Button
-                onClick={(e) => {
-                  deleteProduct(product._id);
-                  setOpenModal(false);
-                  setOpen(false);
-                  e.stopPropagation();
-                }}
-              >
-                Ja
-              </Button>
-              }
+              {typeof product._id !== "undefined" && (
+                <Button
+                  onClick={(e) => {
+                    deleteProduct(product._id);
+                    setOpenModal(false);
+                    setOpen(false);
+                    e.stopPropagation();
+                  }}
+                >
+                  Ja
+                </Button>
+              )}
               <Button onClick={() => setOpenModal(false)}>Nej</Button>
             </Box>
           </Modal>
@@ -223,4 +235,4 @@ function EditProductCard({ expanded, product }: EditProductCardProps) {
   );
 }
 
-export default EditProductCard;
+export default EditProductPage;

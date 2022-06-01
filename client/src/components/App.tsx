@@ -14,6 +14,11 @@ import AdminOrdersPage from "./Admin/AdminOrdersPage";
 import AdminProductsPage from "./Admin/AdminProductsPage";
 import AdminPage from "./Admin/AdminPage";
 import AddNewProductCard from "./Admin/AddNewProductCard";
+import SupportPage from "../pages/SupportPage";
+import ConfirmedOrderPage from "../pages/ConfirmedPage";
+import OrderPage from "../pages/orderPage";
+import OrderListPage from "../pages/OrderListPage";
+import EditProductPage from "./Admin/EditProductPage";
 
 function App() {
   return (
@@ -31,11 +36,17 @@ function App() {
         <Route path="termsOfUse" element={<TermsOfUsePage />} />
         <Route path="support" element={<SupportPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="order" >
+          <Route path="all" element={<OrderListPage />} /> - alla ordrar sen
+          typ
+          <Route path=":id" element={<OrderPage />} />
+        </Route>
       </Route>
       <Route path="admin">
       <Route index element={<AdminPage />} />
       <Route path="orders" element={<AdminOrdersPage />} />
       <Route path="products" element={<AdminProductsPage />} />
+      <Route path="products/:id" element={<EditProductPage />} />
       <Route path="products/new" element={<AddNewProductCard />} />
       </Route>
       
