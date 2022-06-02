@@ -89,7 +89,7 @@ function ShipmentBox(props: Props) {
                       >{`Leveranskostnad: ${delivery.price} kr`}</Typography>
 
                       {/* delivery time */}
-                      {/* <Typography
+                      <Typography
                         sx={{ display: "block" }}
                         component="span"
                         variant="body2"
@@ -99,7 +99,7 @@ function ShipmentBox(props: Props) {
                         addDays(new Date(), delivery.shippingTime),
                         "d MMMM",
                         { locale: sv }
-                      )}`}</Typography> */}
+                      )}`}</Typography>
                     </>
                   }
                 />
