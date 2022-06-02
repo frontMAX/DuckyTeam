@@ -4,7 +4,6 @@ import Layout from "./Layout";
 import StartPage from "../pages/StartPage";
 import CheckOutPage from "../pages/CheckOutPage";
 import ProductPage from "../pages/ProductPage";
-import CartPage from "../pages/CartPage";
 import LoginPage from "../pages/LoginPage";
 import FaqPage from "../pages/FaqPage";
 import TermsOfUsePage from "../pages/TermsOfUsePage";
@@ -15,8 +14,9 @@ import AdminOrdersPage from "./Admin/AdminOrdersPage";
 import AdminProductsPage from "./Admin/AdminProductsPage";
 import EditProductPage from "./Admin/EditProductPage";
 import AdminPage from "./Admin/AdminPage";
-import { OrderCard } from "./Cards/OrderCard";
+import AdminUsersPage from "./Admin/AdminUsersPage";
 import OrderPage from "../pages/OrderPage";
+import CartPage from "../pages/CartPage";
 function App() {
   return (
     <Routes>
@@ -40,6 +40,7 @@ function App() {
         <Route index element={<AdminPage />} />
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="orders/:id" element={<OrderPage />} />
+        <Route path="users" element={<AdminUsersPage />} />
         <Route path="products" element={<AdminProductsPage />} />
         <Route path="products/:id" element={<EditProductPage />} />
         <Route path="products/new" element={<AddNewProductCard />} />

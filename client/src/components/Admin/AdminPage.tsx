@@ -35,6 +35,14 @@ function AdminPage() {
                 </ListItemButton>
               </ListItem>
             </Link>
+            <Divider sx={{marginTop:"1rem", marginBottom:"1rem"}}/>
+            <Link to="users">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemText sx={{ textAlign:"center", color:"black"}} primary="VIEW / MANAGE USERS" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </nav>
       </Box>
