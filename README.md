@@ -26,7 +26,7 @@
 - [x] Inga Lösenord får sparas i klartext i databasen
 - [] Besökaren ska kunna beställa produkter, detta ska uppdatera lagersaldot i databasen 
 - [x] Administratörer ska kunna uppdatera antalet produkter i lager från admin delen av sidan
-- [] Administratörer ska kunna se en lista på alla gjorda beställningar
+- [x] Administratörer ska kunna se en lista på alla gjorda beställningar
 - [x] Sidans produkter ska delas upp i kategorier, en produkt ska tillhöra minst en kategori
 - [x] Från hemsidan ska man kunna se en lista över alla produkter, och man ska kunna lista bara  -     dom produkter som tillhör en kategori   
 - [x] Besökare ska kunna lägga produkterna i en kundkorg, som är sparad i local-storage på     -     klienten
