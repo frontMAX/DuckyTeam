@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { DeliveryModel } from "../delivery/delivery.model";
+import { getProducts, updateProduct } from "../product/product.controller";
 import { OrderModel, Order } from "./order.model"
 
 
@@ -85,6 +86,12 @@ export const addOrder = async (
         const order = new OrderModel(newOrderData);
         await order.save();
 
+        // getProducts(){
+        //     const product
+        //     for (product in order)
+        //         const newQuantity = product.quantity - orderedProduct.qty(from orderProductySchema, has qty = orderedqty -1)
+        //     updateProduct()
+        // }
         // TODO: loop over each product 
         // getProduct
         // update product with quantity - orderedquantity

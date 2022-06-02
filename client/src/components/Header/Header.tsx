@@ -4,7 +4,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import { User, useUser } from "../../contexts/UserContext";
-import AdminBar from "./AdminBar";
 import CartButton from "./CartButton";
 
 interface HeaderProps { }
@@ -30,7 +29,7 @@ const Header: FC<HeaderProps> = () => {
 
   const { users, fetchUser } = useUser();
 
-// does not work.... fix to be able to work for now
+  // does not work.... fix to be able to work for now
   const user = users.find(
     (item: User) => item._id.toString()
   )
@@ -43,8 +42,6 @@ const Header: FC<HeaderProps> = () => {
 
   return (
     <>
-      {!!user?.isAdmin && <AdminBar />}
-
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
           {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.email}</Typography>}
@@ -57,6 +54,7 @@ const Header: FC<HeaderProps> = () => {
             width: "100%",
           }}
         >
+
           <Tabs
             sx={{
               "@media screen and (max-width: 440px)": {
@@ -72,6 +70,12 @@ const Header: FC<HeaderProps> = () => {
           >
             <Tab value="/" label="Hem" />
             <Tab value="/products" label="Produkter" />
+            // if logged in user is admin
+            {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
+            <Tab value="/admin" label="Admin" />
+
+            // if logged in user aint admin
+            {!user?.isAdmin && <Tab value="/user" label="User" />}
           </Tabs>
           <Box
             sx={{
@@ -161,7 +165,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-                // onClick={() => logoutUser()}
+              // onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>
