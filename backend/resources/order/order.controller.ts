@@ -86,6 +86,7 @@ export const addOrder = async (
         const order = new OrderModel(newOrderData);
         await order.save();
 
+
         // getProducts(){
         //     const product
         //     for (product in order)
