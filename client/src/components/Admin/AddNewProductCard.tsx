@@ -4,7 +4,11 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  InputLabel,
+  Container,
 } from "@mui/material";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import Save from "@mui/icons-material/Save";
 import {
@@ -13,7 +17,7 @@ import {
   useProduct,
 } from "../../contexts/product/ProductContext";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFormik } from "formik";
 
@@ -60,85 +64,92 @@ function AddNewProductCard() {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <TextField
-        fullWidth
-        id="imageUrl"
-        type="file"
-        name="imageUrl"
-        label="imageUrl"
-        value={formik.values.imageUrl}
-        onChange={handleUpload}
-      />
-      <TextField
-        fullWidth
-        id="name"
-        name="name"
-        label="Name"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-        error={formik.touched.name && Boolean(formik.errors.name)}
-        helperText={formik.touched.name && formik.errors.name}
-      />
-      <TextField
-        fullWidth
-        id="price"
-        name="price"
-        label="price"
-        type="number"
-        value={formik.values.price}
-        onChange={formik.handleChange}
-        error={formik.touched.price && Boolean(formik.errors.price)}
-        helperText={formik.touched.price && formik.errors.price}
-      />
-      <TextField
-        fullWidth
-        id="details"
-        name="details"
-        label="details"
-        value={formik.values.details}
-        onChange={formik.handleChange}
-        error={formik.touched.details && Boolean(formik.errors.details)}
-        helperText={formik.touched.details && formik.errors.details}
-      />
+    <Container>
+      <Link to="/admin/products">
+        <Button startIcon={<ArrowBackIcon />}>Tillbaka till produktsidan</Button>
+      </Link>
+      <form onSubmit={formik.handleSubmit}>
+        <TextField
+          fullWidth
+          id="imageUrl"
+          type="file"
+          name="imageUrl"
+          label="imageUrl"
+          value={formik.values.imageUrl}
+          onChange={handleUpload}
+        />
+        <TextField
+          fullWidth
+          id="name"
+          name="name"
+          label="Name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+        <TextField
+          fullWidth
+          id="price"
+          name="price"
+          label="price"
+          type="number"
+          value={formik.values.price}
+          onChange={formik.handleChange}
+          error={formik.touched.price && Boolean(formik.errors.price)}
+          helperText={formik.touched.price && formik.errors.price}
+        />
+        <TextField
+          fullWidth
+          id="details"
+          name="details"
+          label="details"
+          value={formik.values.details}
+          onChange={formik.handleChange}
+          error={formik.touched.details && Boolean(formik.errors.details)}
+          helperText={formik.touched.details && formik.errors.details}
+        />
 
-      <Select
-        labelId="category"
-        id="category"
-        name="category"
-        multiple
-        value={formik.values.category}
-        onChange={formik.handleChange}
-        input={<OutlinedInput label="Categories" />}
-      >
-        {Categories.map((category, key) => (
-          <MenuItem key={key} value={category}>
-            {category}
-          </MenuItem>
-        ))}
-      </Select>
+        <InputLabel id="category">Categories</InputLabel>
+        <Select
+          label="Categories"
+          labelId="category"
+          id="category"
+          name="category"
+          multiple
+          value={formik.values.category}
+          onChange={formik.handleChange}
+          input={<OutlinedInput label="Categories" />}
+        >
+          {Categories.map((category, key) => (
+            <MenuItem key={key} value={category}>
+              {category}
+            </MenuItem>
+          ))}
+        </Select>
 
-      <TextField
-        fullWidth
-        id="quantity"
-        name="quantity"
-        label="quantity"
-        type="number"
-        value={formik.values.quantity}
-        onChange={formik.handleChange}
-        error={formik.touched.quantity && Boolean(formik.errors.quantity)}
-        helperText={formik.touched.quantity && formik.errors.quantity}
-      />
-      <Button
-        endIcon={<Save />}
-        color="primary"
-        variant="contained"
-        fullWidth
-        type="submit"
-      >
-        Add product
-      </Button>
-    </form>
+        <TextField
+          fullWidth
+          id="quantity"
+          name="quantity"
+          label="quantity"
+          type="number"
+          value={formik.values.quantity}
+          onChange={formik.handleChange}
+          error={formik.touched.quantity && Boolean(formik.errors.quantity)}
+          helperText={formik.touched.quantity && formik.errors.quantity}
+        />
+        <Button
+          endIcon={<Save />}
+          color="primary"
+          variant="contained"
+          fullWidth
+          type="submit"
+        >
+          Add product
+        </Button>
+      </form>
+    </Container>
   );
 }
 
