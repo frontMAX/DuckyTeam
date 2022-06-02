@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { Order } from "../order/order.model";
 import { ProductModel, Product } from "./product.model";
 
 // update gty
@@ -121,3 +122,10 @@ export const deleteProduct = async (req: Request<{ id: string }>, res: Response)
 
     res.status(200).json('You have the deleted the product: ' + id);
 };
+
+// anropa från min order.
+export const updateStock = async (order: Order) => {
+    for (const product of order.products) {
+        await ProductModel.findByIdAndUpdate(product.id, { $inc: { "quantity": -product.orderedQuantity } })
+    }
+}
