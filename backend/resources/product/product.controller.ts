@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { ProductModel, Product } from "./product.model";
 
+// update gty
+
+// const updateAmount =  { $inc: { <field1>: <amount1>, <field2>: <amount2>, ... } }
+
 // Get all products
 export const getProducts = async (req: Request, res: Response) => {
     const products = await ProductModel.find({});
@@ -63,6 +67,8 @@ export const updateProduct = async (
     //     res.send({ message: 'Unauthorized save attempt.' });
     //     return;
     // }
+
+
 
     const product = await ProductModel.findById(req.params.id);
 

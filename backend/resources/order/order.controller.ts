@@ -87,10 +87,13 @@ export const addOrder = async (
         await order.save();
 
 
+
+
+
         // getProducts(){
-        //     const product
+        //     let product
         //     for (product in order)
-        //         const newQuantity = product.quantity - orderedProduct.qty(from orderProductySchema, has qty = orderedqty -1)
+        //         const newQuantity = product.quantity - orderedProduct.qty(from orderProductySchema, has qty = orderedqty - 1)
         //     updateProduct()
         // }
         // TODO: loop over each product 
@@ -135,4 +138,8 @@ export const deleteOrder = async (req: Request, res: Response) => {
             .catch((err) => res.status(404).json("error: " + err));
     }
 };
+
+function products(products: any) {
+    throw new Error("Function not implemented.");
+}
 
