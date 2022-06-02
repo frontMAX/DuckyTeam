@@ -63,7 +63,7 @@ export const addOrder = async (
     try {
         const delivery = await DeliveryModel.findById(req.body.delivery)
 
-        if(delivery === null){
+        if (delivery === null) {
             return res.status(400).json('bad delivery.')
         }
 
@@ -75,9 +75,9 @@ export const addOrder = async (
             updatedAt: new Date(),
             // user: req.body.user,
             delivery: {
-            name: delivery.name,
-            price: delivery.price,
-            logoUrl: delivery.logoId,
+                name: delivery.name,
+                price: delivery.price,
+                logoUrl: delivery.logoId,
             },
             orderTotal: req.body.orderTotal + delivery.price,
         }
