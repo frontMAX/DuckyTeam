@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { DeliveryModel } from "../delivery/delivery.model";
-import { getProducts, updateProduct, updateStock } from "../product/product.controller";
-import { OrderModel, Order } from "./order.model"
+import { updateStock } from "../product/product.controller";
+import { OrderModel } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
     // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
-
-    // component som kan återanvändas, admin 
 
     const orders = await OrderModel.find({});
     res.status(200).json(orders);
@@ -60,7 +58,6 @@ export const addOrder = async (
     res: Response,
     next: NextFunction
 ) => {
-    // TODO: How do we handle errors in async middlewares?
     try {
         const delivery = await DeliveryModel.findById(req.body.delivery)
 
@@ -87,16 +84,6 @@ export const addOrder = async (
         await order.save();
 
         await updateStock(order)
-
-        // getProducts(){
-        //     let product
-        //     for (product in order)
-        //         const newQuantity = product.quantity - orderedProduct.qty(from orderProductySchema, has qty = orderedqty - 1)
-        //     updateProduct()
-        // }
-        // TODO: loop over each product 
-        // getProduct
-        // update product with quantity - orderedquantity
 
         res.status(200).json(order);
     } catch (err) {
@@ -136,8 +123,3 @@ export const deleteOrder = async (req: Request, res: Response) => {
             .catch((err) => res.status(404).json("error: " + err));
     }
 };
-
-function products(products: any) {
-    throw new Error("Function not implemented.");
-}
-
