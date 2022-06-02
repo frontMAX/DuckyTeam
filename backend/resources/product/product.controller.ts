@@ -126,6 +126,8 @@ export const deleteProduct = async (req: Request<{ id: string }>, res: Response)
 // anropa från min order.
 export const updateStock = async (order: Order) => {
     for (const product of order.products) {
-        await ProductModel.findByIdAndUpdate(product.id, { $inc: { "quantity": -product.orderedQuantity } })
+        await ProductModel.findByIdAndUpdate(
+            product._id, 
+            { $inc: { "quantity": -product.qty} })
     }
 }

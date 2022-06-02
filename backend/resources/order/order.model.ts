@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 import { User } from "../user/user.model";
 import { Product, productSchema } from "../product/product.model";
 import { Address } from "cluster";
@@ -8,7 +8,7 @@ export interface Order {
   id: string;
   orderNumber: string;
   // should be virtual product  !!!! IMPORTANT TO FIX
-  products: Product[];
+  products: OrderProduct[];
   // shipping adress
   shipping: Address;
   createdAt: Date;
@@ -20,12 +20,20 @@ export interface Order {
     name: string;
     price: number;
     logoUrl: string;
-    };
+  };
   // the total for all products and shipping   !!!! IMPORTANT TO FIX
   orderTotal: number;
 }
 
-const orderProductySchema = new mongoose.Schema({
+export interface OrderProduct {
+  _id: ObjectId;
+  name: string;
+  price: number;
+  imageUrl: string;
+  qty: number;
+}
+
+const orderProductSchema = new mongoose.Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   imageUrl: { type: String, required: false },
@@ -34,10 +42,10 @@ const orderProductySchema = new mongoose.Schema({
 
 const orderDeliverySchema = new mongoose.Schema(
   {
-    name: {type: String, required: true},
-    price: {type: Number, required: true},
-    logoUrl: {type: String, required: true},
-    }
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    logoUrl: { type: String, required: true },
+  }
 )
 
 
@@ -61,7 +69,7 @@ const OrderSchema = new mongoose.Schema<Order>(
     orderNumber: { type: String, required: true },
 
     // All products ordered, virtual schema   !!!! IMPORTANT TO FIX
-    products: { type: [orderProductySchema], required: true },
+    products: { type: [orderProductSchema], required: true },
 
     // shipping adress
     shipping: { type: AddressSchema, required: true },

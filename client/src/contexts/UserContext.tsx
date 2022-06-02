@@ -61,8 +61,9 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const loginUser = useCallback(()=>{
-    axios.get<User>("/api/user").then((res) => {
+    axios.get<User>("/api/user", { withCredentials: true }).then((res) => {
       setUsers([...users, res.data]);
+      
     });
   }, []);
 

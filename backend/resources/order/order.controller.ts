@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { DeliveryModel } from "../delivery/delivery.model";
-import { getProducts, updateProduct } from "../product/product.controller";
+import { getProducts, updateProduct, updateStock } from "../product/product.controller";
 import { OrderModel, Order } from "./order.model"
 
 
@@ -86,6 +86,7 @@ export const addOrder = async (
         const order = new OrderModel(newOrderData);
         await order.save();
 
+        await updateStock(order)
 
         // getProducts(){
         //     let product
