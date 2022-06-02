@@ -87,9 +87,6 @@ export const addOrder = async (
         await order.save();
 
 
-
-
-
         // getProducts(){
         //     let product
         //     for (product in order)
