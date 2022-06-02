@@ -1,12 +1,13 @@
 import { Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useUser } from "../../contexts/UserContext";
+import { string } from "yup/lib/locale";
+import { useUser, BaseUser } from "../../contexts/UserContext";
 import InputField from "./InputField";
 
-type LoginDetailsSchemaType = Record<keyof LoginDetails, Yup.AnySchema>;
+type LoginDetailsSchemaType = Record<keyof BaseUser, Yup.AnySchema>;
 
 const LoginFormSchema = Yup.object().shape<LoginDetailsSchemaType>({
   email: Yup.string().required("Vänligen fyll i ditt användarnamn."),
@@ -32,29 +33,25 @@ function LoginForm(_props: Props) {
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   let nav = useNavigate();
 
-  const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
-    useFormik<LoginDetails>({
-      initialValues: emptyForm,
-      validationSchema: LoginFormSchema,
-      onSubmit: (loginDetails, { resetForm }) => {
-        setSubmitError(undefined);
+  const { users, fetchUsers, loginUser } = useUser();
 
-        // on submit, set user to logged in if successful, navigate back to home
-        userContext
-          .login(loginDetails)
-          .then(() => {
-            resetForm();
-            nav("/");
-          })
-          .catch((e) => {
-            setSubmitError(e.message);
-          });
-      },
-    });
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const formik = useFormik({
+    initialValues: emptyForm,
+    validationSchema: LoginFormSchema,
+    onSubmit: (loginDetails, { resetForm }) => {
+      loginUser();
+
+      nav("/");
+    },
+  });
 
   return (
     // Log-in form
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       {/* Display error if invalid input */}
       {!!submitError && (
         <Typography sx={{ color: "red" }}>{submitError}</Typography>
@@ -66,11 +63,11 @@ function LoginForm(_props: Props) {
         id="email"
         name="email"
         type="text"
-        value={values.email}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={touched.email && !!errors.email}
-        helperText={touched.email && errors.email}
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.email && !!formik.errors.email}
+        helperText={formik.touched.email && formik.errors.email}
       />
 
       {/* Password input */}
@@ -79,11 +76,11 @@ function LoginForm(_props: Props) {
         id="password"
         name="password"
         type="password"
-        value={values.password}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={touched.password && !!errors.password}
-        helperText={touched.password && errors.password}
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.password && !!formik.errors.password}
+        helperText={formik.touched.password && formik.errors.password}
       />
 
       <Button

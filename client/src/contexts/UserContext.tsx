@@ -1,50 +1,123 @@
-import React, { useContext, useState } from "react";
+import { UseSwitchResult } from "@mui/base";
+import { Email } from "@mui/icons-material";
+import axios from "axios";
+import React, { useCallback, useContext, useState } from "react";
 import { userFetch } from "../Api/Api";
-import { User } from "../Api/Data";
 import { LoginDetails } from "../components/Forms/LoginForm";
 
 interface UserContextValue {
-  isLoading: boolean;
-  user?: User;
-  login: (loginDetails: LoginDetails) => Promise<boolean>;
-  logout: () => void;
+  users: User[];
+  fetchUsers: () => void;
+  fetchUser: (id: string) => void;
+  createUser: () => void;
+  updateUser: (users: User) => void;
+  deleteUser: (id: string) => void;
+  logoutUser: (id: string) => void;
+  loginUser: () => void;
+}
+
+export interface BaseUser {
+  email: string;
+  password: string;
+}
+
+export interface User extends BaseUser {
+  _id: string;
+  isAdmin: Boolean;
 }
 
 export const UserContext = React.createContext<UserContextValue>({
-  isLoading: false,
-  user: { email: "", password: "", isAdmin: false },
-  login: (_loginDetails: LoginDetails): Promise<boolean> => {
-    return new Promise(() => {});
-  },
-  logout: () => {},
+  users: [],
+  fetchUsers: () => {},
+  fetchUser: (id: string) => {},
+  createUser: () => {},
+  updateUser: (email: User) => {},
+  deleteUser: (id: string) => {},
+  logoutUser: (id: string) => {},
+  loginUser: () => {},
 });
 
 export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
-  const [user, setUser] = React.useState<User | undefined>(undefined);
+  const [users, setUser] = React.useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [admin, setIsAdmin] = useState(false);
 
-  const login = async (loginDetails: LoginDetails) => {
-    setIsLoading(true);
+  const fetchUsers = useCallback(() => {
+    axios.get<User[]>("/api/users").then((res) => {
+      setUser(res.data);
+    });
+  }, []);
 
-    return userFetch(loginDetails)
-      .then((user) => {
-        setUser(user);
-        setIsLoading(false);
-        return true;
+  const fetchUser = useCallback((id: string) => {
+    axios
+      .post<User>(`/api/users/${id}`)
+      .then((res) => {
+        setUser([res.data]);
       })
-      .catch((e) => {
-        setIsLoading(false);
-        throw e;
+      .catch((err) => {
+        if (err) console.log(err);
+        if (null || undefined) {
+          console.log(err + " sign up to make an order");
+        }
       });
-  };
+  }, []);
 
-  const logout = async () => {
-    setUser(undefined);
-    setIsLoading(false);
-  };
+  const createUser = useCallback(() => {
+    axios.post<User>("/api/users").then((res) => {
+      setUser([...users, res.data]);
+    });
+  }, []);
+
+  const loginUser = useCallback(() => {
+    axios.get("/api/users").then((res) => {
+      setUser([...users, res.data]);
+    });
+  }, []);
+
+  const logoutUser = useCallback((id: string) => {
+    axios.delete<User>(`/api/users/logout/${id}`).then((res) => {
+      const userIndex = users.findIndex((users: User) => {
+        return (users._id = id);
+      });
+    });
+  }, []);
+
+  const updateUser = useCallback((newUserData: User) => {
+    axios
+      .put<User>(`/api/users/${newUserData._id}`, {
+        newUserData,
+      })
+      .then((res) => {
+        const userIndex = users.findIndex((users: User) => {
+          return (users._id = newUserData._id);
+        });
+        users[userIndex] = res.data;
+        setUser(users);
+      });
+  }, []);
+
+  const deleteUser = useCallback((id: string) => {
+    axios.delete<User>(`/api/users/${id}`).then((res) => {
+      const userIndex = users.findIndex((users: User) => {
+        return (users._id = id);
+      });
+      setUser([...users.splice(userIndex, 1)]);
+    });
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, isLoading, login, logout }}>
+    <UserContext.Provider
+      value={{
+        users,
+        fetchUser,
+        fetchUsers,
+        loginUser,
+        logoutUser,
+        deleteUser,
+        updateUser,
+        createUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -3,9 +3,10 @@ import { FC, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import { useUser } from "../../contexts/UserContext";
 import AdminBar from "./AdminBar";
 import CartButton from "./CartButton";
+import { User, useUser } from "../../contexts/UserContext";
+import { loginUser, logout } from "../../../../backend/resources/user";
 
 interface HeaderProps {}
 
@@ -28,8 +29,8 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
-  const { user, logout } = useUser();
-
+  const { users, logoutUser } = useUser();
+  const user = users.find((item: User) => item._id.toString());
   return (
     <>
       {!!user?.isAdmin && <AdminBar />}
@@ -155,7 +156,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-                onClick={() => logout()}
+                onClick={() => logoutUser(user._id)}
               >
                 Logga ut
               </Button>
