@@ -8,27 +8,36 @@ import { Link } from "react-router-dom";
 import { Button, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 function UserPage() {
-    return (
-        <Container sx={{ display: "flex", justifyContent: "center" }}>
-            <Box sx={{ textAlign: "center", marginTop: "2rem", padding: "5rem", width: "50vw", bgcolor: "background.paper" }}>
-                <h1>User page</h1>
-                <p>Please choose which page you wish to navigate to:</p>
-                <nav aria-label="main mailbox folders">
-
-                    <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />
-                    <Link to="orders">
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemText sx={{ textAlign: "center", color: "black" }} primary="VIEW / MANAGE ORDERS" />
-                            </ListItemButton>
-                        </ListItem>
-                    </Link>
-                </nav>
-            </Box>
-        </Container >
-    );
+  return (
+    <Container sx={{ display: "flex", justifyContent: "center" }}>
+      <Box
+        sx={{
+          textAlign: "center",
+          marginTop: "2rem",
+          padding: "5rem",
+          width: "50vw",
+          bgcolor: "background.paper",
+        }}
+      >
+        <h1>Användarsida</h1>
+        <p>Navigera till önskad sida:</p>
+        <nav aria-label="main mailbox folders">
+          <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />
+          <Link to="orders">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText
+                  sx={{ textAlign: "center", color: "black" }}
+                  primary="VISA / HANTERA DINA ORDRAR"
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        </nav>
+      </Box>
+    </Container>
+  );
 }
 
 export default UserPage;

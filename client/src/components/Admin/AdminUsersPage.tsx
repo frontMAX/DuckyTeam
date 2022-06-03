@@ -33,7 +33,9 @@ function AdminUsersPage() {
   return (
     <Container sx={{ height: "100%", minWidth: 360, maxWidth: 900 }}>
       <Link to="/admin">
-        <Button startIcon={<ArrowBackIcon />}>Tillbaka till adminsidan</Button>
+        <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
+          Tillbaka till adminsidan
+        </Button>
       </Link>
       <Box
         sx={{
@@ -43,10 +45,17 @@ function AdminUsersPage() {
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
-                <Typography padding={2} sx={{fontWeight:'bold'}}>List of all users by email</Typography>
-              <Divider/>
+              <Typography padding={2} sx={{ fontWeight: "bold" }}>
+                List of all users by email
+              </Typography>
+              <Divider />
               <TableRow>
-                <TableBody sx={{ display: "flex", flexDirection: "column" }}>
+                <TableBody
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   {users.map((user, i) => {
                     return (
                       <TableCell key={i}>

@@ -66,7 +66,9 @@ function AddNewProductCard() {
   return (
     <Container>
       <Link to="/admin/products">
-        <Button startIcon={<ArrowBackIcon />}>Tillbaka till produktsidan</Button>
+        <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
+          Tillbaka till produktsidan
+        </Button>
       </Link>
       <form onSubmit={formik.handleSubmit}>
         <TextField
@@ -74,7 +76,7 @@ function AddNewProductCard() {
           id="imageUrl"
           type="file"
           name="imageUrl"
-          label="imageUrl"
+          // label="imageUrl"
           value={formik.values.imageUrl}
           onChange={handleUpload}
         />
@@ -140,13 +142,18 @@ function AddNewProductCard() {
           helperText={formik.touched.quantity && formik.errors.quantity}
         />
         <Button
+          sx={{
+            bgcolor: "#0EDFE6",
+            "&:hover": {
+              bgcolor: "#eaa0ff",
+            },
+          }}
           endIcon={<Save />}
-          color="primary"
           variant="contained"
           fullWidth
           type="submit"
         >
-          Add product
+          Lägg till
         </Button>
       </form>
     </Container>
