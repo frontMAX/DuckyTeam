@@ -72,15 +72,9 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const loginUser = useCallback((loginDetails: LoginDetails) => {
     axios
       .post<User>("/api/user/login", {
-        loginDetails,
-        withCredentials: true,
-        // headers: {
-        //   CookieSession: "session"
-        // }
-        // // session: false ,
-      })
+        email: loginDetails.email, password: loginDetails.password,
+      },{ withCredentials: true })
       .then((res) => {
-        
         setUser(res.data);
         console.log(res.data);
         setIsLoggedIn(true);
