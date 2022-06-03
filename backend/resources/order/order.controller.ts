@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { DeliveryModel } from "../delivery/delivery.model";
 import { updateStock } from "../product/product.controller";
+import { User, UserModel } from "../user/user.model";
 import { OrderModel } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
-    // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
-
-    const orders = await OrderModel.find({});
+    const orders = await OrderModel.find({}).populate('user');
     res.status(200).json(orders);
 };
 
@@ -15,8 +14,8 @@ export const getOrders = async (req: Request, res: Response) => {
 // Get a single order by id
 export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params
-    // Glöm inte att dubbel kolla det blir en socket hang up vid fel id nr ?! 
-    const order = await OrderModel.findById(id)
+   
+    const order = await OrderModel.findById(id).populate('user')
     if (!order) {
         return res
             .status(400)
@@ -46,7 +45,7 @@ export type CartType = {
 
 export interface NewOrderData {
     shipping: ShippingAdress,
-    // customer: User,
+    user: User,
     orderTotal: number,
     delivery: string,
     products: CartType[],
@@ -65,13 +64,23 @@ export const addOrder = async (
             return res.status(400).json('bad delivery.')
         }
 
+        if (!req.session?.user) {
+            return res.status(400).json('No user logged in.')
+        }
+
+        let user = await UserModel.findById(req.session.user._id);
+        
+        if (!user) {
+            res.status(404).json("user does not exist");
+          }
+
         const newOrderData = {
             orderNumber: Math.floor(Math.random() * 1000000),
             products: req.body.products,
             shipping: req.body.shipping,
             createdAt: new Date(),
             updatedAt: new Date(),
-            // user: req.body.user,
+            user: user,
             delivery: {
                 name: delivery.name,
                 price: delivery.price,
@@ -108,7 +117,6 @@ export const updateOrder = async (
         new: true
     })
 
-    console.log(updatedOrder);
     res.status(200).json(updatedOrder);
 };
 

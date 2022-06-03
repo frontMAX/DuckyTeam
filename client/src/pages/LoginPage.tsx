@@ -8,8 +8,6 @@ function LoginPage() {
         <Typography variant="h5" sx={{fontWeight: "bold", mb:3 }}>
           Logga in
         </Typography>
-
-        {/* Log in form with username and password */}
         <LoginForm />
       </Box>
     </Container>

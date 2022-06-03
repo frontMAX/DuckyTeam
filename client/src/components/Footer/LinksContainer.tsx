@@ -15,6 +15,7 @@ import postnord from "../../assets/ShippingLogos/postnord-full.png";
 import schenker from "../../assets/ShippingLogos/schenker-full.png";
 import duckLogo from "../../assets/ducky2.png";
 
+
 const theme = createTheme({
   palette: {
     secondary: {
@@ -57,7 +58,6 @@ function LinksContainer() {
           justifyContent: "center",
         }}
       >
-        {/* <img src={duckLogo} width="200" height="200" alt=""></img> */}
       </Grid>
       <Grid
         item
@@ -152,11 +152,6 @@ function LinksContainer() {
         lg={2}
         sx={{ display: "flex", justifyContent: "center" }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <img width="100" src={instabox} alt=""></img>
-          <img width="100" src={postnord} alt=""></img>
-          <img width="90" src={schenker} alt=""></img>
-        </Box>
       </Grid>
     </Grid>
   );

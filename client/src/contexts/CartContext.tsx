@@ -43,5 +43,5 @@ export const CartProvider: React.FC = ({ children }) => {
   )
 }
 export default CartProvider
-// useCart hook
+
 export const useCart = () => useContext(CartContext)

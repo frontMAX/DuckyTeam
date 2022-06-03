@@ -74,6 +74,7 @@ function AddNewProductCard() {
           Tillbaka till produktsidan
         </Button>
       </Link>
+
       {!user?.isAdmin && (
         <Box sx={{ textAlign: "center", padding: "2rem" }}>
           <Typography fontSize={30}>
@@ -123,6 +124,7 @@ function AddNewProductCard() {
             error={formik.touched.details && Boolean(formik.errors.details)}
             helperText={formik.touched.details && formik.errors.details}
           />
+
 
           <InputLabel id="category">Categories</InputLabel>
           <Select

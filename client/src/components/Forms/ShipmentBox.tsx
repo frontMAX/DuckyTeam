@@ -30,11 +30,9 @@ function ShipmentBox(props: Props) {
     fetchDeliveries();
   }, [fetchDeliveries]);
 
-  // Checks which button is clicked
   const handleListItemClick = (
     deliveryId : string
   ) =>
-    // if clicked, sets value (seen in orderDetails) to chosen method
     {
       props.setSelectedDeliveryId(deliveryId);
       props.formikProps.setFieldValue("shippingMethod", deliveryId);

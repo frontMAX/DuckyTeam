@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
 const getLocalValue = (key: string, initValue: any) => {
-  //SSR Next.js
   if (typeof window === 'undefined') return initValue
 
   // if a value is already stored

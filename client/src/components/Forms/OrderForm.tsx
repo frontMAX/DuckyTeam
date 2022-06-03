@@ -7,8 +7,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import PaymentBox from "./PaymentBox";
 import {
-  FormControlLabel,
-  Checkbox,
   Button,
   LinearProgress,
   Box,
@@ -91,7 +89,7 @@ interface Props {
 
 function OrderForm(props: Props) {
   let navigate = useNavigate();
-  const { users } = useUser();
+  
   const { updateProduct } = useProduct();
 
   const { dispatch, cart } = useCart();
@@ -100,7 +98,7 @@ function OrderForm(props: Props) {
 
   const { deliveries, fetchDeliveries } = useDelivery();
   const { orders, createOrder } = useOrder();
-
+  const { user } = useUser();
   useEffect(() => {
     fetchDeliveries();
   }, [fetchDeliveries]);
@@ -112,12 +110,12 @@ function OrderForm(props: Props) {
       return false;
     }
 
-    // do check if there's a user signed in, CONDITIONAL
-    // if no user, show register user form. not logged in = register form, logged in = orderform
+    if(!user){
+      return
+    }
 
     const newOrderData = {
       shipping: orderData.shippingAdress,
-      // customer: user,
       orderTotal: total,
       delivery: props.selectedDeliveryId,
       products: cart,

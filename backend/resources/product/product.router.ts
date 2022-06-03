@@ -1,5 +1,4 @@
 import express from "express";
-//import { adminSecure } from "../middlewares";
 
 import {
   getProducts,
