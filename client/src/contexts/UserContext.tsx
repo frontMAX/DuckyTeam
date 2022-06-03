@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useEffect } from "react";
-import axios, { AxiosResponse } from "axios";
-import { LoginDetails } from "../components/Forms/LoginForm";
-import { boolean } from "yup/lib/locale";
-import { loginUser } from "../../../backend/resources/user";
+import React, { useCallback, useContext } from "react";
+import axios from "axios";
 
 interface UserContextValue {
+  isLoggedIn: boolean;
   users: User[];
   user?: User;
   fetchUsers: () => void;
@@ -12,7 +10,7 @@ interface UserContextValue {
   createUser: () => void;
   updateUser: (user: User) => void;
   deleteUser: (id: string) => void;
-  loginUser: (loginDetails: LoginDetails) => void;
+  loginUser: () => void;
   logoutUser: (id: string) => void;
 }
 
@@ -29,63 +27,55 @@ export interface User extends BaseUser {
 
 export const UserContext = React.createContext<UserContextValue>({
   users: [],
-  user: undefined,
+  user: {
+    email: "",
+    password: "",
+    isAdmin: false,
+    _id: ""
+  },
   fetchUsers: () => {},
   fetchUser: (id: string) => {},
   createUser: () => {},
   updateUser: (user: User) => {},
   deleteUser: (id: string) => {},
   logoutUser: (id: string) => {},
-  loginUser: (loginDetails: LoginDetails) => {},
+  loginUser: () => {},
+  isLoggedIn: false,
 });
 
 export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [users, setUsers] = React.useState<User[]>([]);
-  const [user, setUser] = React.useState<User>();
+  let [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const fetchUsers = useCallback(() => {
     axios.get<User[]>("/api/user").then((res) => {
       setUsers(res.data);
-      console.log(res.data);
     });
   }, []);
 
   const fetchUser = useCallback((id: string) => {
-    axios.post<User[]>(`/api/user/${id}`).then((res) => {
-      setUsers([...res.data]);
-      console.log(res.data);
+    axios.post<User>(`/api/user/${id}`).then((res) => {
+      setUsers([res.data]);
     });
   }, []);
 
   const createUser = useCallback(() => {
     axios.post<User>("/api/user").then((res) => {
-      setUser(res.data);
+      setUsers([...users, res.data]);
     });
   }, []);
 
-<<<<<<< HEAD
   const loginUser = useCallback(() => {
-    axios
-      .post<User>("api/user/login", {
-        withCredentials: true,
-      })
-      .then((res: AxiosResponse) => {
-        setUser(res.data);
-        console.log(res.data);
-        return res.data;
-      });
-=======
-  const loginUser = useCallback(()=>{
     axios.get<User>("/api/user", { withCredentials: true }).then((res) => {
       setUsers([...users, res.data]);
-      
     });
->>>>>>> main
   }, []);
 
   const logoutUser = useCallback((id: string) => {
     axios.delete<User>(`/api/user/logout/${id}`).then((res) => {
-      setUser(undefined);
+      const userIndex = users.findIndex((user: User) => {
+        return (user._id = id);
+      });
     });
   }, []);
 
@@ -112,18 +102,10 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  useEffect(() => {
-    axios.get<User>(`/api/user/auth`).then((res) => {
-      console.log(res.data);
-      setUser(res.data);
-    });
-  }, []);
-
   return (
     <UserContext.Provider
       value={{
         users,
-        user,
         fetchUser,
         fetchUsers,
         loginUser,
@@ -131,6 +113,7 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
         createUser,
         updateUser,
         deleteUser,
+        isLoggedIn,
       }}
     >
       {children}

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema<User>(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false, minlength: 8 },
-    isAdmin: { type: Boolean, required: true, default: false },
+    isAdmin: { type: Boolean, required: false, default: false },
     //address: { type: addressSchema, required: true },
     // token: {
     //   type: String, // not uing this

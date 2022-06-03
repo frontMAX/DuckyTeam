@@ -95,24 +95,34 @@ export const loginUser = async (
   next: NextFunction
 ) => {
   if (!req.session) {
+    console.log('no session')
     throw new Error("Session object not initialized");
   }
 
   const user = await UserModel.findOne({ email: req.body.email }).select(
     "+password"
   );
+  console.log('added password to search')
 
-  if (req.session?.user) {
+
+  // aldready a session, can't log in
+  if (req.session.user) {
+    console.log('aldready session')
     return res.json(req.session.user);
   }
+
   // No user found, can't log in.
   if (!user) {
-    return res.status(401).json("you typed in wrong password or name");
+    console.log('no user found')
+    return res.status(401).json("you typed in wrong password or name (no user found)");
   }
+
   const checkPassword = await bcrypt.compare(req.body.password, user.password);
+  
   //passwork check failed, wrong password
   if (!checkPassword) {
-    return res.status(401).json("you typed in wrong password or name");
+    console.log('wrong password')
+    return res.status(401).json("you typed in wrong password or name (password check)");
   }
 
   //passwordceck worked, right password
@@ -120,7 +130,7 @@ export const loginUser = async (
     const userID = await UserModel.findById(req.params.id);
     console.log(checkPassword + " check");
 
-    delete (user as any).password;
+    // delete (user as any).password;
     // setting up user session
     req.session.user = user;
     console.log(req.session.id + " the sessionID");
@@ -154,7 +164,16 @@ export const logout = async (
   res: Response,
   next: NextFunction
 ) => {
+  if(!req.session){
+    return res.status(401).json("No session. Can't log out");
+  }
+
+  if(!req.session.user){
+    return res.status(401).json("No session-user. Can't log out");
+  }
+
   req.session = null;
+
   return res.json("logged out");
 };
 

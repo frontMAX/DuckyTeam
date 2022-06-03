@@ -15,8 +15,11 @@ import { CartType } from "../contexts/Reducers";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDelivery } from "../contexts/DeliveryContetxt";
+import CreateAccountPage from "./CreateAccountPage";
+import { BaseUser, useUser } from "../contexts/UserContext";
 
 function CheckOutPage() {
+  const userContext = useUser();
   // get cart and total price from cart
   const [cart] = useLocalStorage<CartType[]>("cart", "");
   const [total] = useLocalStorage<number>("cartSum", 0);
@@ -25,6 +28,7 @@ function CheckOutPage() {
   >(undefined);
 
   const { deliveries, fetchDeliveries } = useDelivery();
+  const { users, fetchUsers, loginUser, isLoggedIn } = useUser();
 
   const getShippingPrice = (selectedDeliveryId?: string) => {
     const selectedDelivery = deliveries.find((delivery) => {
@@ -112,7 +116,6 @@ function CheckOutPage() {
           Totalpris (inkl moms & frakt)
         </Typography>
         <Typography variant="body2">
-
           {`${total + getShippingPrice(selectedDeliveryId)}`} kr
         </Typography>
         <Button
@@ -137,6 +140,7 @@ function CheckOutPage() {
         >
           Tillbaka till kundvagnen
         </Button>
+        {isLoggedIn ? <></> : <CreateAccountPage />}
       </Box>
 
       {/* the full form with adress, payment and shipping */}
