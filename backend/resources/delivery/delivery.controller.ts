@@ -28,7 +28,6 @@ export const registerDelivery = async (
 ) => {
   if (!req.body) {
     res.status(400);
-    console.log("Fill in required fields.");
     throw new Error("Fill in required fields.");
   }
   try {
@@ -52,7 +51,6 @@ export const updateDelivery = async (
     req.params.id,
     req.body
   );
-  console.log(updatedDelivery);
   res.status(200).json(updatedDelivery);
 };
 
@@ -67,7 +65,7 @@ export const deleteDelivery = async (
     const deletedDelivery = await DeliveryModel.findByIdAndDelete(
       req.params.id
     );
-    console.log(deletedDelivery + "is deleted");
+
     res.status(200).json(deletedDelivery);
   }
 };

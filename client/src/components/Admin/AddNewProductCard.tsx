@@ -1,79 +1,73 @@
 import {
-    Button,
-    TextField,
-    MenuItem,
-    OutlinedInput,
-    Select,
-  } from "@mui/material";
-  
-  import Save from "@mui/icons-material/Save";
-  import {
-    BaseProduct,
-    Categories,
-    useProduct,
-  } from "../../contexts/product/ProductContext";
-  
-  import { useNavigate } from "react-router-dom";
-  import axios from "axios";
-  import { useFormik } from "formik";
-  import * as Yup from "yup";
-  
-  // export type ProductSchemaType = Record<keyof BaseProduct, Yup.AnySchema>;
-  
-  // const ProductFormSchema = Yup.object().shape<ProductSchemaType>({
-  //   name: Yup.string().required("Du måste skriva ett namn"),
-  //   price: Yup.number().required("Du måste skriva ett pris"),
-  //   quantity: Yup.number().required("Du måste skriva ett antal"),
-  //   orderedQuantity: Yup.number().nullable().notRequired(),
-  //   details: Yup.string().required("Du måste skriva en beskrivande text"),
-  //   imageUrl: Yup.string().required("Du måste välja en bild"),
-  //   category: Yup.array(Yup.string()).required("Du måste välja en eller flera kategorier"),
-  // });
-  
-  function AddNewProductCard() {
-    const { createProduct } = useProduct();
-    const navigate = useNavigate();
-  
-    const formik = useFormik({
-      initialValues: {
-        name: "",
-        price: 0,
-        details: "",
-        imageUrl: "",
-        category: [],
-        quantity: 0,
-      },
-      // validationSchema: ProductFormSchema,
-      onSubmit: (values) => {
-        const newProductData = {
-          ...values,
-        };
-        createProduct(newProductData);
-        navigate("/admin");
-      },
-    });
-  
-    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.set("file", file);
-  
-      // TODO: spara ett loading state
-      const res = await axios.post(
-        "/api/media",
-        formData,
-  
-        {
-          headers: {
-            "content-Type": "multipart/form-data",
-          },
-        }
-      );
-      formik.setFieldValue("imageId", res.data._id);
-    };
-  
-    return (
+  Button,
+  TextField,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  InputLabel,
+  Container,
+} from "@mui/material";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import Save from "@mui/icons-material/Save";
+import {
+  BaseProduct,
+  Categories,
+  useProduct,
+} from "../../contexts/product/ProductContext";
+
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useFormik } from "formik";
+
+function AddNewProductCard() {
+  const { createProduct } = useProduct();
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      price: 0,
+      details: "",
+      imageUrl: "",
+      category: [],
+      quantity: 0,
+    },
+    onSubmit: (values) => {
+      const newProductData = {
+        ...values,
+      };
+      createProduct(newProductData);
+      navigate("/admin");
+    },
+  });
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.set("file", file);
+
+    // TODO: spara ett loading state
+    const res = await axios.post(
+      "/api/media",
+      formData,
+
+      {
+        headers: {
+          "content-Type": "multipart/form-data",
+        },
+      }
+    );
+    formik.setFieldValue("imageId", res.data._id);
+  };
+
+  return (
+    <Container>
+      <Link to="/admin/products">
+        <Button startIcon={<ArrowBackIcon />}>Tillbaka till produktsidan</Button>
+      </Link>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth
@@ -99,6 +93,7 @@ import {
           id="price"
           name="price"
           label="price"
+          type="number"
           value={formik.values.price}
           onChange={formik.handleChange}
           error={formik.touched.price && Boolean(formik.errors.price)}
@@ -114,8 +109,10 @@ import {
           error={formik.touched.details && Boolean(formik.errors.details)}
           helperText={formik.touched.details && formik.errors.details}
         />
-  
+
+        <InputLabel id="category">Categories</InputLabel>
         <Select
+          label="Categories"
           labelId="category"
           id="category"
           name="category"
@@ -130,12 +127,13 @@ import {
             </MenuItem>
           ))}
         </Select>
-  
+
         <TextField
           fullWidth
           id="quantity"
           name="quantity"
           label="quantity"
+          type="number"
           value={formik.values.quantity}
           onChange={formik.handleChange}
           error={formik.touched.quantity && Boolean(formik.errors.quantity)}
@@ -151,7 +149,8 @@ import {
           Add product
         </Button>
       </form>
-    );
-  }
-  
-  export default AddNewProductCard;
+    </Container>
+  );
+}
+
+export default AddNewProductCard;

@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { OrderModel, Order } from "./order.model"
+import { DeliveryModel } from "../delivery/delivery.model";
+import { updateStock } from "../product/product.controller";
+import { OrderModel } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
     // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
-
-    // component som kan återanvändas, admin 
 
     const orders = await OrderModel.find({});
     res.status(200).json(orders);
@@ -25,23 +25,72 @@ export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
     res.status(200).json(order)
 };
 
+export interface ShippingAdress {
+    firstName: string;
+    lastName: string;
+    streetAdress: string;
+    postCode: string;
+    city: string;
+    phoneNumber: string;
+    emailAdress: string;
+}
+
+export type CartType = {
+    _id: string
+    title: string
+    description: string
+    price: number
+    qty: number
+    imgURL: string
+}
+
+export interface NewOrderData {
+    shipping: ShippingAdress,
+    // customer: User,
+    orderTotal: number,
+    delivery: string,
+    products: CartType[],
+}
 
 
 export const addOrder = async (
-    req: Request<{}, {}, Order>,
+    req: Request<{}, {}, NewOrderData>,
     res: Response,
     next: NextFunction
 ) => {
-    // TODO: How do we handle errors in async middlewares?
     try {
-        const order = new OrderModel(req.body);
+        const delivery = await DeliveryModel.findById(req.body.delivery)
+
+        if (delivery === null) {
+            return res.status(400).json('bad delivery.')
+        }
+
+        const newOrderData = {
+            orderNumber: Math.floor(Math.random() * 1000000),
+            products: req.body.products,
+            shipping: req.body.shipping,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            // user: req.body.user,
+            delivery: {
+                name: delivery.name,
+                price: delivery.price,
+                logoUrl: delivery.logoId,
+            },
+            orderTotal: req.body.orderTotal + delivery.price,
+        }
+
+        const order = new OrderModel(newOrderData);
         await order.save();
-        // console.log(user.fullname);
+
+        await updateStock(order)
+
         res.status(200).json(order);
     } catch (err) {
         next(err);
     }
-};
+}
+
 
 export const updateOrder = async (
     req: Request<{ id: string }>,
@@ -74,4 +123,3 @@ export const deleteOrder = async (req: Request, res: Response) => {
             .catch((err) => res.status(404).json("error: " + err));
     }
 };
-

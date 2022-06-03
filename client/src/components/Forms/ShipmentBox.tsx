@@ -19,7 +19,8 @@ import { OrderData } from "./OrderForm";
 
 interface Props {
   formikProps: FormikProps<OrderData>;
-  setShippingMethod: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setSelectedDeliveryId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedDeliveryId: string | undefined
 }
 
 function ShipmentBox(props: Props) {
@@ -29,21 +30,14 @@ function ShipmentBox(props: Props) {
     fetchDeliveries();
   }, [fetchDeliveries]);
 
-  // the state to  handle clicks
-  const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(
-    undefined
-  );
-
   // Checks which button is clicked
   const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    deliveryId : string
   ) =>
     // if clicked, sets value (seen in orderDetails) to chosen method
     {
-      setSelectedIndex(index);
-      props.setShippingMethod(index);
-      props.formikProps.setFieldValue("shippingMethod", index);
+      props.setSelectedDeliveryId(deliveryId);
+      props.formikProps.setFieldValue("shippingMethod", deliveryId);
     };
 
   return (
@@ -56,10 +50,10 @@ function ShipmentBox(props: Props) {
             <React.Fragment key={delivery._id}>
               {/* displays all objects in array based on index */}
               <ListItemButton
-                selected={selectedIndex === index}
+                selected={props.selectedDeliveryId === delivery._id}
                 onClick={(
                   event: React.MouseEvent<HTMLDivElement, MouseEvent>
-                ) => handleListItemClick(event, index)}
+                ) => handleListItemClick(delivery._id)}
               >
                 {/* logo for delivery-option */}
                 <ListItemAvatar>
@@ -89,7 +83,7 @@ function ShipmentBox(props: Props) {
                       >{`Leveranskostnad: ${delivery.price} kr`}</Typography>
 
                       {/* delivery time */}
-                      {/* <Typography
+                      <Typography
                         sx={{ display: "block" }}
                         component="span"
                         variant="body2"
@@ -99,7 +93,7 @@ function ShipmentBox(props: Props) {
                         addDays(new Date(), delivery.shippingTime),
                         "d MMMM",
                         { locale: sv }
-                      )}`}</Typography> */}
+                      )}`}</Typography>
                     </>
                   }
                 />

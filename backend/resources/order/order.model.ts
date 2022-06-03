@@ -1,17 +1,14 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 import { User } from "../user/user.model";
 import { Product, productSchema } from "../product/product.model";
-import { timeStamp } from "console";
-import { Delivery } from "../delivery/delivery.model";
 import { Address } from "cluster";
+
 
 export interface Order {
   id: string;
   orderNumber: string;
-
   // should be virtual product  !!!! IMPORTANT TO FIX
-  products: Product[];
-
+  products: OrderProduct[];
   // shipping adress
   shipping: Address;
   createdAt: Date;
@@ -19,19 +16,46 @@ export interface Order {
   user: User;
 
   // delivery method
-  delivery: Delivery;
-
+  delivery: {
+    name: string;
+    price: number;
+    logoUrl: string;
+  };
   // the total for all products and shipping   !!!! IMPORTANT TO FIX
   orderTotal: number;
 }
 
+export interface OrderProduct {
+  _id: ObjectId;
+  name: string;
+  price: number;
+  imageUrl: string;
+  qty: number;
+}
+
+const orderProductSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  imageUrl: { type: String, required: false },
+  qty: { type: Number, required: true }
+})
+
+const orderDeliverySchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    logoUrl: { type: String, required: true },
+  }
+)
+
+
 const AddressSchema = new mongoose.Schema(
   {
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     postCode: { type: Number, required: true },
     city: { type: String, required: true },
-    address: { type: String, required: true },
+    streetAdress: { type: String, required: true },
     phoneNumber: { type: String, required: true },
   },
   {
@@ -45,15 +69,20 @@ const OrderSchema = new mongoose.Schema<Order>(
     orderNumber: { type: String, required: true },
 
     // All products ordered, virtual schema   !!!! IMPORTANT TO FIX
-    products: { type: [productSchema], required: true },
+    products: { type: [orderProductSchema], required: true },
 
     // shipping adress
     shipping: { type: AddressSchema, required: true },
 
-    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    //  REMEMBER TO FIX THIS ONCE WE GOT USER!!!
+    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
+    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
+    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
+    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
+    user: { type: Schema.Types.ObjectId, ref: "user", required: false },
 
     // delivery method
-    delivery: { type: Schema.Types.ObjectId, ref: "delivery", require: true },
+    delivery: { type: orderDeliverySchema, require: true },
 
     // total for the full order, products and shipping included !!!! IMPORTANT TO FIX
     orderTotal: { type: Number, required: true }

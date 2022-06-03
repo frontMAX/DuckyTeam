@@ -63,6 +63,7 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
+<<<<<<< HEAD
   const loginUser = useCallback(() => {
     axios
       .post<User>("api/user/login", {
@@ -73,6 +74,13 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
         console.log(res.data);
         return res.data;
       });
+=======
+  const loginUser = useCallback(()=>{
+    axios.get<User>("/api/user", { withCredentials: true }).then((res) => {
+      setUsers([...users, res.data]);
+      
+    });
+>>>>>>> main
   }, []);
 
   const logoutUser = useCallback((id: string) => {

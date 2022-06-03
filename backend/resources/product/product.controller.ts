@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { Order } from "../order/order.model";
 import { ProductModel, Product } from "./product.model";
+
+// update gty
+
+// const updateAmount =  { $inc: { <field1>: <amount1>, <field2>: <amount2>, ... } }
 
 // Get all products
 export const getProducts = async (req: Request, res: Response) => {
@@ -64,6 +69,8 @@ export const updateProduct = async (
     //     return;
     // }
 
+
+
     const product = await ProductModel.findById(req.params.id);
 
     if (!product) {
@@ -115,3 +122,12 @@ export const deleteProduct = async (req: Request<{ id: string }>, res: Response)
 
     res.status(200).json('You have the deleted the product: ' + id);
 };
+
+// anropa från min order.
+export const updateStock = async (order: Order) => {
+    for (const product of order.products) {
+        await ProductModel.findByIdAndUpdate(
+            product._id, 
+            { $inc: { "quantity": -product.qty} })
+    }
+}

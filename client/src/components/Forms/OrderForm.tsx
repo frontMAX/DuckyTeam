@@ -16,12 +16,14 @@ import {
 } from "@mui/material";
 import ShipmentBox from "./ShipmentBox";
 import { Link, useNavigate } from "react-router-dom";
-// import { placeOrderFetch } from "../../Api/Api";
-import useLocalStorage from "../../Hooks/useLocalStorage";
 import React, { useEffect } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { CartType, Types } from "../../contexts/Reducers";
 import { useDelivery } from "../../contexts/DeliveryContetxt";
+import { useOrder } from "../../contexts/Order/orderContext";
+import { useUser } from "../../contexts/UserContext";
+import { useProduct } from "../../contexts/product/ProductContext";
+import useLocalStorage from "../../Hooks/useLocalStorage";
 
 export interface OrderData {
   shippingAdress: ShippingAdress;
@@ -81,71 +83,65 @@ export interface AllOrderData {
 
 interface Props {
   defaultOrderData?: OrderData;
-  setShippingMethod: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setSelectedDeliveryId: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+  selectedDeliveryId: string | undefined;
 }
 
 function OrderForm(props: Props) {
   let navigate = useNavigate();
-  const { dispatch } = useCart();
+  const { users } = useUser();
+  const { updateProduct } = useProduct();
+
+  const { dispatch, cart } = useCart();
+  const [total, setTotal] = useLocalStorage<number>("cartSum", 0);
   const [isLoading, setLoading] = React.useState<boolean>(false);
 
   const { deliveries, fetchDeliveries } = useDelivery();
+  const { orders, createOrder } = useOrder();
 
   useEffect(() => {
     fetchDeliveries();
   }, [fetchDeliveries]);
 
-  let [allOrderDetails, setAllDetails] = useLocalStorage<AllOrderData>(
-    "orderDetails",
-    ""
-  );
-  let [sumDetails] = useLocalStorage<number>("cartSum", "");
-  let [productsDetails] = useLocalStorage<CartType[]>("cart", "");
-
-  // successful submit
-  function handleSubmit(orderData: OrderData) {
+  async function handleSubmit(orderData: OrderData) {
     setLoading(true);
-    setOrderDetails(orderData);
 
-    // fetch api and navigate to confirmed-order page if successful
-    confirmOrder();
-  }
+    if (typeof props.selectedDeliveryId === "undefined") {
+      return false;
+    }
 
-  //populate a full Local storage key with all order details
-  function setOrderDetails(orderDetails: OrderData) {
-    allOrderDetails = {
-      orderDetails: orderDetails,
-      orderTotal:
-        sumDetails +
-        (typeof orderDetails.shippingMethod === "number"
-          ? deliveries[orderDetails.shippingMethod].price
-          : 0),
-      products: productsDetails,
+    // do check if there's a user signed in, CONDITIONAL
+    // if no user, show register user form. not logged in = register form, logged in = orderform
+
+    const newOrderData = {
+      shipping: orderData.shippingAdress,
+      // customer: user,
+      orderTotal: total,
+      delivery: props.selectedDeliveryId,
+      products: cart,
     };
 
-    setAllDetails(allOrderDetails);
+    if (newOrderData) {
+      const myNewOrder = await createOrder(newOrderData);
+
+      dispatch({
+        type: Types.ResetCart,
+        payload: {},
+      });
+
+      navigate(`/confirmed-order/${myNewOrder.id}`);
+    }
   }
 
-  const formikProps = useFormik<OrderData>({
+  const formik = useFormik<OrderData>({
     initialValues: emptyForm,
     validationSchema: OrderFormSchema,
     onSubmit: (orderData) => {
       handleSubmit(orderData);
     },
   });
-
-  // fetches api to check if order went through, navigates to confirmed-order if successful
-  async function confirmOrder() {
-    // const success = await placeOrderFetch();
-    // if (success) {
-    //   dispatch({
-    //     type: Types.ResetCart,
-    //     payload: {},
-    //   });
-    //   setLoading(false);
-    //   navigate("/confirmed-order");
-    // }
-  }
 
   return (
     <>
@@ -166,12 +162,12 @@ function OrderForm(props: Props) {
             {/* RANDOM INFO TEXT, DOESN'T ACTUALLY DO/MEAN ANYTHING */}
 
             {/* The full order form */}
-            <form onSubmit={formikProps.handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
               {/* Shipping adress */}
               <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
                 Leveransadress
               </Typography>
-              <ShippingForm formikProps={formikProps} />
+              <ShippingForm formikProps={formik} />
 
               {/* Shipping methods */}
               <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
@@ -179,12 +175,12 @@ function OrderForm(props: Props) {
               </Typography>
 
               {/* Show error if no shipping method is selected */}
-              {formikProps.touched.shippingMethod &&
-                formikProps.errors.shippingMethod}
+              {formik.touched.shippingMethod && formik.errors.shippingMethod}
 
               <ShipmentBox
-                formikProps={formikProps}
-                setShippingMethod={props.setShippingMethod}
+                formikProps={formik}
+                setSelectedDeliveryId={props.setSelectedDeliveryId}
+                selectedDeliveryId={props.selectedDeliveryId}
               />
 
               {/* Payment methods (and payment details) */}
@@ -193,10 +189,9 @@ function OrderForm(props: Props) {
               </Typography>
 
               {/* Show error if no payment method is selected */}
-              {formikProps.touched.paymentMethod &&
-                formikProps.errors.paymentMethod}
+              {formik.touched.paymentMethod && formik.errors.paymentMethod}
 
-              <PaymentBox formikProps={formikProps} />
+              <PaymentBox formikProps={formik} />
 
               {/* conditions checkbox, does nothing for now */}
               <div>

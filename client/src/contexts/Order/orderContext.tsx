@@ -1,25 +1,52 @@
-import { Order } from "@shared/types";
-
 import axios from "axios";
+import { Address } from "cluster";
 import React, { useCallback, useContext } from "react";
+import { User } from "../../../../backend/resources/user/user.model";
+import { OrderData } from "../../components/Forms/OrderForm";
+import { ShippingAdress } from "../../components/Forms/ShippingForm";
+import { Delivery } from "../DeliveryContetxt";
+import { OrderProduct, Product } from "../product/ProductContext";
+import { CartType } from "../Reducers";
+
+export interface NewOrderData {
+  shipping: ShippingAdress;
+  // customer: User,
+  orderTotal: number;
+  delivery: string;
+  products: CartType[];
+}
 
 interface OrderContextValue {
   orders: Order[];
   // getOrders: () => void;
   fetchOrders: () => void;
   fetchOrder: (id: string) => void;
+  createOrder: (newOrderData: NewOrderData) => Promise<Order>;
 }
 
-// den är ju shared, men vet iinte hur jag får in..
-// export interface Order {
-//     id: number
-// }
+export interface Order {
+  // should be virtual product  !!!! IMPORTANT TO FIX
+  products: OrderProduct[];
+
+  // shipping adress
+  shipping: ShippingAdress;
+  // delivery method
+  delivery: Delivery;
+  createdAt: Date;
+  id: number;
+  orderNumber: string;
+  orderTotal: number;
+  user: User;
+}
 
 export const OrderContext = React.createContext<OrderContextValue>({
   orders: [],
   // getOrders: () => { },
-  fetchOrders: () => { },
-  fetchOrder: (id: string) => { }
+  fetchOrders: () => {},
+  fetchOrder: (id: string) => {},
+  createOrder: (newOrderData: NewOrderData) => {
+    return Promise.resolve({} as Order);
+  },
 });
 
 export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
@@ -31,7 +58,15 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  //single order by id
+  const createOrder = useCallback(
+    async (newOrderData: NewOrderData): Promise<Order> => {
+      const result = await axios.post<Order>("/api/order", newOrderData);
+      setOrders([...orders, result.data]);
+
+      return result.data;
+    },
+    []
+  );
 
   const fetchOrder = useCallback((id: string) => {
     axios.get<Order>(`/api/order/${id}`).then((res) => {
@@ -41,7 +76,7 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   return (
     <OrderContext.Provider
-      value={{ orders, fetchOrders, fetchOrder }}
+      value={{ orders, fetchOrders, fetchOrder, createOrder }}
     >
       {children}
     </OrderContext.Provider>
