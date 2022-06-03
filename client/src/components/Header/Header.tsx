@@ -6,15 +6,19 @@ import React from "react";
 import { User, useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
 import { CenterFocusStrong } from "@mui/icons-material";
+import MenuIcon from '@mui/icons-material/Menu';
+import { width, height } from "@mui/system";
 
-interface HeaderProps {}
 
-const TabValues: string[] = ["/", "/products", "/about"];
+function Header() {
 
-const filteredValue = (value: string) =>
-  TabValues.includes(value) ? value : false;
 
-const Header: FC<HeaderProps> = () => {
+  const TabValues: string[] = ["/", "/products", "/about"];
+
+  const filteredValue = (value: string) =>
+    TabValues.includes(value) ? value : false;
+
+
   const navigate = useNavigate();
 
   const [value, setValue] = useState(filteredValue(useLocation().pathname));
@@ -28,6 +32,8 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
+
+
   const { users, fetchUser } = useUser();
 
   // does not work.... fix to be able to work for now
@@ -39,6 +45,8 @@ const Header: FC<HeaderProps> = () => {
   //   // }
   // }, [fetchUser]);
 
+
+
   return (
     <>
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
@@ -49,6 +57,8 @@ const Header: FC<HeaderProps> = () => {
             </Typography>
           )}
         </Box>
+
+
         <Box
           sx={{
             display: "flex",
@@ -57,18 +67,23 @@ const Header: FC<HeaderProps> = () => {
             width: "100%",
           }}
         >
+
           <Tabs
             sx={{
-              "@media screen and (max-width: 440px)": {
+              "@media screen and (max-width: 700px)": {
                 padding: "0",
                 marginLeft: "-30px",
+
+
               },
             }}
+
             value={value}
             onChange={handleChange}
             textColor="primary"
             indicatorColor="primary"
             aria-label="secondary tabs example"
+
           >
             <Tab value="/" label="Hem" />
             <Tab value="/products" label="Produkter" />
@@ -165,7 +180,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-                // onClick={() => logoutUser()}
+              // onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>
@@ -179,4 +194,8 @@ const Header: FC<HeaderProps> = () => {
   );
 };
 
+
+
+
 export default Header;
+

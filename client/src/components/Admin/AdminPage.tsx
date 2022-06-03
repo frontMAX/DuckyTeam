@@ -10,7 +10,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function AdminPage() {
   return (
-    <Container sx={{ display: "flex", justifyContent: "center" }}>
+    <Container sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
       <Link to="/">
         <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
           Tillbaka till startsidan
@@ -19,8 +19,8 @@ function AdminPage() {
       <Box
         sx={{
           textAlign: "center",
-          marginTop: "2rem",
-          padding: "5rem",
+          marginTop: "5rem",
+          padding: "2rem",
           width: "50vw",
           bgcolor: "background.paper",
         }}

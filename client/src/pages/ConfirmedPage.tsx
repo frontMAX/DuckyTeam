@@ -22,7 +22,7 @@ function ConfirmedOrderPage() {
         <h2>Tack för din beställning!</h2>
         <p>
           Din betalning och beställning har genomförts, och snart kommer dina
-          nya ankor till sitt nya hem! <br />
+          nya prylar till sitt nya hem! <br />
           Nedan är en sammanfattning på din beställning;
         </p>
         <Divider />
