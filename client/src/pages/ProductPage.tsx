@@ -7,26 +7,24 @@ import {
   CardMedia,
   Container,
   Typography,
-} from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Link, useParams } from 'react-router-dom'
-import BuyButton from '../components/BuyButton'
-import { useCart } from '../contexts/CartContext'
-import { Product, useProduct } from '../contexts/product/ProductContext'
-import { useEffect } from 'react'
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link, useParams } from "react-router-dom";
+import BuyButton from "../components/BuyButton";
+import { useCart } from "../contexts/CartContext";
+import { Product, useProduct } from "../contexts/product/ProductContext";
+import { useEffect } from "react";
 
 function ProductPage() {
-  let { id } = useParams()
-  const { cart, dispatch } = useCart()
-  const { products, fetchProduct } = useProduct()
-  const product = products.find(
-    (item: Product) => item._id.toString() === id
-  )
+  let { id } = useParams();
+  const { cart, dispatch } = useCart();
+  const { products, fetchProduct } = useProduct();
+  const product = products.find((item: Product) => item._id.toString() === id);
 
   useEffect(() => {
-    if(id){
-    fetchProduct(id);
-  }
+    if (id) {
+      fetchProduct(id);
+    }
   }, [fetchProduct]);
 
   return (
@@ -37,31 +35,37 @@ function ProductPage() {
         </Button>
       </Link>
       {product && (
-        <Card sx={{ height: '100%' }}>
+        <Card sx={{ height: "100%" }}>
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'stretch',
-              flexWrap: 'wrap',
+              display: "flex",
+              flexDirection: "column",
+              ["@media (min-width:480px)"]: {
+                flexDirection: "row"
+              },
             }}
           >
             <CardMedia
               component="img"
               height="480"
               image={`http://localhost:5001${product.imageUrl}`}
-              sx={{ objectFit: 'contain', maxWidth: '20rem' }}
+              sx={{ objectFit: "contain", maxWidth: "20rem" }}
             />
             <Box
-              sx={{ display: 'flex', flexDirection: 'column', flexGrow: '1', alignItems:"center" }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: "1",
+                alignItems: "center",
+              }}
             >
-              <CardContent sx={{ flexGrow: '1' }}>
+              <CardContent sx={{ maxWidth: "100%" }}>
                 <Typography variant="h5" component="div" gutterBottom>
                   {product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {product.details}
                 </Typography>
-                {/* <Rating name="read-only" value={ratingValue} readOnly /> */}
               </CardContent>
               <CardActions>
                 {cart.some((p: any) => p.id === product._id) ? (
@@ -75,7 +79,7 @@ function ProductPage() {
         </Card>
       )}
     </Container>
-  )
+  );
 }
 
-export default ProductPage
+export default ProductPage;
