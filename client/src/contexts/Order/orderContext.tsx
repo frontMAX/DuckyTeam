@@ -1,16 +1,13 @@
 import axios from "axios";
-import { Address } from "cluster";
 import React, { useCallback, useContext } from "react";
 import { User } from "../../../../backend/resources/user/user.model";
-import { OrderData } from "../../components/Forms/OrderForm";
 import { ShippingAdress } from "../../components/Forms/ShippingForm";
 import { Delivery } from "../DeliveryContetxt";
-import { OrderProduct, Product } from "../product/ProductContext";
+import { OrderProduct } from "../product/ProductContext";
 import { CartType } from "../Reducers";
 
 export interface NewOrderData {
   shipping: ShippingAdress;
-  // customer: User,
   orderTotal: number;
   delivery: string;
   products: CartType[];
@@ -18,19 +15,14 @@ export interface NewOrderData {
 
 interface OrderContextValue {
   orders: Order[];
-  // getOrders: () => void;
   fetchOrders: () => void;
   fetchOrder: (id: string) => void;
   createOrder: (newOrderData: NewOrderData) => Promise<Order>;
 }
 
 export interface Order {
-  // should be virtual product  !!!! IMPORTANT TO FIX
   products: OrderProduct[];
-
-  // shipping adress
   shipping: ShippingAdress;
-  // delivery method
   delivery: Delivery;
   createdAt: Date;
   id: number;
@@ -60,7 +52,7 @@ export const OrderProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const createOrder = useCallback(
     async (newOrderData: NewOrderData): Promise<Order> => {
-      const result = await axios.post<Order>("/api/order", newOrderData);
+      const result = await axios.post<Order>("/api/order", newOrderData, {withCredentials: true});
       setOrders([...orders, result.data]);
 
       return result.data;
