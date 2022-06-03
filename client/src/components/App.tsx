@@ -17,7 +17,6 @@ import AdminPage from "./Admin/AdminPage";
 import AdminUsersPage from "./Admin/AdminUsersPage";
 import OrderPage from "../pages/OrderPage";
 import CartPage from "../pages/CartPage";
-import UserPage from "../pages/UserPage";
 function App() {
   return (
     <Routes>
@@ -34,10 +33,6 @@ function App() {
         <Route path="termsOfUse" element={<TermsOfUsePage />} />
         <Route path="support" element={<SupportPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="user">
-          <Route index element={<UserPage />} />
-          <Route path="orders/:id" element={<OrderPage />} />
-        </Route>
       </Route>
       <Route path="admin">
         <Route index element={<AdminPage />} />

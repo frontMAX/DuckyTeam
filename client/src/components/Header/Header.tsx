@@ -47,7 +47,6 @@ const Header: FC<HeaderProps> = () => {
             width: "100%",
           }}
         >
-
           <Tabs
             sx={{
               "@media screen and (max-width: 440px)": {
@@ -65,10 +64,6 @@ const Header: FC<HeaderProps> = () => {
             <Tab value="/products" label="Produkter" />
             // if logged in user is admin
             {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
-            <Tab value="/admin" label="Admin" />
-
-            // if logged in user aint admin
-            {!user?.isAdmin && <Tab value="/user" label="User" />}
           </Tabs>
           <Box
             sx={{
@@ -157,7 +152,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-              onClick={() => logoutUser()}
+                onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>
