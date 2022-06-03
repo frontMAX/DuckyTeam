@@ -27,22 +27,7 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
-<<<<<<< HEAD
   const { user, fetchUser } = useUser();
-=======
-  const { users, fetchUser } = useUser();
-
-  // does not work.... fix to be able to work for now
-  const user = users.find(
-    (item: User) => item._id.toString()
-  )
-
-  // useEffect(() => {
-  //   // if(id){
-  //   fetchUser();
-  //   // }
-  // }, [fetchUser]);
->>>>>>> main
 
   return (
     <>
