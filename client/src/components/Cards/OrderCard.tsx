@@ -50,11 +50,10 @@ export function OrderCard({ order }: OrderCardProps) {
                     {product.qty}
                   </TableCell>
 
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" sx={{ "@media screen and (max-width: 400px)": { display: "none" }, }}>
                     <img
                       style={{ width: "60px" }}
                       src={`http://localhost:5001${product.imageUrl}`}
-
                     />
                   </TableCell>
                 </TableRow>
