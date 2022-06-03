@@ -1,9 +1,6 @@
-import { Email, FormatLineSpacing } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
-import { AsyncResource } from "async_hooks";
-import axios from "axios";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { BaseUser, useUser } from "../../contexts/UserContext";
@@ -31,31 +28,27 @@ const emptyForm: LoginDetails = {
 };
 
 function LoginForm(_props: Props) {
-  const userContext = useUser();
+  const { loginUser, user } = useUser();
+
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   let navigate = useNavigate();
-
-  const { user, loginUser, isLoggedIn } = useUser();
-
 
   const formik = useFormik<LoginDetails>({
     initialValues: emptyForm,
     validationSchema: LoginFormSchema,
     onSubmit: (loginDetails, { resetForm }) => {
       loginUser(loginDetails);
-      console.log(loginDetails);
+      navigate(`/`);
     },
   });
 
   return (
-    // Log-in form
     <form onSubmit={formik.handleSubmit}>
       {/* Display error if invalid input */}
       {!!submitError && (
         <Typography sx={{ color: "red" }}>{submitError}</Typography>
       )}
-  <Typography>Logged in user: {user?.email}</Typography>
-  <Typography>{isLoggedIn}</Typography>
+      <Typography>Logged in user: {user?.email}</Typography>
       {/* user name input */}
       <InputField
         label="Email: "
