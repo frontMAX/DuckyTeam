@@ -34,7 +34,7 @@ const Header: FC<HeaderProps> = () => {
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
           {!!user && (
-            <Typography sx={{ color: "#c900c1" }}>
+            <Typography fontWeight={700}>
               Du är nu inloggad som: {user?.email}
             </Typography>
           )}
