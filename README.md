@@ -11,9 +11,10 @@
 * *Github repo* (https://github.com/frontMAX/DuckyTeam)
 
 ## Kom igång:
-1. Öppna terminalen, skriv `cd backend` och därefter `npm i` & `npm start`.
-2. Öppna ett nytt terminalfönster, skriv `cd client` och därefter `npm i` & `npm start`.
-3. Sidan ska då öppnas automatiskt 
+1. Öppna terminalen, skriv `cd client` och därefter `npm i` & ` cd ..`
+2. Skriv sedan `npm i `  pch därefter `npm run start-server`
+3. Öppna ett nytt terminalfönster, skriv `npm run start-front`
+
 
 ## Betygskriterier
 ### Godkänt:
