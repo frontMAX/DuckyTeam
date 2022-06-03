@@ -8,18 +8,18 @@ POST http://localhost:5001/api/user
 Content-Type: application/json
 
 {
-  "email" : "sabina@sabina",
-  "password": "sabina",
+  "email" : "admin@admin",
+  "password": "säkert",
   "isAdmin": true
 }
 
 ###
-PUT http://localhost:5001/api/user/6299b7ddc09ac1371dc006f8
+PUT http://localhost:5001/api/user/629a03ebd1f2630af0f57011
 Content-Type: application/json
 
 {
-  "email": "sabina@sabina",
-  "password": "sabina",
+  "email": "admin@admin",
+  "password": "säkert",
   "isAdmin": true
 }
 
