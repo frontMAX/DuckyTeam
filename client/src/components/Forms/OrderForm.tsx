@@ -193,15 +193,6 @@ function OrderForm(props: Props) {
 
               <PaymentBox formikProps={formik} />
 
-              {/* conditions checkbox, does nothing for now */}
-              <div>
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="Jag godkänner"
-                />
-                <Link to="/termsOfUse">Köpvillkoren.</Link>
-              </div>
-
               {/* Post form */}
 
               <Button

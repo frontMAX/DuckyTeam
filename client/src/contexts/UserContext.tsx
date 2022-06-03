@@ -66,10 +66,14 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  const createUser = useCallback((newUser: createAccount) => {
-    axios.post<User>("/api/user", newUser,{withCredentials: true}).then((res) => {
-      setUsers([...users, res.data]);
-    });
+  const createUser = useCallback( async (newUser: createAccount) => {
+    const result = await axios.post<User>("/api/user", newUser,{withCredentials: true})
+    if(result.data){ 
+    setUsers([...users, result.data]);
+      setUser(result.data)   
+      loginUser(newUser)
+    }
+    return false;
   }, []);
 
   const loginUser = useCallback(async (loginDetails: LoginDetails) => {
@@ -78,34 +82,24 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
       loginDetails,
       { withCredentials: true }
     );
-
+    if(result.data){
     setUser(result.data);
-
-    if (result.data) {
-      setIsLoggedIn(true);
-    }
-
-    console.log("from func", user);
-
     return result.data;
+  }
   }, []);
 
   const getCurrentUser = useCallback(async () => {
     const result = await axios.get<User>("/api/user/auth", {
       withCredentials: true,
     });
-    setUser(result.data);
-
     if (result.data) {
-      setIsLoggedIn(true);
+      setUser(result.data);
     }
-    console.log(isLoggedIn);
     return result.data;
   }, []);
 
   const logoutUser = useCallback(() => {
     axios.delete<User>(`/api/user/logout`).then((res) => {
-      setIsLoggedIn(false);
       setUser(undefined);
       return false;
     });
