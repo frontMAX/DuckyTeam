@@ -1,43 +1,39 @@
 GET http://localhost:5001/api/user
 
-###
-GET http://localhost:5001/api/user/6299bbd762647e8b7e2b176d
+###  Get user by id
+GET http://localhost:5001/api/user/id
 
-###
+
+###  create user, doesn't become admin on create user.
 POST http://localhost:5001/api/user
 Content-Type: application/json
 
 {
-  "email" : "admin@admin",
+  "email" : "admin@japp",
   "password": "säkert",
   "isAdmin": true
 }
 
-###
-PUT http://localhost:5001/api/user/629a03ebd1f2630af0f57011
+###  Update user, can make user into admin.
+PUT http://localhost:5001/api/user/id
 Content-Type: application/json
 
 {
-  "email": "admin@admin",
-  "password": "säkert",
+  "email": "admin@japp",
   "isAdmin": true
 }
 
-###
+###   Delete user by id
+DELETE http://localhost:5001/api/user/id
 
-DELETE http://localhost:5001/api/user/628c8dd2b3eac60aef73974e
-
-###
-
-
+###  Login user
 POST http://localhost:5001/api/user/login
 Content-Type: application/json
 
 {   
-  "email" : "sabina@sabina",
-  "password": "sabina"
+  "email" : "admin@japp",
+  "password": "säkert"
 }
 
-###
-
+###  Logout user
 DELETE http://localhost:5001/api/user/logout

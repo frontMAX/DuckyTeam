@@ -22,7 +22,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useUser } from "../../contexts/UserContext";
 
 function AdminUsersPage() {
-  const { users, fetchUsers } = useUser();
+  const { user, users, fetchUsers } = useUser();
 
   const [addingProduct, setAddingProduct] = useState(false);
 
@@ -37,6 +37,12 @@ function AdminUsersPage() {
           Tillbaka till adminsidan
         </Button>
       </Link>
+      {!user?.isAdmin && 
+      <Box sx={{textAlign:"center", padding:"2rem"}}>
+        <Typography fontSize={30}>Woops. <br/> Unauthorized access, please return back.</Typography>
+      </Box>
+      }
+      {!!user?.isAdmin && 
       <Box
         sx={{
           height: "100%",
@@ -77,6 +83,7 @@ function AdminUsersPage() {
           </Table>
         </TableContainer>
       </Box>
+}
     </Container>
   );
 }

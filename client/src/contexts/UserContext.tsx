@@ -37,15 +37,15 @@ export const UserContext = React.createContext<UserContextValue>({
     isAdmin: false,
     _id: "",
   },
-  fetchUsers: () => {},
-  fetchUser: (id: string) => {},
-  createUser: (newUser: createAccount) => {},
-  updateUser: (user: User) => {},
-  getCurrentUser: () => {},
-  deleteUser: (id: string) => {},
-  logoutUser: () => {},
+  fetchUsers: () => { },
+  fetchUser: (id: string) => { },
+  createUser: (newUser: createAccount) => { },
+  updateUser: (user: User) => { },
+  getCurrentUser: () => { },
+  deleteUser: (id: string) => { },
+  logoutUser: () => { },
   loginUser: (loginDetails: LoginDetails): Promise<boolean> => {
-    return new Promise(() => {});
+    return new Promise(() => { });
   },
   isLoggedIn: false,
   failedLogin: true,
@@ -77,6 +77,13 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
       setUsers([...users, result.data]);
       setUser(result.data);
       loginUser(newUser);
+
+    const result = await axios.post<User>("/api/user", newUser, { withCredentials: true })
+    if (result.data) {
+      setUsers([...users, result.data]);
+      setUser(result.data)
+      loginUser(newUser)
+
     }
     return false;
   }, []);

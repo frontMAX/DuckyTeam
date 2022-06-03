@@ -10,7 +10,11 @@ import swish from "../../assets/PaymentLogos/swish.svg";
 import visa from "../../assets/PaymentLogos/visa.png";
 import mastercard from "../../assets/PaymentLogos/mastercard.png";
 import maestro from "../../assets/PaymentLogos/maestro.png";
-import SubscribeForm from "../Forms/SubscribeForm";
+import instabox from "../../assets/ShippingLogos/instabox-full.jpg";
+import postnord from "../../assets/ShippingLogos/postnord-full.png";
+import schenker from "../../assets/ShippingLogos/schenker-full.png";
+import duckLogo from "../../assets/ducky2.png";
+
 
 const theme = createTheme({
   palette: {
@@ -124,9 +128,7 @@ function LinksContainer() {
         lg={2}
         sx={{ display: "flex", justifyContent: "center" }}
       >
-        <Box>
-          <SubscribeForm />
-        </Box>
+       
       </Grid>
       <Grid
         item

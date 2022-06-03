@@ -1,4 +1,4 @@
-import CreditCardIcon from "@mui/icons-material/CreditCard";
+import CreditCardIcon from "../assets/PaymentLogos/visa.png";
 import klarna from "../assets/PaymentLogos/klarna-square.jpg";
 import swish from "../assets/PaymentLogos/swish.svg";
 import { SvgIcon } from "@mui/material";
@@ -28,7 +28,7 @@ export const paymentOptions: Payment[] = [
   {
     name: "Kortbetalning",
     altText: "Betala med Visa / Mastercard / Maestro",
-    icon: CreditCardIcon,
+    logo: CreditCardIcon,
     id: "card",
   },
 ];
