@@ -1,14 +1,14 @@
-import { Box } from '@mui/material';
-import LinksContainer from './LinksContainer';
+import { Box } from "@mui/material";
+import LinksContainer from "./LinksContainer";
 
 function Footer() {
   return (
     <Box
       sx={{
-        backgroundColor: '#c4dbf2',
-        width: '100%',
-        height: 'fit-content',
-        marginTop: '2rem',
+        backgroundColor: "#eaa0ff",
+        width: "100%",
+        height: "fit-content",
+        marginTop: "2rem",
       }}
     >
       <LinksContainer />

@@ -1,19 +1,20 @@
 import { Box, Tabs, Tab, Container, Button, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import { useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
 
-interface HeaderProps {}
+function Header() {
 
-const TabValues: string[] = ["/", "/products", "/about"];
 
-const filteredValue = (value: string) =>
-  TabValues.includes(value) ? value : false;
+  const TabValues: string[] = ["/", "/products", "/about"];
 
-const Header: FC<HeaderProps> = () => {
+  const filteredValue = (value: string) =>
+    TabValues.includes(value) ? value : false;
+
+
   const navigate = useNavigate();
 
   const [value, setValue] = useState(filteredValue(useLocation().pathname));
@@ -29,6 +30,8 @@ const Header: FC<HeaderProps> = () => {
 
   const { user, logoutUser } = useUser();
 
+
+
   return (
     <>
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
@@ -39,6 +42,8 @@ const Header: FC<HeaderProps> = () => {
             </Typography>
           )}
         </Box>
+
+
         <Box
           sx={{
             display: "flex",
@@ -49,16 +54,20 @@ const Header: FC<HeaderProps> = () => {
         >
           <Tabs
             sx={{
-              "@media screen and (max-width: 440px)": {
+              "@media screen and (max-width: 700px)": {
                 padding: "0",
-                marginLeft: "-25px",
+                marginLeft: "-30px",
+
+
               },
             }}
+
             value={value}
             onChange={handleChange}
             textColor="primary"
             indicatorColor="primary"
             aria-label="secondary tabs example"
+
           >
             <Tab value="/" label="Hem" />
             <Tab value="/products" label="Produkter" />
@@ -166,4 +175,8 @@ const Header: FC<HeaderProps> = () => {
   );
 };
 
+
+
+
 export default Header;
+
