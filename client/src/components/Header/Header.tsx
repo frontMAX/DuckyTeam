@@ -7,7 +7,7 @@ import { User, useUser } from "../../contexts/UserContext";
 import AdminBar from "./AdminBar";
 import CartButton from "./CartButton";
 
-interface HeaderProps { }
+interface HeaderProps {}
 
 const TabValues: string[] = ["/", "/products", "/about"];
 
@@ -28,18 +28,7 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
-  const { users, fetchUser } = useUser();
-
-// does not work.... fix to be able to work for now
-  const user = users.find(
-    (item: User) => item._id.toString()
-  )
-
-  // useEffect(() => {
-  //   // if(id){
-  //   fetchUser();
-  //   // }
-  // }, [fetchUser]);
+  const { user, fetchUser } = useUser();
 
   return (
     <>
@@ -47,7 +36,11 @@ const Header: FC<HeaderProps> = () => {
 
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
-          {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.email}</Typography>}
+          {!!user && (
+            <Typography sx={{ color: "#c900c1" }}>
+              Du är nu inloggad som: {user?.email}
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
@@ -83,7 +76,6 @@ const Header: FC<HeaderProps> = () => {
               },
             }}
           >
-
             {!user ? (
               <Link to="/login">
                 <Button

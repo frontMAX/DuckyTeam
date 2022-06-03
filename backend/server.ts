@@ -17,7 +17,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
 app.use(
   cookieSession({
     name: "session",
@@ -28,7 +27,6 @@ app.use(
     sameSite: "strict",
   })
 );
-
 
 app.use(
   "/api",

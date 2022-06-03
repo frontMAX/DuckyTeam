@@ -14,7 +14,7 @@ export interface User {
   // /** Virtual */ fullname: string;
 }
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<User>(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false, minlength: 8 },

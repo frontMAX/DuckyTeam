@@ -10,14 +10,14 @@ export const getUsers = async (req: Request, res: Response) => {
 
 // Get a single user by id
 export const getUser = async (req: Request<{ id: string }>, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  const user = await UserModel.findById(id)
+  const user = await UserModel.findById(id);
   if (!user) {
-      res.status(400)
-      throw new Error('User not found')
+    res.status(400);
+    throw new Error("User not found");
   }
-  res.status(200).json(user)
+  res.status(200).json(user);
 };
 
 export const addUser = async (
@@ -30,12 +30,12 @@ export const addUser = async (
     const { email, password, isAdmin } = req.body;
 
     if (!email || !password) {
-      res.json({ msg: 'Incorrent inputs.' });
+      res.json({ msg: "Incorrent inputs." });
       return;
     }
 
     const userExist = await UserModel.findOne({ email: req.body.email });
-    
+
     if (userExist) {
       res.json("user already exist, pick another.").status(409);
       return;
@@ -46,10 +46,10 @@ export const addUser = async (
 
     const user = await UserModel.create({
       email: email,
-      password: encryptedPassword
+      password: encryptedPassword,
     });
 
-    if(!user){
+    if (!user) {
       res.json("cant create user");
     }
 
@@ -63,7 +63,6 @@ export const updateUser = async (
   req: Request<{ id: string }>,
   res: Response
 ) => {
-
   const userToUpdate = await UserModel.findById({ _id: req.params.id });
 
   if (!userToUpdate) {
@@ -120,6 +119,8 @@ export const loginUser = async (
   if (checkPassword) {
     const userID = await UserModel.findById(req.params.id);
     console.log(checkPassword + " check");
+
+    delete (user as any).password;
     // setting up user session
     req.session.user = user;
     console.log(req.session.id + " the sessionID");
@@ -137,32 +138,16 @@ export const getCurrentUser = async (
   res: Response,
   next: NextFunction
 ) => {
-
   const loggedInUser = req.session?.user;
 
   if (!loggedInUser) {
     res.status(403);
-    res.send({ message: 'You are not currently logged in.' });
+    res.send({ message: "You are not currently logged in." });
     return;
   }
 
-  // Should only happen if the logged in user has been removed
-  const user  = await UserModel.findById({ _id: req.params.id }).exec();
-  
-  if (!user) {
-    res.status(403);
-    res.send({ message: 'Could not find the currently logged on user.' });
-    return;
-  }
-
-  const response = {
-    email: user.email,
-    role: user.role.name,
-  };
-
-  res.json(response);
-}
-
+  res.json(loggedInUser);
+};
 
 export const logout = async (
   req: Request,

@@ -82,8 +82,8 @@ function ProductListPage() {
   const filteredCategories = categoryState.all
     ? Categories
     : Categories.filter((category) => categoryState[category]);
-  console.log(filteredCategories);
-  
+  //console.log(filteredCategories);
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -127,7 +127,7 @@ function ProductListPage() {
         {products
           .filter((product) => {
             for (const productCategory of product.category) {
-              console.log(productCategory)
+              //console.log(productCategory)
               if (
                 filteredCategories.includes(productCategory as MockedCategories)
               ) {

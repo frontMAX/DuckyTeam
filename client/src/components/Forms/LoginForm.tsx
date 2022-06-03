@@ -1,4 +1,7 @@
+import { Email, FormatLineSpacing } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
+import { AsyncResource } from "async_hooks";
+import axios from "axios";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,18 +35,19 @@ function LoginForm(_props: Props) {
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   let navigate = useNavigate();
 
-  const { users, fetchUsers, loginUser } = useUser();
+  const { user, users, fetchUsers, loginUser } = useUser();
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const formik = useFormik({
+  const formik = useFormik<LoginDetails>({
     initialValues: emptyForm,
     validationSchema: LoginFormSchema,
     onSubmit: (loginDetails, { resetForm }) => {
-      loginUser();
-      navigate("/");
+      loginUser(loginDetails);
+      console.log(loginDetails);
+      console.log(user);
     },
   });
 
