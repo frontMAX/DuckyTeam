@@ -32,7 +32,7 @@ function CartList({ handleClose }: any) {
               <ListItemAvatar>
                 <img
                   src={`http://localhost:5001${product.imageUrl}`}
-                  alt={product.title}
+                  alt={product.name}
                   style={{
                     width: "70px",
                     height: "70px",
@@ -41,7 +41,7 @@ function CartList({ handleClose }: any) {
                 />
               </ListItemAvatar>
               <ListItemText
-                primary={product.title}
+                primary={product.name}
                 secondary={`${product.price} kr/st`}
                 sx={{ marginLeft: ".5rem" }}
               />

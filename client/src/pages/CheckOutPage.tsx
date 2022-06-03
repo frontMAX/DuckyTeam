@@ -59,7 +59,7 @@ function CheckOutPage() {
                 <ListItemAvatar>
                   <img
                     src={c.imageUrl}
-                    alt={c.title}
+                    alt={c.name}
                     style={{
                       width: "70px",
                       height: "70px",
@@ -69,7 +69,7 @@ function CheckOutPage() {
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={c.title}
+                  primary={c.name}
                   secondary={
                     <>
                       <Typography

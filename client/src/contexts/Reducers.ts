@@ -25,7 +25,7 @@ export enum Types {
 
 export type CartType = {
   _id: string
-  title: string
+  name: string
   description: string
   price: number
   qty: number
@@ -35,7 +35,7 @@ export type CartType = {
 type CartPayload = {
   [Types.AddToCart]: {
     _id: string
-    title: string
+    name: string
     description: string
     price: number
     qty: number
