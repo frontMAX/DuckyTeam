@@ -46,6 +46,13 @@ export interface Product extends BaseProduct {
   _id: string;
 }
 
+export interface OrderProduct {
+  name: string;
+  price: number;
+  qty: number;
+  imageUrl: string;
+}
+
 export const ProductContext = React.createContext<ProductContextValue>({
   isLoading: false,
   products: [],

@@ -1,109 +1,100 @@
 import {
-    Typography,
-    Button,
-    Box,
-    Modal,
-    TextField,
-    MenuItem,
-    OutlinedInput,
-    Select,
-  } from "@mui/material";
-  import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-  import { useEffect, useState } from "react";
-  import Save from "@mui/icons-material/Save";
-  
-  import {
-    Product,
-    Categories,
-    useProduct,
-    BaseProduct,
-  } from "../../contexts/product/ProductContext";
-  
-  import axios from "axios";
-  import { useFormik } from "formik";
-  import * as Yup from "yup";
-  import { useNavigate, useParams } from "react-router-dom";
-  
-  interface EditProductCardProps {
-    expanded?: boolean;
-  }
-  
-  // export type ProductSchemaType = Record<keyof BaseProduct, Yup.AnySchema>;
-  
-  // const ProductFormSchema = Yup.object().shape<ProductSchemaType>({
-  //   name: Yup.string().required("Du måste skriva ett namn"),
-  //   price: Yup.number().required("Du måste skriva ett pris"),
-  //   quantity: Yup.number().required("Du måste skriva ett antal"),
-  //   orderedQuantity: Yup.number().notRequired(),
-  //   details: Yup.string().required("Du måste skriva en beskrivande text"),
-  //   imageUrl: Yup.string().required("Du måste välja en bild"),
-  //   category: Yup.array(Yup.string()).required(
-  //     "Du måste välja en eller flera kategorier"
-  //   ),
-  // });
-  
-  function EditProductPage({ expanded }: EditProductCardProps) {
-    const [open, setOpen] = useState(expanded ?? false);
-    const [openModal, setOpenModal] = useState(false);
-    const { id } = useParams();
-    const { products, fetchProduct, updateProduct, deleteProduct } = useProduct();
-  
-    const product = products.find((item: Product) => item._id?.toString() === id);
-  
-    useEffect(() => {
-      if (id) {
-        fetchProduct(id);
+  Typography,
+  Button,
+  Box,
+  Modal,
+  TextField,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  InputLabel,
+  Container,
+} from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useEffect, useState } from "react";
+import Save from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {
+  Product,
+  Categories,
+  useProduct,
+  BaseProduct,
+} from "../../contexts/product/ProductContext";
+
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+interface EditProductCardProps {
+  expanded?: boolean;
+}
+
+function EditProductPage({ expanded }: EditProductCardProps) {
+  const [open, setOpen] = useState(expanded ?? false);
+  const [openModal, setOpenModal] = useState(false);
+  const { id } = useParams();
+  const { products, fetchProduct, updateProduct, deleteProduct } = useProduct();
+
+  const product = products.find((item: Product) => item._id?.toString() === id);
+
+  useEffect(() => {
+    if (id) {
+      fetchProduct(id);
+    }
+  }, [fetchProduct]);
+
+  const navigate = useNavigate();
+
+  const handleOpen = (
+    event: React.SyntheticEvent<Element, Event>,
+    expanded: boolean
+  ) => setOpen(!open);
+
+  const formik = useFormik({
+    initialValues: {
+      _id: product?._id || "",
+      name: product?.name || "",
+      price: product?.price || 0,
+      details: product?.details || "",
+      imageUrl: "",
+      category: product?.category || [],
+      quantity: product?.quantity || 0,
+    },
+    onSubmit: (values) => {
+      const newProductData = {
+        ...values,
+      };
+      updateProduct(newProductData);
+      navigate("/admin");
+    },
+  });
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.set("file", file);
+
+    // TODO: spara ett loading state
+    const res = await axios.post(
+      "/api/media",
+      formData,
+
+      {
+        headers: {
+          "content-Type": "multipart/form-data",
+        },
       }
-    }, [fetchProduct]);
-  
-    const navigate = useNavigate();
-  
-    const handleOpen = (
-      event: React.SyntheticEvent<Element, Event>,
-      expanded: boolean
-    ) => setOpen(!open);
-  
-    const formik = useFormik({
-      initialValues: {
-        _id: product?._id || "",
-        name: product?.name || "",
-        price: product?.price || 0,
-        details: product?.details || "",
-        imageUrl: "",
-        category: product?.category || [],
-        quantity: product?.quantity || 0,
-      },
-      // validationSchema: ProductFormSchema,
-      onSubmit: (values) => {
-        const newProductData = {
-          ...values,
-        };
-        updateProduct(newProductData);
-        navigate("/admin");
-      },
-    });
-  
-    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.set("file", file);
-  
-      // TODO: spara ett loading state
-      const res = await axios.post(
-        "/api/media",
-        formData,
-  
-        {
-          headers: {
-            "content-Type": "multipart/form-data",
-          },
-        }
-      );
-      formik.setFieldValue("imageId", res.data._id);
-    };
-  
-    return (
+    );
+    formik.setFieldValue("imageId", res.data._id);
+  };
+
+  return (
+    <Container>
+      <Link to="/admin/products">
+        <Button startIcon={<ArrowBackIcon />}>Tillbaka till produktsidan</Button>
+      </Link>
       <form onSubmit={formik.handleSubmit}>
         {!product?._id ? (
           <div>This product doesn't exist.</div>
@@ -137,6 +128,7 @@ import {
               id="price"
               name="price"
               label="price"
+              type="number"
               value={formik.values.price}
               onChange={formik.handleChange}
               error={formik.touched.price && Boolean(formik.errors.price)}
@@ -152,7 +144,7 @@ import {
               error={formik.touched.details && Boolean(formik.errors.details)}
               helperText={formik.touched.details && formik.errors.details}
             />
-  
+            <InputLabel id="category">Categories</InputLabel>
             <Select
               labelId="category"
               id="category"
@@ -168,12 +160,13 @@ import {
                 </MenuItem>
               ))}
             </Select>
-  
+
             <TextField
               fullWidth
               id="quantity"
               name="quantity"
               label="quantity"
+              type="number"
               value={formik.values.quantity}
               onChange={formik.handleChange}
               error={formik.touched.quantity && Boolean(formik.errors.quantity)}
@@ -232,7 +225,8 @@ import {
           </>
         )}
       </form>
-    );
-  }
-  
-  export default EditProductPage;
+    </Container>
+  );
+}
+
+export default EditProductPage;

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
-import ducky from "../assets/ducky2.png";
 import PopularDucks from "./Cards/PopularDucks";
-import ShowCarousel from "./Carousel";
 
 function StartPageDesription() {
   return (
@@ -24,13 +22,6 @@ function StartPageDesription() {
           },
         }}
       >
-        <img
-          style={{
-            width: "10rem",
-          }}
-          src={ducky}
-          alt=""
-        ></img>
         <Typography
           sx={{
             textAlign: "center",
@@ -38,7 +29,7 @@ function StartPageDesription() {
             fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
           }}
         >
-          Välkommen till Ducky - affären där du köper dina badankor
+          Välkommen till Random-Shop - affären där vi säljer vad vi vill!
         </Typography>
       </Box>
       <Box
@@ -50,15 +41,11 @@ function StartPageDesription() {
         }}
       >
         <Typography sx={{ fontSize: "clamp(1rem, 2.5vw, 1.1rem)" }}>
-          Håll humöret flytande med hjälp av våra osänkbara badankor! Badankor
-          är levnadsglada filurer med truten formad som ett naturligt leende. Vi
-          på Ducky har också lagt näbben i blöt och våra efterforskningar ger
-          starka belägg för att det är svårt att sura när du ser en badanka i
-          ögonen. Badankor bör därför inte saknas i badrummet och alla våra
-          badankor har riktigt starka personligheter
+          Håll humöret flytande med hjälp av.. lite vad som helst!
+          Bara fantasin kan sätta gränserna för vad du kan hitta här!
+          Njut av tillvaron, och kolla in vårat ologiska sortiment!
         </Typography>
       </Box>
-      <ShowCarousel />
       <Box sx={{ textAlign: "center" }}>
         <Typography
           sx={{ marginBottom: "2rem", fontSize: "clamp(1.5rem, 2.5vw, 2rem)" }}

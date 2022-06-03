@@ -30,10 +30,6 @@ export const productSchema = new Schema<Product>(
   }
 );
 
-productSchema.virtual("product-copy").get(function () {
-  return this.name + " " + this.price + this.orderedQuantity;
-});
-
 productSchema.virtual("imageUrl").get(function () {
   return "/api/media/" + this.imageId;
 });
