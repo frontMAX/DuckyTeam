@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { LoginDetails } from "../components/Forms/LoginForm";
 import { createAccount } from "../components/Forms/CreateAccountForm";
 
@@ -15,6 +15,7 @@ interface UserContextValue {
   loginUser: (loginDetails: LoginDetails) => void;
   logoutUser: () => void;
   getCurrentUser: () => void;
+  failedLogin: boolean;
 }
 
 /** Remember this is used backendside as well, update both of needed. */
@@ -47,12 +48,14 @@ export const UserContext = React.createContext<UserContextValue>({
     return new Promise(() => { });
   },
   isLoggedIn: false,
+  failedLogin: true,
 });
 
 export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [users, setUsers] = React.useState<User[]>([]);
   const [user, setUser] = React.useState<User>();
-  let [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [failedLogin, setFailedLogin] = React.useState(true);
+  let [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
 
   const fetchUsers = useCallback(() => {
     axios.get<User[]>("/api/user").then((res) => {
@@ -67,25 +70,42 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const createUser = useCallback(async (newUser: createAccount) => {
+    const result = await axios.post<User>("/api/user", newUser, {
+      withCredentials: true,
+    });
+    if (result.data) {
+      setUsers([...users, result.data]);
+      setUser(result.data);
+      loginUser(newUser);
+
     const result = await axios.post<User>("/api/user", newUser, { withCredentials: true })
     if (result.data) {
       setUsers([...users, result.data]);
       setUser(result.data)
       loginUser(newUser)
+
     }
     return false;
   }, []);
 
   const loginUser = useCallback(async (loginDetails: LoginDetails) => {
-    const result = await axios.post<User>(
-      "/api/user/login",
-      loginDetails,
-      { withCredentials: true }
-    );
-    if (result.data) {
-      setUser(result.data);
-      return result.data;
-    }
+    const result = await axios
+      .post<User>("/api/user/login", loginDetails, { withCredentials: true })
+      .catch((error) => {
+        if ((error = 401 || 402 || 404)) {
+          setFailedLogin(false);
+          return error;
+        }
+        console.log(error);
+      })
+      .then((result: AxiosResponse) => {
+        if (result.data) {
+          console.log(result.data);
+          setUser(result.data);
+          setFailedLogin(true);
+          return result.data;
+        }
+      });
   }, []);
 
   const getCurrentUser = useCallback(async () => {
@@ -142,6 +162,7 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
         deleteUser,
         getCurrentUser,
         isLoggedIn,
+        failedLogin,
       }}
     >
       {children}
