@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import axios from "axios";
 import { LoginDetails } from "../components/Forms/LoginForm";
+import { createAccount } from "../components/Forms/CreateAccountForm";
 
 interface UserContextValue {
   isLoggedIn: boolean;
@@ -8,7 +9,7 @@ interface UserContextValue {
   user?: User;
   fetchUsers: () => void;
   fetchUser: (id: string) => void;
-  createUser: (loginDetails: LoginDetails) => void;
+  createUser: (newUser: createAccount) => void;
   updateUser: (user: User) => void;
   deleteUser: (id: string) => void;
   loginUser: (loginDetails: LoginDetails) => void;
@@ -37,7 +38,7 @@ export const UserContext = React.createContext<UserContextValue>({
   },
   fetchUsers: () => {},
   fetchUser: (id: string) => {},
-  createUser: (loginDetails: LoginDetails) => {},
+  createUser: (newUser: createAccount) => {},
   updateUser: (user: User) => {},
   getCurrentUser: () => {},
   deleteUser: (id: string) => {},
@@ -65,8 +66,8 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  const createUser = useCallback((loginDetails: LoginDetails) => {
-    axios.post<User>("/api/user").then((res) => {
+  const createUser = useCallback((newUser: createAccount) => {
+    axios.post<User>("/api/user", newUser,{withCredentials: true}).then((res) => {
       setUsers([...users, res.data]);
     });
   }, []);
@@ -74,10 +75,7 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const loginUser = useCallback(async (loginDetails: LoginDetails) => {
     const result = await axios.post<User>(
       "/api/user/login",
-      {
-        email: loginDetails.email,
-        password: loginDetails.password,
-      },
+      loginDetails,
       { withCredentials: true }
     );
 

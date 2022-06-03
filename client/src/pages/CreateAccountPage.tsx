@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import CreateAccountForm from "../components/Forms/CreateAccountForm";
 
-function createAccountPage() {
+function CreateAccountPage() {
   return (
     <Container maxWidth="md">
       <Box
@@ -35,4 +35,4 @@ function createAccountPage() {
   );
 }
 
-export default createAccountPage;
+export default CreateAccountPage;
