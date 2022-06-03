@@ -95,10 +95,6 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     if (result.data) {
       setUser(result.data);
     }
-    if (user?.isAdmin) {
-      console.log('setting is admin')
-      user.isAdmin = true
-    }
     return result.data;
   }, []);
 

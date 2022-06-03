@@ -129,10 +129,9 @@ export const loginUser = async (
     delete user.password;
     // setting up user session
     req.session.user = user;
-    console.log(user)
     return res.status(201).json(user);
   }
-  //if user is logged in send them a message ans show they are logged in already
+
 };
 
 // Get current logged in user

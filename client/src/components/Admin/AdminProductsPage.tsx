@@ -20,6 +20,7 @@ import { useProduct } from "../../contexts/product/ProductContext";
 import { Add } from "@mui/icons-material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
+import { useUser } from "../../contexts/UserContext";
 
 interface AdminProductProps {
   expanded?: boolean;
@@ -27,7 +28,7 @@ interface AdminProductProps {
 
 function AdminProductsPage({ expanded }: AdminProductProps) {
   const { products, fetchProducts, deleteProduct } = useProduct();
-
+  const { user } = useUser();
   const [addingProduct, setAddingProduct] = useState(false);
 
   const [open, setOpen] = useState(expanded ?? false);
@@ -49,6 +50,12 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
           Tillbaka till adminsidan
         </Button>
       </Link>
+      {!user?.isAdmin && 
+      <Box sx={{textAlign:"center", padding:"2rem"}}>
+        <Typography fontSize={30}>Woops. <br/> Unauthorized access, please return back.</Typography>
+      </Box>
+      }
+      {!!user?.isAdmin && 
       <Box
         sx={{
           height: "100%",
@@ -131,6 +138,7 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
           </Table>
         </TableContainer>
       </Box>
+}
     </Container>
   );
 }
