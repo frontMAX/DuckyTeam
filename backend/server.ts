@@ -21,7 +21,7 @@ app.use(
   cookieSession({
     name: "session",
     secret: "s3cretkey",
-    maxAge: 1000 * 200,
+    maxAge: 1000 * 2000000,
     httpOnly: true,
     secure: false,
     sameSite: "strict",

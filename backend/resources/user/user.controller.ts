@@ -108,6 +108,7 @@ export const loginUser = async (
   // aldready a session, can't log in
   if (req.session.user) {
     console.log('aldready session')
+    delete req.session.user.password;
     return res.json(req.session.user);
   }
 
@@ -130,7 +131,7 @@ export const loginUser = async (
     const userID = await UserModel.findById(req.params.id);
     console.log(checkPassword + " check");
 
-    // delete (user as any).password;
+    delete user.password;
     // setting up user session
     req.session.user = user;
     console.log(req.session.id + " the sessionID");
@@ -155,7 +156,7 @@ export const getCurrentUser = async (
     res.send({ message: "You are not currently logged in." });
     return;
   }
-
+  console.log(loggedInUser)
   res.json(loggedInUser);
 };
 

@@ -40,4 +40,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5001/api/user/logout/
+DELETE http://localhost:5001/api/user/logout

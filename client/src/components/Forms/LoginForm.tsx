@@ -35,11 +35,8 @@ function LoginForm(_props: Props) {
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   let navigate = useNavigate();
 
-  const { user, users, fetchUsers, loginUser } = useUser();
+  const { user, loginUser, isLoggedIn } = useUser();
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
 
   const formik = useFormik<LoginDetails>({
     initialValues: emptyForm,
@@ -47,7 +44,6 @@ function LoginForm(_props: Props) {
     onSubmit: (loginDetails, { resetForm }) => {
       loginUser(loginDetails);
       console.log(loginDetails);
-      console.log(user);
     },
   });
 
@@ -58,7 +54,8 @@ function LoginForm(_props: Props) {
       {!!submitError && (
         <Typography sx={{ color: "red" }}>{submitError}</Typography>
       )}
-
+  <Typography>Logged in user: {user?.email}</Typography>
+  <Typography>{isLoggedIn}</Typography>
       {/* user name input */}
       <InputField
         label="Email: "

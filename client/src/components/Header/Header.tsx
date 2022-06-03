@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import { User, useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
 
 interface HeaderProps {}
@@ -27,7 +27,7 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
-  const { user, fetchUser } = useUser();
+  const { user, logoutUser } = useUser();
 
   return (
     <>
@@ -157,7 +157,7 @@ const Header: FC<HeaderProps> = () => {
                     color="success"
                   />
                 }
-              // onClick={() => logoutUser()}
+              onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>
