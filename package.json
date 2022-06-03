@@ -5,7 +5,7 @@
   },
   "proxy": "http://localhost:5001/",
   "scripts": {
-    "start-server": "cross-env nodemon backend/server.ts --watch backend/*",
+    "start-server": "nodemon backend/server.ts --watch backend/*",
     "start-front": "cd client && npm run start"
   },
   "dependencies": {
