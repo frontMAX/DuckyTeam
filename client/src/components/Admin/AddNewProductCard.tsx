@@ -76,7 +76,6 @@ function AddNewProductCard() {
           id="imageUrl"
           type="file"
           name="imageUrl"
-          // label="imageUrl"
           value={formik.values.imageUrl}
           onChange={handleUpload}
         />

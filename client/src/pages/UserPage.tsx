@@ -1,12 +1,11 @@
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
-import { Button, Container } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Container } from "@mui/material";
+
 
 function UserPage() {
   return (

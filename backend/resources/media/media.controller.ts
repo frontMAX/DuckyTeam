@@ -57,21 +57,14 @@ export const getMedia = async (req: Request, res: Response) => {
 export const addMedia = async (req: Request, res: Response, next: NextFunction) => {
 
     upload(req, res, function () {
-        console.log(upload)
-
-        console.log('starting adding...')
         const bucket = new mongoose.mongo.GridFSBucket(
             mongoose.connection.db
             , { bucketName: "files" }
         )
 
-        console.log('starting adding...')
-
         if (!req.file) {
-            console.log('no file sent')
             return
         }
-        console.log('no error...')
         const { originalname, mimetype, buffer } = req.file
         const thumbnailName = 'thumb' + originalname
 
@@ -122,5 +115,4 @@ export const deleteMedia = async (req: Request, res: Response) => {
     await bucket.delete(_id)
 
     res.status(204).json('deleted media')
-    console.log('media deleted')
 }

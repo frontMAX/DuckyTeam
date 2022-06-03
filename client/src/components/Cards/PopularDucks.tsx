@@ -23,7 +23,6 @@ function getRandomProducts(
 function PopularDucks() {
   const { products, fetchProducts } = useProduct();
 
-  // TODO  make sure this runs on start page to actually render products...
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);

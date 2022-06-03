@@ -1,6 +1,5 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 import { User } from "../user/user.model";
-import { Product, productSchema } from "../product/product.model";
 import { Address } from "cluster";
 
 
@@ -74,11 +73,6 @@ const OrderSchema = new mongoose.Schema<Order>(
     // shipping adress
     shipping: { type: AddressSchema, required: true },
 
-    //  REMEMBER TO FIX THIS ONCE WE GOT USER!!!
-    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
-    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
-    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
-    // REMEMBER TO FIX THIS ONCE WE GOT USER!!!
     user: { type: Schema.Types.ObjectId, ref: "user", required: false },
 
     // delivery method
