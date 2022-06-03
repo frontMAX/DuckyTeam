@@ -28,10 +28,19 @@ function Header() {
     navigate(newValue);
   };
 
+
   const { user, logoutUser } = useUser();
 
+  function checkIfAdmin() {
+    if (!user?.isAdmin) {
+      return
+    } else if (!!user?.isAdmin) {
+      user.isAdmin = true
+    }
+  }
 
-
+  checkIfAdmin()
+  console.log(user?.isAdmin)
   return (
     <>
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
@@ -71,8 +80,15 @@ function Header() {
           >
             <Tab value="/" label="Hem" />
             <Tab value="/products" label="Produkter" />
-            // if logged in user is admin
+            {/* { if ({!user?.isAdmin})  {
+              <Tab value="/admin" label="Admin" />
+            } else if( {!!user?.isAdmin}) {
+              <Tab value="" label="" />
+            } */}
+
+            {/* isAdmin = true */}
             {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
+
           </Tabs>
           <Box
             sx={{

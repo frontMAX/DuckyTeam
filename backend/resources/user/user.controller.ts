@@ -115,7 +115,7 @@ export const loginUser = async (
   }
 
   const checkPassword = await bcrypt.compare(req.body.password, user.password);
-  
+
   //passwork check failed, wrong password
   if (!checkPassword) {
 
@@ -129,6 +129,7 @@ export const loginUser = async (
     delete user.password;
     // setting up user session
     req.session.user = user;
+    console.log(user)
     return res.status(201).json(user);
   }
   //if user is logged in send them a message ans show they are logged in already
@@ -155,11 +156,11 @@ export const logout = async (
   res: Response,
   next: NextFunction
 ) => {
-  if(!req.session){
+  if (!req.session) {
     return res.status(401).json("No session. Can't log out");
   }
 
-  if(!req.session.user){
+  if (!req.session.user) {
     return res.status(401).json("No session-user. Can't log out");
   }
 
