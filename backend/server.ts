@@ -17,18 +17,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
 app.use(
   cookieSession({
     name: "session",
     secret: "s3cretkey",
-    maxAge: 1000 * 200,
+    maxAge: 1000 * 2000000,
     httpOnly: true,
     secure: false,
     sameSite: "strict",
   })
 );
-
 
 app.use(
   "/api",

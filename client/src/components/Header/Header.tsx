@@ -1,14 +1,10 @@
 import { Box, Tabs, Tab, Container, Button, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import { User, useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
-import { CenterFocusStrong } from "@mui/icons-material";
-import MenuIcon from '@mui/icons-material/Menu';
-import { width, height } from "@mui/system";
-
 
 function Header() {
 
@@ -32,18 +28,7 @@ function Header() {
     navigate(newValue);
   };
 
-
-
-  const { users, fetchUser } = useUser();
-
-  // does not work.... fix to be able to work for now
-  const user = users.find((item: User) => item._id.toString());
-
-  // useEffect(() => {
-  //   // if(id){
-  //   fetchUser();
-  //   // }
-  // }, [fetchUser]);
+  const { user, logoutUser } = useUser();
 
 
 
@@ -52,7 +37,7 @@ function Header() {
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
           {!!user && (
-            <Typography sx={{ color: "#c900c1" }}>
+            <Typography fontWeight={700}>
               Du är nu inloggad som: {user?.email}
             </Typography>
           )}
@@ -67,7 +52,6 @@ function Header() {
             width: "100%",
           }}
         >
-
           <Tabs
             sx={{
               "@media screen and (max-width: 700px)": {
@@ -89,9 +73,6 @@ function Header() {
             <Tab value="/products" label="Produkter" />
             // if logged in user is admin
             {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
-            <Tab value="/admin" label="Admin" />
-            // if logged in user aint admin
-            {!user?.isAdmin && <Tab value="/user" label="Min Sida" />}
           </Tabs>
           <Box
             sx={{
@@ -180,7 +161,7 @@ function Header() {
                     color="success"
                   />
                 }
-              // onClick={() => logoutUser()}
+                onClick={() => logoutUser()}
               >
                 Logga ut
               </Button>

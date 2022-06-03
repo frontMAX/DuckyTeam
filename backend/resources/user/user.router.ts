@@ -14,10 +14,10 @@ import {
 export const userRouter = express
   .Router()
   .get("/user", /* adminSecure, */ getUsers)
-  .get('/user/:id', getUser)
-  .get('/user/:id', getCurrentUser)
+  .get("/user/auth", getCurrentUser)
+  .get("/user/:id", getUser)
   .post("/user", addUser)
   .put("/user/:id", updateUser)
   .post("/user/login", loginUser)
-  .delete("/user/:id", deleteUser)
-  .delete("/user/logout/:id", logout);
+  .delete("/user/logout", logout)
+  .delete("/user/:id", deleteUser);

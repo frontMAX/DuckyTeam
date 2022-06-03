@@ -1,35 +1,26 @@
 GET http://localhost:5001/api/user
 
 ###
+GET http://localhost:5001/api/user/6299bbd762647e8b7e2b176d
 
-
-GET http://localhost:5001/api/user/628c908008610e7fba64c0dc
-
+###
 POST http://localhost:5001/api/user
 Content-Type: application/json
 
 {
-
-  "email" : "hej@hej@hej",
-  "password": "gröten",
-  "isAdmin": "false"
+  "email" : "admin@admin",
+  "password": "säkert",
+  "isAdmin": true
 }
 
 ###
-
-PUT http://localhost:5001/api/user/628c8dd2b3eac60aef73974e
+PUT http://localhost:5001/api/user/629a03ebd1f2630af0f57011
 Content-Type: application/json
 
 {
-
-  "email": "test",
-  "password": "gröten",
-   "address": {
-     "street": "Åkannavägen",
-     "zipcode": 43540,
-     "city": "Mölnlycke"
-   }
-  
+  "email": "admin@admin",
+  "password": "säkert",
+  "isAdmin": true
 }
 
 ###
@@ -43,12 +34,10 @@ POST http://localhost:5001/api/user/login
 Content-Type: application/json
 
 {   
-  "email" : "hej@hej.hej",
-  "password": "gröten"
+  "email" : "sabina@sabina",
+  "password": "sabina"
 }
 
 ###
 
-DELETE http://localhost:5001/api/user/logout/628c908008610e7fba64c0dc
-
-###
+DELETE http://localhost:5001/api/user/logout

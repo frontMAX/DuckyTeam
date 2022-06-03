@@ -13,11 +13,14 @@ import OrderForm from "../components/Forms/OrderForm";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import { CartType } from "../contexts/Reducers";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDelivery } from "../contexts/DeliveryContetxt";
+import { useUser } from "../contexts/UserContext";
+import CreateAccountForm from "../components/Forms/CreateAccountForm";
+import LoginPage from "./LoginPage";
 
 function CheckOutPage() {
-  // get cart and total price from cart
+  const { user, createUser } = useUser();
   const [cart] = useLocalStorage<CartType[]>("cart", "");
   const [total] = useLocalStorage<number>("cartSum", 0);
   const [selectedDeliveryId, setSelectedDeliveryId] = useState<
@@ -112,7 +115,6 @@ function CheckOutPage() {
           Totalpris (inkl moms & frakt)
         </Typography>
         <Typography variant="body2">
-
           {`${total + getShippingPrice(selectedDeliveryId)}`} kr
         </Typography>
         <Button
@@ -141,10 +143,25 @@ function CheckOutPage() {
 
       {/* the full form with adress, payment and shipping */}
       <Divider sx={{ mt: 2, mb: 2 }} />
-      <OrderForm
-        setSelectedDeliveryId={setSelectedDeliveryId}
-        selectedDeliveryId={selectedDeliveryId}
-      />
+      {!user ? (
+        <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}}>
+          <Typography fontSize={20} mb={2}>
+            För att slutföra din beställning behöver du ett konto.
+          </Typography>
+          <Link to="/login">
+            <Button>Har du redan ett konto?  Logga in</Button>
+          </Link>
+          <CreateAccountForm />
+        </Box>
+      ) : (
+        <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}}>
+
+        <OrderForm
+          setSelectedDeliveryId={setSelectedDeliveryId}
+          selectedDeliveryId={selectedDeliveryId}
+        />
+        </Box>
+      )}
     </Container>
   );
 
