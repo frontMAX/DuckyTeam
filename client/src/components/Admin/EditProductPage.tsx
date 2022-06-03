@@ -91,9 +91,11 @@ function EditProductPage({ expanded }: EditProductCardProps) {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginBottom: "5rem" }}>
       <Link to="/admin/products">
-        <Button startIcon={<ArrowBackIcon />}>Tillbaka till produktsidan</Button>
+        <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
+          Tillbaka till produktsidan
+        </Button>
       </Link>
       <form onSubmit={formik.handleSubmit}>
         {!product?._id ? (
@@ -101,7 +103,7 @@ function EditProductPage({ expanded }: EditProductCardProps) {
         ) : (
           <>
             <img
-              style={{ width: 100, height: 100 }}
+              style={{ width: 100, height: 100, marginBottom: "1rem" }}
               src={product?.imageUrl}
             ></img>
             <TextField
@@ -109,7 +111,7 @@ function EditProductPage({ expanded }: EditProductCardProps) {
               id="imageUrl"
               type="file"
               name="imageUrl"
-              label="imageUrl"
+              //label="imageUrl"
               value={formik.values.imageUrl}
               onChange={handleUpload}
             />
@@ -173,13 +175,18 @@ function EditProductPage({ expanded }: EditProductCardProps) {
               helperText={formik.touched.quantity && formik.errors.quantity}
             />
             <Button
+              sx={{
+                bgcolor: "#0EDFE6",
+                "&:hover": {
+                  bgcolor: "#eaa0ff",
+                },
+              }}
               endIcon={<Save />}
-              color="primary"
               variant="contained"
               fullWidth
               type="submit"
             >
-              Save product
+              Spara
             </Button>
             <Button
               startIcon={<DeleteForeverIcon />}
@@ -192,6 +199,11 @@ function EditProductPage({ expanded }: EditProductCardProps) {
               onClose={() => setOpenModal(false)}
               aria-labelledby="modal-modal-name"
               aria-describedby="modal-modal-description"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "2rem",
+              }}
             >
               <Box
                 sx={{

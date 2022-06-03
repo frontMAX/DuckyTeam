@@ -5,15 +5,20 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import { User, useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
+import { CenterFocusStrong } from "@mui/icons-material";
+import MenuIcon from '@mui/icons-material/Menu';
+import { width, height } from "@mui/system";
 
-interface HeaderProps { }
 
-const TabValues: string[] = ["/", "/products", "/about"];
+function Header() {
 
-const filteredValue = (value: string) =>
-  TabValues.includes(value) ? value : false;
 
-const Header: FC<HeaderProps> = () => {
+  const TabValues: string[] = ["/", "/products", "/about"];
+
+  const filteredValue = (value: string) =>
+    TabValues.includes(value) ? value : false;
+
+
   const navigate = useNavigate();
 
   const [value, setValue] = useState(filteredValue(useLocation().pathname));
@@ -27,12 +32,12 @@ const Header: FC<HeaderProps> = () => {
     navigate(newValue);
   };
 
+
+
   const { users, fetchUser } = useUser();
 
   // does not work.... fix to be able to work for now
-  const user = users.find(
-    (item: User) => item._id.toString()
-  )
+  const user = users.find((item: User) => item._id.toString());
 
   // useEffect(() => {
   //   // if(id){
@@ -40,12 +45,20 @@ const Header: FC<HeaderProps> = () => {
   //   // }
   // }, [fetchUser]);
 
+
+
   return (
     <>
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
         <Box sx={{ width: "100%" }}>
-          {!!user && <Typography sx={{ color: "#c900c1" }}>Du är nu inloggad som: {user?.email}</Typography>}
+          {!!user && (
+            <Typography sx={{ color: "#c900c1" }}>
+              Du är nu inloggad som: {user?.email}
+            </Typography>
+          )}
         </Box>
+
+
         <Box
           sx={{
             display: "flex",
@@ -57,25 +70,28 @@ const Header: FC<HeaderProps> = () => {
 
           <Tabs
             sx={{
-              "@media screen and (max-width: 440px)": {
+              "@media screen and (max-width: 700px)": {
                 padding: "0",
-                marginLeft: "-25px",
+                marginLeft: "-30px",
+
+
               },
             }}
+
             value={value}
             onChange={handleChange}
             textColor="primary"
             indicatorColor="primary"
             aria-label="secondary tabs example"
+
           >
             <Tab value="/" label="Hem" />
             <Tab value="/products" label="Produkter" />
             // if logged in user is admin
             {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
             <Tab value="/admin" label="Admin" />
-
             // if logged in user aint admin
-            {!user?.isAdmin && <Tab value="/user" label="User" />}
+            {!user?.isAdmin && <Tab value="/user" label="Min Sida" />}
           </Tabs>
           <Box
             sx={{
@@ -87,7 +103,6 @@ const Header: FC<HeaderProps> = () => {
               },
             }}
           >
-
             {!user ? (
               <Link to="/login">
                 <Button
@@ -179,4 +194,8 @@ const Header: FC<HeaderProps> = () => {
   );
 };
 
+
+
+
 export default Header;
+

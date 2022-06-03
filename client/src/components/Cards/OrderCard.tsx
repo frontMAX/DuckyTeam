@@ -9,13 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Order } from "../../contexts/Order/orderContext";
 
-interface OrderCardProps{
-order: Order
+interface OrderCardProps {
+  order: Order
 }
 
-export function OrderCard({order}: OrderCardProps) {
+export function OrderCard({ order }: OrderCardProps) {
   return (
-    <Card sx={{ borderRadius: "1rem", padding: "1rem" }}>
+    <Card sx={{ borderRadius: "1rem", padding: ".5rem" }}>
       <Typography>Order number: {order.orderNumber}</Typography>
       <Divider sx={{ mb: "1rem" }} />
       <Typography>Order date: {order.createdAt}</Typography>
@@ -26,7 +26,7 @@ export function OrderCard({order}: OrderCardProps) {
                         Customer:  <Link to={`/user/${id}`}>{order.user}</Link>
                     </Typography> */}
       <Divider sx={{ mb: "1rem" }} />
-      <TableContainer sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer sx={{ minWidth: 600 }} aria-label="simple table">
         <Table>
           <TableHead>
             <TableRow>
@@ -40,27 +40,28 @@ export function OrderCard({order}: OrderCardProps) {
             {order.products.map((product) => {
               return (
                 <TableRow key={product.imageUrl}>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" sx={{ "@media screen and (max-width: 740px)": { width: "1rem" }, }}>
                     {product.name}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" sx={{ "@media screen and (max-width: 740px)": { width: "1rem" }, }}>
                     {product.price}kr/st
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" sx={{ "@media screen and (max-width: 740px)": { width: "1rem" }, }}>
                     {product.qty}
                   </TableCell>
 
                   <TableCell component="th" scope="row">
                     <img
-                      style={{ width: "80px" }}
+                      style={{ width: "60px" }}
                       src={`http://localhost:5001${product.imageUrl}`}
+
                     />
                   </TableCell>
                 </TableRow>
               );
             })}
             <TableRow>
-              <TableCell colSpan={4} align="right">
+              <TableCell colSpan={4} align="left" >
                 Total price incl shipping: {order.orderTotal} kr
               </TableCell>
             </TableRow>
@@ -87,6 +88,6 @@ export function OrderCard({order}: OrderCardProps) {
           {order.shipping.phoneNumber} {order.shipping.emailAdress}
         </Typography>
       </Box>
-    </Card>
+    </Card >
   );
 }

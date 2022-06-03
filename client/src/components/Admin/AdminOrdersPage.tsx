@@ -1,5 +1,14 @@
 import { useEffect } from "react";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { Box, Button, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
@@ -15,7 +24,9 @@ function AdminOrdersPage() {
   return (
     <Container sx={{ height: "100%", minWidth: 360, maxWidth: 900 }}>
       <Link to="/admin">
-        <Button startIcon={<ArrowBackIcon />}>Tillbaka till adminsidan</Button>
+        <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
+          Tillbaka till adminsidan
+        </Button>
       </Link>
       <Box
         sx={{

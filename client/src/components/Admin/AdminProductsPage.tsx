@@ -45,7 +45,9 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
   return (
     <Container sx={{ height: "100%", minWidth: 360, maxWidth: 900 }}>
       <Link to="/admin">
-        <Button startIcon={<ArrowBackIcon />}>Tillbaka till adminsidan</Button>
+        <Button sx={{ paddingTop: "2rem" }} startIcon={<ArrowBackIcon />}>
+          Tillbaka till adminsidan
+        </Button>
       </Link>
       <Box
         sx={{
@@ -53,7 +55,7 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
         }}
       >
         <Link to="/admin/products/new">
-          <Button startIcon={<Add />}>Add new product</Button>
+          <Button startIcon={<Add />}>Lägg till produkt</Button>
         </Link>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
@@ -73,16 +75,14 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
                           <Typography>{product.name}</Typography>
                           <Box sx={{}}>
                             <Link to={`/admin/products/${product._id}`}>
-                              <Button startIcon={<EditIcon />}>
-                                Edit product
-                              </Button>
+                              <Button startIcon={<EditIcon />}>Redigera</Button>
                             </Link>
                           </Box>
                           <Button
                             startIcon={<DeleteForeverIcon />}
                             onClick={() => setOpenModal(true)}
                           >
-                            Ta bort produkt
+                            Ta bort
                           </Button>
                           <Modal
                             open={openModal}
@@ -116,7 +116,9 @@ function AdminProductsPage({ expanded }: AdminProductProps) {
                                   Ja
                                 </Button>
                               )}
-                              <Button onClick={() => setOpenModal(false)}>Nej</Button>
+                              <Button onClick={() => setOpenModal(false)}>
+                                Nej
+                              </Button>
                             </Box>
                           </Modal>
                         </Box>
