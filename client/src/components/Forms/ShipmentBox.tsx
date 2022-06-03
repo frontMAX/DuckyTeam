@@ -56,7 +56,7 @@ function ShipmentBox(props: Props) {
                 {/* logo for delivery-option */}
                 <ListItemAvatar>
                   <Avatar
-                    src={`http://localhost:5001${delivery.logoUrl}`}
+                    src={`http://localhost:5001/${delivery.logoUrl}`}
                     alt={`${delivery.name} logo`}
                   />
                 </ListItemAvatar>
