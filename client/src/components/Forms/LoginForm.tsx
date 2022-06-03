@@ -28,8 +28,7 @@ const emptyForm: LoginDetails = {
 };
 
 function LoginForm(_props: Props) {
-  const { loginUser, user } = useUser();
-
+  const { loginUser, user, failedLogin } = useUser();
   const [submitError, setSubmitError] = useState<string | undefined>(undefined);
   let navigate = useNavigate();
 
@@ -38,12 +37,19 @@ function LoginForm(_props: Props) {
     validationSchema: LoginFormSchema,
     onSubmit: (loginDetails, { resetForm }) => {
       loginUser(loginDetails);
-      navigate(`/`);
+      if (!failedLogin) {
+        navigate(`/`);
+      }
+      if (failedLogin) {
+        navigate("/login");
+        console.log("wrong");
+      }
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
+      {!failedLogin ? <h2>wrong email or password</h2> : <h2></h2>}
       {/* Display error if invalid input */}
       {!!submitError && (
         <Typography sx={{ color: "red" }}>{submitError}</Typography>
