@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import axios from "axios";
+import { LoginDetails } from "../components/Forms/LoginForm";
 
 interface UserContextValue {
   isLoggedIn: boolean;
@@ -7,10 +8,10 @@ interface UserContextValue {
   user?: User;
   fetchUsers: () => void;
   fetchUser: (id: string) => void;
-  createUser: () => void;
+  createUser: (loginDetails: LoginDetails) => void;
   updateUser: (user: User) => void;
   deleteUser: (id: string) => void;
-  loginUser: () => void;
+  loginUser: (loginDetails: LoginDetails) => void;
   logoutUser: (id: string) => void;
 }
 
@@ -35,16 +36,19 @@ export const UserContext = React.createContext<UserContextValue>({
   },
   fetchUsers: () => {},
   fetchUser: (id: string) => {},
-  createUser: () => {},
+  createUser: (loginDetails: LoginDetails) => {},
   updateUser: (user: User) => {},
   deleteUser: (id: string) => {},
   logoutUser: (id: string) => {},
-  loginUser: () => {},
+  loginUser: (loginDetails: LoginDetails): Promise<boolean> => {
+    return new Promise(() => {});
+  },
   isLoggedIn: false,
 });
 
 export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [users, setUsers] = React.useState<User[]>([]);
+  const [user, setUser] = React.useState<User>();
   let [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const fetchUsers = useCallback(() => {
@@ -59,16 +63,29 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  const createUser = useCallback(() => {
+  const createUser = useCallback((loginDetails: LoginDetails) => {
     axios.post<User>("/api/user").then((res) => {
       setUsers([...users, res.data]);
     });
   }, []);
 
-  const loginUser = useCallback(() => {
-    axios.get<User>("/api/user", { withCredentials: true }).then((res) => {
-      setUsers([...users, res.data]);
-    });
+  const loginUser = useCallback((loginDetails: LoginDetails) => {
+    axios
+      .post<User>("/api/user/login", {
+        loginDetails,
+        withCredentials: true,
+        // headers: {
+        //   CookieSession: "session"
+        // }
+        // // session: false ,
+      })
+      .then((res) => {
+        
+        setUser(res.data);
+        console.log(res.data);
+        setIsLoggedIn(true);
+        return res.data;
+      });
   }, []);
 
   const logoutUser = useCallback((id: string) => {
