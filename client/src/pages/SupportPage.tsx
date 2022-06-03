@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Box, Container, Typography } from "@mui/material";
-import duckyComputer from "../assets/duckyComputer.webp";
 
 function SupportPage() {
   return (
@@ -31,13 +30,6 @@ function SupportPage() {
           Vardagar 08:00-17:00
         </Typography>
         <Typography variant="subtitle1">Mailsupport random@mail.com</Typography>
-        {/* <img
-          style={{ borderRadius: "20rem", marginTop: "5rem" }}
-          width="250"
-          height="250"
-          src={duckyComputer}
-          alt=""
-        ></img> */}
       </Box>
     </Container>
   );

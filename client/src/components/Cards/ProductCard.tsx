@@ -18,8 +18,6 @@ import { CartType } from "../../contexts/Reducers";
 function ProductCard({ product }: any) {
   const { cart, dispatch } = useCart();
   const [ratingValue] = useState(5);
-
-  //console.log(product)
   return (
     <Card key={product._id} sx={{ borderRadius: "1rem", padding: "1rem" }}>
       <CardActionArea>

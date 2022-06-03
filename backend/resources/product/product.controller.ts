@@ -2,10 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { Order } from "../order/order.model";
 import { ProductModel, Product } from "./product.model";
 
-// update gty
-
-// const updateAmount =  { $inc: { <field1>: <amount1>, <field2>: <amount2>, ... } }
-
 // Get all products
 export const getProducts = async (req: Request, res: Response) => {
     const products = await ProductModel.find({});
@@ -42,7 +38,6 @@ export const registerProduct = async (
 
     if (!req.body) {
         res.status(400)
-        console.log('Fill in required fields.')
         throw new Error('Fill in required fields.')
 
     }
@@ -50,7 +45,6 @@ export const registerProduct = async (
     try {
         const product = new ProductModel(req.body);
         await product.save();
-        console.log(product.name);
         res.status(201).json(product);
     } catch (err) {
         next(err);
@@ -69,21 +63,16 @@ export const updateProduct = async (
     //     return;
     // }
 
-
-
     const product = await ProductModel.findById(req.params.id);
 
     if (!product) {
         res.status(400)
         throw new Error('Product not found')
     }
-
-    console.log(req.body)
     const updatedProduct = await ProductModel.findByIdAndUpdate(req.params.id, req.body.newProductData, {
         new: true
     })
 
-    console.log(updatedProduct);
     res.status(200).json(updatedProduct);
 };
 
@@ -123,7 +112,6 @@ export const deleteProduct = async (req: Request<{ id: string }>, res: Response)
     res.status(200).json('You have the deleted the product: ' + id);
 };
 
-// anropa från min order.
 export const updateStock = async (order: Order) => {
     for (const product of order.products) {
         await ProductModel.findByIdAndUpdate(

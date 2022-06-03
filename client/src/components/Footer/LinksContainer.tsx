@@ -58,7 +58,6 @@ function LinksContainer() {
           justifyContent: "center",
         }}
       >
-        {/* <img src={duckLogo} width="200" height="200" alt=""></img> */}
       </Grid>
       <Grid
         item

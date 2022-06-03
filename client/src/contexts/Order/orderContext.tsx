@@ -33,7 +33,6 @@ export interface Order {
 
 export const OrderContext = React.createContext<OrderContextValue>({
   orders: [],
-  // getOrders: () => { },
   fetchOrders: () => {},
   fetchOrder: (id: string) => {},
   createOrder: (newOrderData: NewOrderData) => {

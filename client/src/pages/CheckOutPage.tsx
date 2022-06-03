@@ -17,7 +17,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDelivery } from "../contexts/DeliveryContetxt";
 import { useUser } from "../contexts/UserContext";
 import CreateAccountForm from "../components/Forms/CreateAccountForm";
-import LoginPage from "./LoginPage";
 
 function CheckOutPage() {
   const { user, createUser } = useUser();

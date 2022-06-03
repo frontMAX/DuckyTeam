@@ -6,8 +6,6 @@ import { OrderModel } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
-    // const query = req.session?.user.isAdmin ? {} : { user: req.session?.user } // för säkerheten admin
-
     const orders = await OrderModel.find({}).populate('user');
     res.status(200).json(orders);
 };
@@ -119,7 +117,6 @@ export const updateOrder = async (
         new: true
     })
 
-    console.log(updatedOrder);
     res.status(200).json(updatedOrder);
 };
 
