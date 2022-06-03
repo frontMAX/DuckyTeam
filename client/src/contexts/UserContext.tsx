@@ -77,13 +77,6 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
       setUsers([...users, result.data]);
       setUser(result.data);
       loginUser(newUser);
-
-    const result = await axios.post<User>("/api/user", newUser, { withCredentials: true })
-    if (result.data) {
-      setUsers([...users, result.data]);
-      setUser(result.data)
-      loginUser(newUser)
-
     }
     return false;
   }, []);
