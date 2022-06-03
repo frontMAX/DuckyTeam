@@ -5,15 +5,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import { useUser } from "../../contexts/UserContext";
 import CartButton from "./CartButton";
+import HomeIcon from "@mui/icons-material/Home";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 function Header() {
-
-
   const TabValues: string[] = ["/", "/products", "/about"];
 
   const filteredValue = (value: string) =>
     TabValues.includes(value) ? value : false;
-
 
   const navigate = useNavigate();
 
@@ -30,8 +29,6 @@ function Header() {
 
   const { user, logoutUser } = useUser();
 
-
-
   return (
     <>
       <Container maxWidth="md" sx={{ padding: "0,2rem", mb: 1, mt: 2 }}>
@@ -43,43 +40,46 @@ function Header() {
           )}
         </Box>
 
-
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            flexDirection: "row",
             alignItems: "center",
             width: "100%",
           }}
         >
-          <Tabs
-            sx={{
-              "@media screen and (max-width: 700px)": {
-                padding: "0",
-                marginLeft: "-30px",
+          <Box  sx={{
+            display: "flex",
+            gap: "0.8rem",
+            flexDirection: "row",
+            alignItems: "center",
+            width: "100%",
+          }}>
+            <Link to="/">
+              {" "}
+              <HomeIcon
+                sx={{ color: "black", fontSize: "2rem", ml: "0.5rem" }}
+              />{" "}
+            </Link>
+            <Link to="/products">
+              {" "}
+              <Typography sx={{ color: "black" }}>PRODUKTER</Typography>{" "}
+            </Link>
+            {!!user?.isAdmin && (
+              <Link to="/admin">
+                <AdminPanelSettingsIcon
+                  sx={{ color: "black", ml: "1rem", fontSize: "2rem" }}
+                />
+              </Link>
+            )}
+          </Box>
 
-
-              },
-            }}
-
-            value={value}
-            onChange={handleChange}
-            textColor="primary"
-            indicatorColor="primary"
-            aria-label="secondary tabs example"
-
-          >
-            <Tab value="/" label="Hem" />
-            <Tab value="/products" label="Produkter" />
-            // if logged in user is admin
-            {!!user?.isAdmin && <Tab value="/admin" label="Admin" />}
-          </Tabs>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: "1rem",
-              "@media screen and (max-width: 480px)": {
+              gap: ".1rem",
+              "@media screen and (max-width: 700px)": {
                 marginRight: "-10px",
               },
             }}
@@ -111,11 +111,12 @@ function Header() {
                   endIcon={
                     <AccountCircleIcon
                       sx={{
-                        padding: "0",
-                        height: "2.5rem",
-                        width: "2.5rem",
+                        padding: "1rem",
+                        height: "2rem",
+                        width: "2rem",
                         "@media screen and (max-width: 440px)": {
                           marginRight: "-30px",
+                  
                         },
                       }}
                       color="warning"
@@ -151,9 +152,9 @@ function Header() {
                 endIcon={
                   <AccountCircleIcon
                     sx={{
-                      padding: "0",
-                      height: "2.5rem",
-                      width: "2.5rem",
+                      padding: "1rem",
+                      height: "2rem",
+                      width: "2rem",
                       "@media screen and (max-width: 440px)": {
                         marginRight: "-30px",
                       },
@@ -173,10 +174,6 @@ function Header() {
       </Container>
     </>
   );
-};
-
-
-
+}
 
 export default Header;
-

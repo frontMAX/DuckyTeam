@@ -25,6 +25,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 interface EditProductCardProps {
   expanded?: boolean;
@@ -35,7 +36,7 @@ function EditProductPage({ expanded }: EditProductCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const { products, fetchProduct, updateProduct, deleteProduct } = useProduct();
-
+  const { user } = useUser();
   const product = products.find((item: Product) => item._id?.toString() === id);
 
   useEffect(() => {
@@ -97,146 +98,157 @@ function EditProductPage({ expanded }: EditProductCardProps) {
           Tillbaka till produktsidan
         </Button>
       </Link>
-      <form onSubmit={formik.handleSubmit}>
-        {!product?._id ? (
-          <div>This product doesn't exist.</div>
-        ) : (
-          <>
-            <img
-              style={{ width: 100, height: 100, marginBottom: "1rem" }}
-              src={product?.imageUrl}
-            ></img>
-            <TextField
-              fullWidth
-              id="imageUrl"
-              type="file"
-              name="imageUrl"
-              //label="imageUrl"
-              value={formik.values.imageUrl}
-              onChange={handleUpload}
-            />
-            <TextField
-              fullWidth
-              id="name"
-              name="name"
-              label="Name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
-            />
-            <TextField
-              fullWidth
-              id="price"
-              name="price"
-              label="price"
-              type="number"
-              value={formik.values.price}
-              onChange={formik.handleChange}
-              error={formik.touched.price && Boolean(formik.errors.price)}
-              helperText={formik.touched.price && formik.errors.price}
-            />
-            <TextField
-              fullWidth
-              id="details"
-              name="details"
-              label="details"
-              value={formik.values.details}
-              onChange={formik.handleChange}
-              error={formik.touched.details && Boolean(formik.errors.details)}
-              helperText={formik.touched.details && formik.errors.details}
-            />
-            <InputLabel id="category">Categories</InputLabel>
-            <Select
-              labelId="category"
-              id="category"
-              name="category"
-              multiple
-              value={formik.values.category}
-              onChange={formik.handleChange}
-              input={<OutlinedInput label="Categories" />}
-            >
-              {Categories.map((category, key) => (
-                <MenuItem key={key} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </Select>
+      {!user?.isAdmin && (
+        <Box sx={{ textAlign: "center", padding: "2rem" }}>
+          <Typography fontSize={30}>
+            Woops. <br /> Unauthorized access, please return back.
+          </Typography>
+        </Box>
+      )}
+      {!!user?.isAdmin && (
+        <form onSubmit={formik.handleSubmit}>
+          {!product?._id ? (
+            <div>This product doesn't exist.</div>
+          ) : (
+            <>
+              <img
+                style={{ width: 100, height: 100, marginBottom: "1rem" }}
+                src={product?.imageUrl}
+              ></img>
+              <TextField
+                fullWidth
+                id="imageUrl"
+                type="file"
+                name="imageUrl"
+                //label="imageUrl"
+                value={formik.values.imageUrl}
+                onChange={handleUpload}
+              />
+              <TextField
+                fullWidth
+                id="name"
+                name="name"
+                label="Name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+              />
+              <TextField
+                fullWidth
+                id="price"
+                name="price"
+                label="price"
+                type="number"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
+              />
+              <TextField
+                fullWidth
+                id="details"
+                name="details"
+                label="details"
+                value={formik.values.details}
+                onChange={formik.handleChange}
+                error={formik.touched.details && Boolean(formik.errors.details)}
+                helperText={formik.touched.details && formik.errors.details}
+              />
+              <InputLabel id="category">Categories</InputLabel>
+              <Select
+                labelId="category"
+                id="category"
+                name="category"
+                multiple
+                value={formik.values.category}
+                onChange={formik.handleChange}
+                input={<OutlinedInput label="Categories" />}
+              >
+                {Categories.map((category, key) => (
+                  <MenuItem key={key} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
 
-            <TextField
-              fullWidth
-              id="quantity"
-              name="quantity"
-              label="quantity"
-              type="number"
-              value={formik.values.quantity}
-              onChange={formik.handleChange}
-              error={formik.touched.quantity && Boolean(formik.errors.quantity)}
-              helperText={formik.touched.quantity && formik.errors.quantity}
-            />
-            <Button
-              sx={{
-                bgcolor: "#0EDFE6",
-                "&:hover": {
-                  bgcolor: "#eaa0ff",
-                },
-              }}
-              endIcon={<Save />}
-              variant="contained"
-              fullWidth
-              type="submit"
-            >
-              Spara
-            </Button>
-            <Button
-              startIcon={<DeleteForeverIcon />}
-              onClick={() => setOpenModal(true)}
-            >
-              Ta bort produkt
-            </Button>
-            <Modal
-              open={openModal}
-              onClose={() => setOpenModal(false)}
-              aria-labelledby="modal-modal-name"
-              aria-describedby="modal-modal-description"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "2rem",
-              }}
-            >
-              <Box
+              <TextField
+                fullWidth
+                id="quantity"
+                name="quantity"
+                label="quantity"
+                type="number"
+                value={formik.values.quantity}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.quantity && Boolean(formik.errors.quantity)
+                }
+                helperText={formik.touched.quantity && formik.errors.quantity}
+              />
+              <Button
                 sx={{
-                  background: "white",
-                  height: "10rem",
-                  width: "25rem",
-                  textAlign: "center",
+                  bgcolor: "#0EDFE6",
+                  "&:hover": {
+                    bgcolor: "#eaa0ff",
+                  },
+                }}
+                endIcon={<Save />}
+                variant="contained"
+                fullWidth
+                type="submit"
+              >
+                Spara
+              </Button>
+              <Button
+                startIcon={<DeleteForeverIcon />}
+                onClick={() => setOpenModal(true)}
+              >
+                Ta bort produkt
+              </Button>
+              <Modal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                aria-labelledby="modal-modal-name"
+                aria-describedby="modal-modal-description"
+                sx={{
                   display: "flex",
                   justifyContent: "center",
-                  flexDirection: "column",
+                  marginTop: "2rem",
                 }}
               >
-                <Typography>
-                  Är du säker på att du vill ta bort produkten?
-                </Typography>
-                {typeof product._id !== "undefined" && (
-                  <Button
-                    onClick={(e) => {
-                      deleteProduct(product._id);
-                      setOpenModal(false);
-                      setOpen(false);
-                      e.stopPropagation();
-                    }}
-                  >
-                    Ja
-                  </Button>
-                )}
-                <Button onClick={() => setOpenModal(false)}>Nej</Button>
-              </Box>
-            </Modal>
-          </>
-        )}
-      </form>
+                <Box
+                  sx={{
+                    background: "white",
+                    height: "10rem",
+                    width: "25rem",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography>
+                    Är du säker på att du vill ta bort produkten?
+                  </Typography>
+                  {typeof product._id !== "undefined" && (
+                    <Button
+                      onClick={(e) => {
+                        deleteProduct(product._id);
+                        setOpenModal(false);
+                        setOpen(false);
+                        e.stopPropagation();
+                      }}
+                    >
+                      Ja
+                    </Button>
+                  )}
+                  <Button onClick={() => setOpenModal(false)}>Nej</Button>
+                </Box>
+              </Modal>
+            </>
+          )}
+        </form>
+      )}
     </Container>
   );
 }

@@ -5,10 +5,12 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useUser } from "../../contexts/UserContext";
 
 function AdminPage() {
+  const { user } = useUser();
   return (
     <Container sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
       <Link to="/">
@@ -16,6 +18,12 @@ function AdminPage() {
           Tillbaka till startsidan
         </Button>
       </Link>
+      {!user?.isAdmin && 
+      <Box sx={{textAlign:"center", padding:"2rem"}}>
+        <Typography fontSize={30}>Woops. <br/> Unauthorized access, please return back.</Typography>
+      </Box>
+      }
+      {!!user?.isAdmin && 
       <Box
         sx={{
           textAlign: "center",
@@ -64,6 +72,7 @@ function AdminPage() {
           </List>
         </nav>
       </Box>
+}
     </Container>
   );
 }

@@ -59,8 +59,8 @@ function CartButton() {
           <ShoppingCartIcon
             sx={{
               color: "#0EDFE6",
-              height: "2.5rem",
-              width: "2.5rem",
+              height: "2rem",
+              width: "2rem",
               border: "none",
               "&:hover": {
                 color: "#eaa0ff",

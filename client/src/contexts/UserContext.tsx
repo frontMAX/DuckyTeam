@@ -36,15 +36,15 @@ export const UserContext = React.createContext<UserContextValue>({
     isAdmin: false,
     _id: "",
   },
-  fetchUsers: () => {},
-  fetchUser: (id: string) => {},
-  createUser: (newUser: createAccount) => {},
-  updateUser: (user: User) => {},
-  getCurrentUser: () => {},
-  deleteUser: (id: string) => {},
-  logoutUser: () => {},
+  fetchUsers: () => { },
+  fetchUser: (id: string) => { },
+  createUser: (newUser: createAccount) => { },
+  updateUser: (user: User) => { },
+  getCurrentUser: () => { },
+  deleteUser: (id: string) => { },
+  logoutUser: () => { },
   loginUser: (loginDetails: LoginDetails): Promise<boolean> => {
-    return new Promise(() => {});
+    return new Promise(() => { });
   },
   isLoggedIn: false,
 });
@@ -66,11 +66,11 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
     });
   }, []);
 
-  const createUser = useCallback( async (newUser: createAccount) => {
-    const result = await axios.post<User>("/api/user", newUser,{withCredentials: true})
-    if(result.data){ 
-    setUsers([...users, result.data]);
-      setUser(result.data)   
+  const createUser = useCallback(async (newUser: createAccount) => {
+    const result = await axios.post<User>("/api/user", newUser, { withCredentials: true })
+    if (result.data) {
+      setUsers([...users, result.data]);
+      setUser(result.data)
       loginUser(newUser)
     }
     return false;
@@ -82,10 +82,10 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
       loginDetails,
       { withCredentials: true }
     );
-    if(result.data){
-    setUser(result.data);
-    return result.data;
-  }
+    if (result.data) {
+      setUser(result.data);
+      return result.data;
+    }
   }, []);
 
   const getCurrentUser = useCallback(async () => {
