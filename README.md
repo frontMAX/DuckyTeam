@@ -11,9 +11,9 @@
 * *Github repo* (https://github.com/frontMAX/DuckyTeam)
 
 ## Kom igång:
-1. Öppna terminalen, skriv `cd client` och därefter `npm i` &  sedan ` cd ..`
-2. Skriv sedan `npm i `  och därefter `npm run start-server`
-3. Öppna ett nytt terminalfönster, skriv `npm run start-front`
+1. Öppna terminalen, skriv `cd backend` och därefter `npm i` &  sedan `npm start`
+2. Öppna ett nytt terminalfönster, skriv `cd client` och därefter `npm i` &  sedan `npm start`
+3. Då skall både servern vara up and running samt frontend kan ses på http://localhost:3000/
 
 
 För att logga in som admin (och se adminpanelen i header): 
