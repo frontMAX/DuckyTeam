@@ -26,6 +26,7 @@
     "nodemon": "^2.0.16"
   },
   "devDependencies": {
+    "@types/express-session": "^1.17.4",
     "ts-node": "^10.8.1"
   }
 }
