@@ -37,15 +37,15 @@ export const UserContext = React.createContext<UserContextValue>({
     isAdmin: false,
     _id: "",
   },
-  fetchUsers: () => { },
-  fetchUser: (id: string) => { },
-  createUser: (newUser: createAccount) => { },
-  updateUser: (user: User) => { },
-  getCurrentUser: () => { },
-  deleteUser: (id: string) => { },
-  logoutUser: () => { },
+  fetchUsers: () => {},
+  fetchUser: (id: string) => {},
+  createUser: (newUser: createAccount) => {},
+  updateUser: (user: User) => {},
+  getCurrentUser: () => {},
+  deleteUser: (id: string) => {},
+  logoutUser: () => {},
   loginUser: (loginDetails: LoginDetails): Promise<boolean> => {
-    return new Promise(() => { });
+    return new Promise(() => {});
   },
   isLoggedIn: false,
   failedLogin: true,
@@ -89,11 +89,9 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
           setFailedLogin(false);
           return error;
         }
-        console.log(error);
       })
       .then((result: AxiosResponse) => {
         if (result.data) {
-          console.log(result.data);
           setUser(result.data);
           setFailedLogin(true);
           return result.data;
@@ -102,13 +100,19 @@ export const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
   }, []);
 
   const getCurrentUser = useCallback(async () => {
-    const result = await axios.get<User>("/api/user/auth", {
-      withCredentials: true,
-    });
-    if (result.data) {
-      setUser(result.data);
+    try {
+      const result = await axios.get<User>("/api/user/auth", {
+        withCredentials: true,
+      });
+
+      if (result.data) {
+        setUser(result.data);
+      }
+      return result.data;
+    } catch (e) {
+      setUser(undefined);
+      return undefined;
     }
-    return result.data;
   }, []);
 
   const logoutUser = useCallback(() => {

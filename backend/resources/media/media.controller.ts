@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Readable } from 'stream'
 import mongoose, { Types } from "mongoose";
-import { GridFSFile } from "mongoose/node_modules/mongodb";
 import multer from "multer";
+import { GridFSFile } from "mongodb";
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage }).single('file')

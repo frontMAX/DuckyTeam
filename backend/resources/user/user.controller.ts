@@ -39,22 +39,26 @@ export const addUser = async (
     if (userExist) {
       res.json("user already exist, pick another.").status(409);
       return;
-    } // encryption of password
+    }
 
+    // encryption of password
     const salt = await bcrypt.genSalt(10);
-    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const user = await UserModel.create({
-      email: email,
-      password: encryptedPassword,
-    });
+    if (!!req.body.password) {
+      const encryptedPassword = await bcrypt.hash(req.body.password, 10);
+
+      const user = await UserModel.create({
+        email: email,
+        password: encryptedPassword,
+      });
+    
 
     if (!user) {
       res.json("cant create user");
     }
 
     res.status(200).json(user);
-
+  }
   } catch (err) {
     next(err);
   }
@@ -110,7 +114,7 @@ export const loginUser = async (
   }
 
   // No user found, can't log in.
-  if (!user) {
+  if (!user || !user.password) {
     return res.status(401).json("you typed in wrong password or name");
   }
 
