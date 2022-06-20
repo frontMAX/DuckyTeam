@@ -42,14 +42,13 @@ function LoginForm(_props: Props) {
       }
       if (failedLogin) {
         navigate("/login");
-        console.log("wrong");
       }
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      {!failedLogin ? <h2>wrong email or password</h2> : <h2></h2>}
+      {!failedLogin ? <h2>Wrong email or password.</h2> : <h2></h2>}
       {/* Display error if invalid input */}
       {!!submitError && (
         <Typography sx={{ color: "red" }}>{submitError}</Typography>
