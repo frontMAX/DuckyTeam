@@ -89,6 +89,7 @@ export const addOrder = async (
                 logoUrl: delivery.logoId,
             },
             orderTotal: req.body.orderTotal + delivery.price,
+            id: ""
         }
 
         const order = new OrderModel(newOrderData);
