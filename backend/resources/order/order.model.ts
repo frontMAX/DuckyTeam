@@ -1,15 +1,14 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 import { User } from "../user/user.model";
-import { Address } from "cluster";
+import { ShippingAdress } from "./order.controller";
 
 
 export interface Order {
   id: string;
   orderNumber: string;
-  // should be virtual product  !!!! IMPORTANT TO FIX
   products: OrderProduct[];
   // shipping adress
-  shipping: Address;
+  shipping: ShippingAdress;
   createdAt: Date;
   updatedAt: Date;
   user: User;
@@ -18,7 +17,7 @@ export interface Order {
   delivery: {
     name: string;
     price: number;
-    logoUrl: string;
+    logoUrl: Schema.Types.ObjectId;
   };
   // the total for all products and shipping   !!!! IMPORTANT TO FIX
   orderTotal: number;
@@ -43,7 +42,7 @@ const orderDeliverySchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    logoUrl: { type: String, required: true },
+    logoUrl: { type: Schema.Types.ObjectId, required: true },
   }
 )
 

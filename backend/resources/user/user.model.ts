@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface User {
   email: string;
   id: string;
-  password: string;
+  password?: string;
   isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;

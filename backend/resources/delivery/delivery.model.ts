@@ -6,7 +6,7 @@ export interface Delivery {
   altText: string;
   shippingTime: number;
   price: number;
-  logoId: Types.ObjectId;
+  logoId: Schema.Types.ObjectId;
   logoUrl: string;
 }
 

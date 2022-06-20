@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { DeliveryModel } from "../delivery/delivery.model";
 import { updateStock } from "../product/product.controller";
 import { User, UserModel } from "../user/user.model";
-import { OrderModel } from "./order.model"
+import { Order, OrderModel, OrderProduct } from "./order.model"
 
 
 export const getOrders = async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export const getOrders = async (req: Request, res: Response) => {
 // Get a single order by id
 export const getOrder = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params
-   
+
     const order = await OrderModel.findById(id).populate('user')
     if (!order) {
         return res
@@ -48,7 +48,7 @@ export interface NewOrderData {
     user: User,
     orderTotal: number,
     delivery: string,
-    products: CartType[],
+    products: OrderProduct[],
 }
 
 
@@ -69,13 +69,15 @@ export const addOrder = async (
         }
 
         let user = await UserModel.findById(req.session.user._id);
-        
-        if (!user) {
-            res.status(404).json("user does not exist");
-          }
 
-        const newOrderData = {
-            orderNumber: Math.floor(Math.random() * 1000000),
+
+        if (user === null) {
+            res.status(404).json("user does not exist");
+            return;
+        }
+
+        const newOrderData: Order = {
+            orderNumber: Math.floor(Math.random() * 1000000).toString(),
             products: req.body.products,
             shipping: req.body.shipping,
             createdAt: new Date(),
